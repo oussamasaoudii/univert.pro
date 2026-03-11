@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -311,10 +312,20 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <div className="flex -space-x-2">
-                    {['A', 'B', 'C', 'D'].map((letter, i) => (
-                      <div key={i} className="w-8 h-8 rounded-full bg-secondary border-2 border-background flex items-center justify-center text-xs font-medium">
-                        {letter}
-                      </div>
+                    {[
+                      'https://randomuser.me/api/portraits/men/32.jpg',
+                      'https://randomuser.me/api/portraits/women/44.jpg',
+                      'https://randomuser.me/api/portraits/men/75.jpg',
+                      'https://randomuser.me/api/portraits/women/65.jpg',
+                    ].map((src, i) => (
+                      <Image 
+                        key={i} 
+                        src={src} 
+                        alt={`Developer ${i + 1}`}
+                        width={32}
+                        height={32}
+                        className="w-8 h-8 rounded-full border-2 border-background object-cover"
+                      />
                     ))}
                   </div>
                   <span>Join <strong className="text-foreground">50,000+</strong> developers</span>
@@ -453,10 +464,19 @@ export default function HomePage() {
                 <FloatingBadge className="top-1/2 -right-4 lg:-right-12 -translate-y-1/2" delay={1}>
                   <div className="flex items-center gap-2">
                     <div className="flex -space-x-1">
-                      {[1, 2, 3].map((i) => (
-                        <div key={i} className="w-6 h-6 rounded-full bg-secondary border border-background flex items-center justify-center text-[10px]">
-                          {String.fromCharCode(64 + i)}
-                        </div>
+                      {[
+                        'https://randomuser.me/api/portraits/men/22.jpg',
+                        'https://randomuser.me/api/portraits/women/28.jpg',
+                        'https://randomuser.me/api/portraits/men/45.jpg',
+                      ].map((src, i) => (
+                        <Image 
+                          key={i} 
+                          src={src} 
+                          alt={`Online user ${i + 1}`}
+                          width={24}
+                          height={24}
+                          className="w-6 h-6 rounded-full border border-background object-cover"
+                        />
                       ))}
                     </div>
                     <span className="text-xs text-muted-foreground">+12 online</span>
