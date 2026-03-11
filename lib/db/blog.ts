@@ -105,6 +105,8 @@ async function enrichTags(posts: BlogPostWithRelations[]): Promise<BlogPostWithR
   if (posts.length === 0) return posts;
 
   const pool = getMySQLPool();
+  if (!pool) return posts;
+  
   const postIds = posts.map((p) => p.id);
   const placeholders = postIds.map(() => "?").join(",");
 
@@ -139,6 +141,7 @@ async function enrichTags(posts: BlogPostWithRelations[]): Promise<BlogPostWithR
 
 async function runPostsQuery(whereSql: string, params: unknown[], suffixSql: string = ""): Promise<BlogPostWithRelations[]> {
   const pool = getMySQLPool();
+  if (!pool) return [];
 
   const [rows] = await pool.query<JoinedPostRow[]>(
     `
@@ -289,6 +292,7 @@ export async function getRelatedPosts(postId: string, limit: number = 3): Promis
 
 export async function getBlogAuthors(): Promise<BlogAuthorRow[]> {
   const pool = getMySQLPool();
+  if (!pool) return [];
 
   try {
     const [rows] = await pool.query<BlogAuthorRow[]>(
@@ -303,6 +307,7 @@ export async function getBlogAuthors(): Promise<BlogAuthorRow[]> {
 
 export async function getBlogAuthor(id: string): Promise<BlogAuthorRow | null> {
   const pool = getMySQLPool();
+  if (!pool) return null;
 
   try {
     const [rows] = await pool.query<BlogAuthorRow[]>(
@@ -320,6 +325,7 @@ export async function getBlogAuthor(id: string): Promise<BlogAuthorRow | null> {
 
 export async function getBlogCategories(): Promise<BlogCategoryRow[]> {
   const pool = getMySQLPool();
+  if (!pool) return [];
 
   try {
     const [rows] = await pool.query<BlogCategoryRow[]>(
@@ -334,6 +340,7 @@ export async function getBlogCategories(): Promise<BlogCategoryRow[]> {
 
 export async function getBlogCategory(slug: string): Promise<BlogCategoryRow | null> {
   const pool = getMySQLPool();
+  if (!pool) return null;
 
   try {
     const [rows] = await pool.query<BlogCategoryRow[]>(
@@ -351,6 +358,7 @@ export async function getBlogCategory(slug: string): Promise<BlogCategoryRow | n
 
 export async function getBlogTags(): Promise<BlogTagRow[]> {
   const pool = getMySQLPool();
+  if (!pool) return [];
 
   try {
     const [rows] = await pool.query<BlogTagRow[]>(
@@ -365,6 +373,7 @@ export async function getBlogTags(): Promise<BlogTagRow[]> {
 
 export async function getBlogTag(slug: string): Promise<BlogTagRow | null> {
   const pool = getMySQLPool();
+  if (!pool) return null;
 
   try {
     const [rows] = await pool.query<BlogTagRow[]>(
@@ -382,6 +391,7 @@ export async function getBlogTag(slug: string): Promise<BlogTagRow | null> {
 
 export async function createBlogPost(post: Partial<BlogPostRow>): Promise<BlogPostRow | null> {
   const pool = getMySQLPool();
+  if (!pool) return null;
 
   const id = post.id || randomUUID();
   const now = new Date().toISOString().slice(0, 19).replace("T", " ");
@@ -435,6 +445,7 @@ export async function createBlogPost(post: Partial<BlogPostRow>): Promise<BlogPo
 
 export async function updateBlogPost(id: string, updates: Partial<BlogPostRow>): Promise<BlogPostRow | null> {
   const pool = getMySQLPool();
+  if (!pool) return null;
 
   const entries = Object.entries(updates).filter(([, value]) => value !== undefined);
   if (entries.length === 0) return null;
@@ -461,6 +472,7 @@ export async function updateBlogPost(id: string, updates: Partial<BlogPostRow>):
 
 export async function deleteBlogPost(id: string): Promise<boolean> {
   const pool = getMySQLPool();
+  if (!pool) return false;
 
   try {
     await pool.execute("DELETE FROM blog_posts WHERE id = ?", [id]);
@@ -478,6 +490,7 @@ export async function trackPostView(
   referrer?: string,
 ): Promise<boolean> {
   const pool = getMySQLPool();
+  if (!pool) return false;
 
   try {
     await pool.execute(
