@@ -350,23 +350,32 @@ export default function ProductPage() {
     },
   ];
 
-  const testimonials = [
-    {
-      quote: 'Ovmon reduced our deployment time from 15 minutes to under 3 seconds. The edge network keeps our users happy everywhere.',
-      author: 'Sarah Chen',
-      role: 'CTO, TechFlow',
+const testimonials = [
+  {
+    quote: 'Ovmon reduced our deployment time from 15 minutes to under 3 seconds. The edge network keeps our users happy everywhere.',
+    author: {
+      name: 'Sarah Chen',
+      title: 'CTO',
+      company: 'TechFlow',
     },
-    {
-      quote: 'The developer experience is unmatched. CLI, preview environments, and rollbacks make shipping code a joy.',
-      author: 'Marcus Johnson',
-      role: 'Lead Developer, GlobalRetail',
+  },
+  {
+    quote: 'The developer experience is unmatched. CLI, preview environments, and rollbacks make shipping code a joy.',
+    author: {
+      name: 'Marcus Johnson',
+      title: 'Lead Developer',
+      company: 'GlobalRetail',
     },
-    {
-      quote: 'Enterprise security without the complexity. SOC2 compliance and DDoS protection out of the box.',
-      author: 'Elena Rodriguez',
-      role: 'VP Engineering, FinanceHub',
+  },
+  {
+    quote: 'Enterprise security without the complexity. SOC2 compliance and DDoS protection out of the box.',
+    author: {
+      name: 'Elena Rodriguez',
+      title: 'VP Engineering',
+      company: 'FinanceHub',
     },
-  ];
+  },
+];
 
   return (
     <main className="min-h-screen bg-background">
@@ -782,10 +791,10 @@ export default function ProductPage() {
       {/* Metrics / Proof Section */}
       <StatsSection
         stats={[
-          { value: 50000, suffix: '+', label: 'Developers', icon: Users },
-          { value: 2, suffix: 'B+', label: 'Monthly Requests', icon: TrendingUp },
-          { value: 150, suffix: '+', label: 'Edge Locations', icon: Globe },
-          { value: 99.99, suffix: '%', label: 'Uptime SLA', icon: Shield },
+          { value: 50000, suffix: '+', label: 'Developers' },
+          { value: 2, suffix: 'B+', label: 'Monthly Requests' },
+          { value: 150, suffix: '+', label: 'Edge Locations' },
+          { value: 99.99, suffix: '%', label: 'Uptime SLA' },
         ]}
         variant="contained"
         columns={4}
