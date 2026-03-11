@@ -54,7 +54,7 @@ type MarketingSessionUser = {
 const productFeatured = {
   title: "Platform Overview",
   description: "Discover the complete Ovmon platform architecture",
-  href: "/product/overview",
+  href: "/product",
   icon: Layers,
 };
 
@@ -172,8 +172,14 @@ const solutionsHighlight = {
 // Resources menu items
 const resourcesLearn = [
   {
-    title: "Documentation",
-    description: "Guides and API reference",
+  title: "Resource Hub",
+  description: "All resources in one place",
+  href: "/resources",
+  icon: BookOpen,
+  },
+  {
+  title: "Documentation",
+  description: "Guides and API reference",
     href: "/docs",
     icon: BookOpen,
   },
@@ -221,6 +227,7 @@ const resourcesConnect = [
 // Company menu items
 const companyLinks = [
   { title: "About", description: "Our story and mission", href: "/about" },
+  { title: "Customers", description: "Customer success stories", href: "/customers" },
   { title: "Careers", description: "Join our team", href: "/careers", badge: "Hiring" },
   { title: "Partners", description: "Partner program", href: "/partners" },
   { title: "Press", description: "News and media", href: "/press" },
