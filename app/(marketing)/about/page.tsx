@@ -1,4 +1,5 @@
-import { Metadata } from 'next';
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -26,11 +27,6 @@ import {
   TestimonialSection,
   LogoCloud,
 } from '@/components/marketing/sections';
-
-export const metadata: Metadata = {
-  title: 'About Ovmon - Website Hosting Platform',
-  description: 'Learn about Ovmon, the modern platform for deploying and managing websites with integrated provisioning, monitoring, and domain management.',
-};
 
 // Company values
 const values = [
