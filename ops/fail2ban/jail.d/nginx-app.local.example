@@ -1,0 +1,17 @@
+[nginx-auth]
+enabled = true
+port = http,https
+filter = nginx-auth
+logpath = /var/log/nginx/access.log
+findtime = 600
+maxretry = 6
+bantime = 3600
+
+[nginx-scanners]
+enabled = true
+port = http,https
+filter = nginx-scanners
+logpath = /var/log/nginx/access.log
+findtime = 600
+maxretry = 8
+bantime = 7200
