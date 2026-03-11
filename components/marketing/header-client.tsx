@@ -19,7 +19,7 @@ const navigation = [
   { name: "Templates", href: "/demos" },
   { name: "Pricing", href: "/pricing" },
   { name: "Features", href: "/features" },
-  { name: "Docs", href: "/support" },
+  { name: "Docs", href: "/docs" },
 ];
 
 export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUser }) {
