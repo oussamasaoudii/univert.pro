@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+'use client';
+
 import Link from "next/link";
 import {
   BookOpen,
@@ -24,11 +25,6 @@ import {
 import { ResourceCards } from "./resource-cards";
 import { FeaturedContent } from "./featured-content";
 import { CommunitySection } from "./community-section";
-
-export const metadata: Metadata = {
-  title: "Resources - Ovmon",
-  description: "Documentation, guides, tutorials, and everything you need to succeed with Ovmon.",
-};
 
 // Main resource categories
 const resourceCategories = [

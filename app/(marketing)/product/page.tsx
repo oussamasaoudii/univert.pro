@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+'use client';
+
 import {
   Globe,
   Zap,
@@ -12,8 +13,6 @@ import {
   Cpu,
   RefreshCw,
   Rocket,
-  ArrowRight,
-  Check,
   Users,
   Clock,
   Database,
@@ -29,11 +28,6 @@ import {
 } from "@/components/marketing/sections";
 import { ProductArchitecture } from "./product-architecture";
 import { ProductComparison } from "./product-comparison";
-
-export const metadata: Metadata = {
-  title: "Product - Ovmon",
-  description: "Discover the complete Ovmon platform. Build, deploy, and scale modern web applications with enterprise-grade infrastructure.",
-};
 
 // Core platform pillars
 const platformPillars = [

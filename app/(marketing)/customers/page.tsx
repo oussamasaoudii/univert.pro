@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+'use client';
+
 import {
   ShoppingCart,
   Layers,
@@ -20,11 +21,6 @@ import {
 import { CustomerCaseStudies } from "./customer-case-studies";
 import { CustomerStats } from "./customer-stats";
 import { CustomerQuotes } from "./customer-quotes";
-
-export const metadata: Metadata = {
-  title: "Customer Stories - Ovmon",
-  description: "See how leading companies use Ovmon to build, deploy, and scale their web applications.",
-};
 
 // Featured case studies
 const caseStudies = [
