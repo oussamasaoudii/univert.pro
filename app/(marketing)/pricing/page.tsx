@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Check, ArrowRight, AlertTriangle } from "lucide-react";
+import { Check, ArrowRight, AlertTriangle, Shield, Zap, Headphones, CreditCard, RefreshCw, Rocket } from "lucide-react";
+import { FAQSection, CTABand, TrustMetrics, ComparisonTable } from "@/components/marketing/sections";
 
 type PricingPlan = {
   id: string;
@@ -24,6 +25,64 @@ function hasPlans(
 ): value is { plans: PricingPlan[]; error?: string } {
   return Array.isArray((value as { plans?: PricingPlan[] }).plans);
 }
+
+// Trust items for pricing page
+const pricingTrustItems = [
+  { icon: CreditCard, label: 'No Credit Card', sublabel: 'Required to start' },
+  { icon: Shield, label: 'Secure Payments', sublabel: 'PCI compliant' },
+  { icon: RefreshCw, label: 'Cancel Anytime', sublabel: 'No lock-in' },
+  { icon: Rocket, label: '60 Second Setup', sublabel: 'Start instantly' },
+];
+
+// Comparison table for pricing
+const pricingComparison = {
+  columns: [
+    { name: 'Feature', highlighted: false },
+    { name: 'Starter', highlighted: false },
+    { name: 'Pro', highlighted: true },
+    { name: 'Enterprise', highlighted: false },
+  ],
+  rows: [
+    { feature: 'Projects', values: ['3', 'Unlimited', 'Unlimited'] },
+    { feature: 'Bandwidth', values: ['100GB', '1TB', 'Custom'] },
+    { feature: 'Team Members', values: ['1', '10', 'Unlimited'] },
+    { feature: 'Preview Deployments', values: [true, true, true] },
+    { feature: 'Custom Domains', values: [true, true, true] },
+    { feature: 'SSL Certificates', values: [true, true, true] },
+    { feature: 'Edge Functions', values: ['partial', true, true] },
+    { feature: 'Analytics', values: ['Basic', 'Advanced', 'Custom'] },
+    { feature: 'Support', values: ['Community', 'Priority', 'Dedicated'] },
+    { feature: 'SLA Guarantee', values: [false, true, true] },
+  ],
+};
+
+// FAQ data
+const pricingFAQs = [
+  {
+    question: 'What happens when I exceed my bandwidth limit?',
+    answer: 'We will notify you before you reach your limit. You can upgrade your plan at any time, and we offer affordable overage rates so your site stays online.',
+  },
+  {
+    question: 'Can I change my plan later?',
+    answer: 'Yes! You can upgrade or downgrade your plan at any time. When upgrading, you will be prorated for the remainder of your billing cycle. When downgrading, changes take effect at the next billing period.',
+  },
+  {
+    question: 'Do you offer refunds?',
+    answer: 'Yes, we offer a 30-day money-back guarantee for all paid plans. If you are not satisfied, contact support for a full refund.',
+  },
+  {
+    question: 'What payment methods do you accept?',
+    answer: 'We accept all major credit cards (Visa, Mastercard, American Express), PayPal, and bank transfers for Enterprise customers.',
+  },
+  {
+    question: 'Is there a free trial for paid plans?',
+    answer: 'The Starter plan is free forever! For Pro features, you can start a 14-day free trial without entering a credit card.',
+  },
+  {
+    question: 'What is included in Enterprise support?',
+    answer: 'Enterprise customers get dedicated account management, 24/7 priority support with guaranteed response times, custom SLAs, and direct access to our engineering team.',
+  },
+];
 
 export default function PricingPage() {
   const [isYearly, setIsYearly] = useState(false);
@@ -63,26 +122,29 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen">
-      <section className="border-b border-border">
-        <div className="container py-16 md:py-24">
+      {/* Hero Section */}
+      <section className="relative py-20 lg:py-28 overflow-hidden border-b border-border/50">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-transparent" />
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <Badge variant="outline" className="border-accent text-accent mb-4">
+            <Badge variant="outline" className="border-accent/50 text-accent mb-6">
               Simple, transparent pricing
             </Badge>
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Plans and Pricing
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6 text-balance">
+              Plans that scale with{' '}
+              <span className="text-accent">your growth</span>
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              Plans are loaded from your MySQL billing configuration.
+            <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
+              Start free and upgrade as you grow. No hidden fees, no surprises. Cancel anytime.
             </p>
-            <div className="flex items-center justify-center gap-3 mt-8">
-              <Label htmlFor="billing-toggle" className={!isYearly ? "text-foreground" : "text-muted-foreground"}>
+            <div className="flex items-center justify-center gap-4">
+              <Label htmlFor="billing-toggle" className={!isYearly ? "text-foreground font-medium" : "text-muted-foreground"}>
                 Monthly
               </Label>
               <Switch id="billing-toggle" checked={isYearly} onCheckedChange={setIsYearly} />
-              <Label htmlFor="billing-toggle" className={isYearly ? "text-foreground" : "text-muted-foreground"}>
+              <Label htmlFor="billing-toggle" className={isYearly ? "text-foreground font-medium" : "text-muted-foreground"}>
                 Yearly
-                <Badge variant="secondary" className="ml-2 bg-accent/20 text-accent">
+                <Badge variant="secondary" className="ml-2 bg-accent/20 text-accent border-accent/30">
                   Save 20%
                 </Badge>
               </Label>
@@ -91,20 +153,27 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="py-16 md:py-24">
-        <div className="container">
+      {/* Pricing Cards */}
+      <section className="py-16 lg:py-24">
+        <div className="container mx-auto px-4">
           {loading ? (
             <Card className="max-w-4xl mx-auto">
-              <CardContent className="py-10 text-center text-muted-foreground">
-                Loading plans...
+              <CardContent className="py-16 text-center">
+                <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                <p className="text-muted-foreground">Loading pricing plans...</p>
               </CardContent>
             </Card>
           ) : errorMessage ? (
-            <Card className="max-w-4xl mx-auto border-red-500/30 bg-red-500/5">
-              <CardContent className="py-6">
-                <div className="flex items-center gap-2 text-red-500">
-                  <AlertTriangle className="w-4 h-4" />
-                  <p className="text-sm font-medium">{errorMessage}</p>
+            <Card className="max-w-4xl mx-auto border-destructive/30 bg-destructive/5">
+              <CardContent className="py-8">
+                <div className="flex items-center justify-center gap-3 text-destructive">
+                  <AlertTriangle className="w-5 h-5" />
+                  <p className="font-medium">{errorMessage}</p>
+                </div>
+                <div className="text-center mt-4">
+                  <Button variant="outline" onClick={loadPlans}>
+                    Try Again
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -118,33 +187,46 @@ export default function PricingPage() {
                   return (
                     <Card
                       key={plan.id}
-                      className={`bg-card relative ${
-                        isPopular ? "border-accent ring-1 ring-accent" : "border-border"
+                      className={`bg-card relative transition-all duration-300 hover:shadow-lg ${
+                        isPopular 
+                          ? "border-accent ring-1 ring-accent shadow-lg shadow-accent/10 scale-[1.02]" 
+                          : "border-border hover:border-accent/50"
                       }`}
                     >
                       {isPopular && (
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                          <Badge className="bg-accent text-accent-foreground">Recommended</Badge>
+                          <Badge className="bg-accent text-accent-foreground shadow-lg shadow-accent/30">
+                            Recommended
+                          </Badge>
                         </div>
                       )}
                       <CardHeader className="pb-4">
                         <CardTitle className="text-lg">{plan.name}</CardTitle>
+                        <p className="text-sm text-muted-foreground mt-1">{plan.supportLevel}</p>
                         <div className="mt-4">
-                          <span className="text-3xl font-bold">${Math.round(price)}</span>
+                          <span className="text-4xl font-bold text-foreground">${Math.round(price)}</span>
                           <span className="text-muted-foreground">/month</span>
                         </div>
+                        {isYearly && (
+                          <p className="text-xs text-accent mt-1">
+                            Billed ${plan.yearlyPrice}/year
+                          </p>
+                        )}
                       </CardHeader>
                       <CardContent>
                         <ul className="space-y-3 mb-6">
                           {plan.features.map((feature, index) => (
                             <li key={`${plan.id}-feature-${index}`} className="flex items-start gap-2 text-sm text-muted-foreground">
-                              <Check className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                              <Check className={`w-4 h-4 shrink-0 mt-0.5 ${isPopular ? 'text-accent' : 'text-muted-foreground'}`} />
                               {feature}
                             </li>
                           ))}
                         </ul>
                         <Link href="/auth/signup">
-                          <Button className="w-full" variant={isPopular ? "default" : "outline"}>
+                          <Button 
+                            className={`w-full ${isPopular ? 'bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/20' : ''}`} 
+                            variant={isPopular ? "default" : "outline"}
+                          >
                             Get Started
                           </Button>
                         </Link>
@@ -154,30 +236,39 @@ export default function PricingPage() {
                 })}
               </div>
 
+              {/* Enterprise Card */}
               {enterprisePlan && (
-                <Card className="mt-12 max-w-6xl mx-auto bg-card border-border">
+                <Card className="mt-12 max-w-6xl mx-auto bg-gradient-to-br from-card via-card to-accent/5 border-accent/30 hover:border-accent/50 transition-colors">
                   <CardContent className="p-8 md:p-12">
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
                       <div>
-                        <h3 className="text-2xl font-bold">{enterprisePlan.name}</h3>
+                        <Badge variant="outline" className="border-accent/50 text-accent mb-4">
+                          Enterprise
+                        </Badge>
+                        <h3 className="text-2xl font-bold text-foreground">{enterprisePlan.name}</h3>
                         <p className="text-muted-foreground mt-2 max-w-xl">
-                          Custom enterprise package with dedicated support and advanced controls.
+                          Custom enterprise package with dedicated support, advanced security, and unlimited scale.
                         </p>
-                        <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4">
+                        <div className="flex flex-wrap gap-x-6 gap-y-3 mt-6">
                           {enterprisePlan.features.slice(0, 5).map((feature, index) => (
-                            <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <div key={index} className="flex items-center gap-2 text-sm text-foreground">
                               <Check className="w-4 h-4 text-accent" />
                               {feature}
                             </div>
                           ))}
                         </div>
                       </div>
-                      <Link href="/dashboard/support">
-                        <Button size="lg">
-                          Contact Us
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
+                      <div className="flex flex-col gap-3 shrink-0">
+                        <Link href="/contact">
+                          <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                            Contact Sales
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
+                        <p className="text-xs text-muted-foreground text-center">
+                          Custom pricing for your needs
+                        </p>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -186,6 +277,42 @@ export default function PricingPage() {
           )}
         </div>
       </section>
+
+      {/* Trust Metrics */}
+      <TrustMetrics
+        items={pricingTrustItems}
+        variant="inline"
+      />
+
+      {/* Feature Comparison */}
+      <ComparisonTable
+        badge="Compare Plans"
+        title="What's included in each plan"
+        description="A detailed breakdown of features across all pricing tiers."
+        columns={pricingComparison.columns}
+        rows={pricingComparison.rows}
+        variant="default"
+      />
+
+      {/* FAQ Section */}
+      <FAQSection
+        badge="Pricing FAQ"
+        title="Common questions about pricing"
+        description="Everything you need to know about our pricing and billing."
+        faqs={pricingFAQs}
+        variant="default"
+      />
+
+      {/* Final CTA */}
+      <CTABand
+        title="Ready to get started?"
+        description="Start with our free plan and upgrade when you need more."
+        actions={[
+          { label: 'Start Building Free', href: '/auth/signup', variant: 'primary' },
+          { label: 'Contact Sales', href: '/contact', variant: 'outline' },
+        ]}
+        variant="gradient"
+      />
     </div>
   );
 }

@@ -123,6 +123,18 @@ const solutionsByIndustry = [
     href: "/solutions/agencies",
     icon: Briefcase,
   },
+  {
+    title: "Creators",
+    description: "Portfolio and content sites",
+    href: "/solutions/creators",
+    icon: Heart,
+  },
+  {
+    title: "Education",
+    description: "Learning platforms",
+    href: "/solutions/education",
+    icon: GraduationCap,
+  },
 ];
 
 const solutionsByUseCase = [
@@ -142,6 +154,13 @@ const solutionsByUseCase = [
     href: "/use-cases/api",
   },
 ];
+
+const solutionsHighlight = {
+  title: "Enterprise Security",
+  description: "SOC2 certified, 99.99% uptime SLA, and dedicated support for mission-critical apps.",
+  href: "/trust",
+  cta: "Learn about Trust",
+};
 
 // Resources menu items
 const resourcesLearn = [
@@ -296,19 +315,19 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                   Solutions
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[560px] p-5">
-                    <div className="grid grid-cols-2 gap-6">
+                  <div className="w-[720px] p-5">
+                    <div className="grid grid-cols-12 gap-6">
                       {/* By Industry */}
-                      <div>
+                      <div className="col-span-5">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">By Industry</p>
-                        <div className="space-y-1">
+                        <div className="grid grid-cols-1 gap-1">
                           {solutionsByIndustry.map((solution) => (
                             <NavigationMenuLink key={solution.href} asChild>
                               <Link
                                 href={solution.href}
-                                className="group flex items-center gap-3 rounded-lg p-3 hover:bg-secondary/60 transition-colors"
+                                className="group flex items-center gap-3 rounded-lg p-2.5 hover:bg-secondary/60 transition-colors"
                               >
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-foreground/80 group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-foreground/80 group-hover:bg-accent/10 group-hover:text-accent transition-colors">
                                   <solution.icon className="h-4 w-4" />
                                 </div>
                                 <div>
@@ -322,7 +341,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       </div>
 
                       {/* By Use Case */}
-                      <div>
+                      <div className="col-span-4">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">By Use Case</p>
                         <div className="space-y-1">
                           {solutionsByUseCase.map((useCase) => (
@@ -345,6 +364,26 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                           >
                             View all solutions
                             <ArrowRight className="h-4 w-4" />
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Trust highlight card */}
+                      <div className="col-span-3">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Trust</p>
+                        <div className="rounded-xl bg-gradient-to-br from-accent/10 via-accent/5 to-transparent border border-accent/20 p-4">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Shield className="h-4 w-4 text-accent" />
+                            <span className="text-xs font-medium text-accent">Security</span>
+                          </div>
+                          <p className="text-sm font-medium text-foreground mb-1">{solutionsHighlight.title}</p>
+                          <p className="text-xs text-muted-foreground mb-3">{solutionsHighlight.description}</p>
+                          <Link
+                            href={solutionsHighlight.href}
+                            className="inline-flex items-center text-xs font-medium text-accent hover:underline"
+                          >
+                            {solutionsHighlight.cta}
+                            <ChevronRight className="h-3 w-3 ml-1" />
                           </Link>
                         </div>
                       </div>
@@ -607,6 +646,22 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                         {useCase.title}
                       </Link>
                     ))}
+                    {/* Trust highlight in mobile */}
+                    <div className="mx-2 mt-3 p-3 rounded-lg bg-accent/10 border border-accent/20">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Shield className="h-4 w-4 text-accent" />
+                        <span className="text-sm font-medium text-foreground">Enterprise Security</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-2">SOC2 certified with 99.99% uptime SLA</p>
+                      <Link
+                        href="/trust"
+                        onClick={() => setIsOpen(false)}
+                        className="inline-flex items-center text-xs font-medium text-accent"
+                      >
+                        Learn more
+                        <ChevronRight className="h-3 w-3 ml-1" />
+                      </Link>
+                    </div>
                   </div>
                 )}
               </div>

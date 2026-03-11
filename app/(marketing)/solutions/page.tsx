@@ -1,10 +1,5 @@
 import { Metadata } from "next";
-import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
-  ArrowRight,
   Building2,
   ShoppingCart,
   Layers,
@@ -13,14 +8,29 @@ import {
   Zap,
   Lock,
   Server,
-  CheckCircle2,
+  Heart,
+  GraduationCap,
+  Users,
+  Shield,
+  BarChart3,
+  Headphones,
 } from "lucide-react";
+import {
+  HeroSection,
+  IndustryCards,
+  FeatureShowcase,
+  TrustMetrics,
+  TestimonialSection,
+  CTABand,
+  BenefitsGrid,
+} from "@/components/marketing/sections";
 
 export const metadata: Metadata = {
   title: "Solutions - Ovmon",
   description: "Discover how Ovmon helps businesses of all sizes build, deploy, and scale their web presence.",
 };
 
+// Industry solutions data
 const industries = [
   {
     title: "E-commerce",
@@ -28,7 +38,8 @@ const industries = [
     href: "/solutions/ecommerce",
     icon: ShoppingCart,
     features: ["Sub-second page loads", "Global CDN delivery", "Headless commerce ready"],
-    color: "from-orange-500/20 to-orange-500/5",
+    stat: "40%",
+    statLabel: "Faster checkout",
   },
   {
     title: "SaaS",
@@ -36,7 +47,8 @@ const industries = [
     href: "/solutions/saas",
     icon: Layers,
     features: ["Auto-scaling infrastructure", "99.99% uptime SLA", "Built-in analytics"],
-    color: "from-blue-500/20 to-blue-500/5",
+    stat: "99.99%",
+    statLabel: "Uptime SLA",
   },
   {
     title: "Enterprise",
@@ -44,7 +56,8 @@ const industries = [
     href: "/solutions/enterprise",
     icon: Building2,
     features: ["SOC2 Type II certified", "Dedicated support", "Custom SLAs"],
-    color: "from-purple-500/20 to-purple-500/5",
+    stat: "SOC2",
+    statLabel: "Certified",
   },
   {
     title: "Agencies",
@@ -52,46 +65,133 @@ const industries = [
     href: "/solutions/agencies",
     icon: Briefcase,
     features: ["Multi-site management", "White-label options", "Client billing integration"],
-    color: "from-green-500/20 to-green-500/5",
+    stat: "100+",
+    statLabel: "Sites per account",
   },
   {
     title: "Creators",
     description: "Build your online presence with beautiful, fast websites. Perfect for content creators and personal brands.",
     href: "/solutions/creators",
-    icon: Zap,
+    icon: Heart,
     features: ["Beautiful templates", "Built-in analytics", "Social integrations"],
-    color: "from-pink-500/20 to-pink-500/5",
+    stat: "60s",
+    statLabel: "Setup time",
   },
   {
-    title: "Teams",
-    description: "Collaborate seamlessly with role-based access, shared workspaces, and powerful deployment workflows.",
-    href: "/solutions/teams",
-    icon: Globe,
-    features: ["Role-based access", "Preview deployments", "Team analytics"],
-    color: "from-cyan-500/20 to-cyan-500/5",
+    title: "Education",
+    description: "Build learning platforms that scale. Perfect for online courses, educational content, and student portals.",
+    href: "/solutions/education",
+    icon: GraduationCap,
+    features: ["LMS integrations", "Video hosting", "Student analytics"],
+    stat: "10M+",
+    statLabel: "Students served",
   },
 ];
 
+// Core capabilities
 const capabilities = [
   {
     icon: Globe,
     title: "Global Edge Network",
     description: "Deploy to 150+ edge locations for sub-50ms latency worldwide.",
+    stat: "150+",
+    statLabel: "Locations",
+    highlight: true,
   },
   {
     icon: Zap,
     title: "Instant Deployments",
     description: "Push to deploy in under 3 seconds with atomic rollbacks.",
+    stat: "<3s",
+    statLabel: "Deploy time",
   },
   {
     icon: Lock,
     title: "Enterprise Security",
     description: "DDoS protection, WAF, and automatic SSL for every deployment.",
+    stat: "SOC2",
+    statLabel: "Certified",
   },
   {
     icon: Server,
     title: "Serverless Functions",
     description: "Run backend code at the edge with zero cold starts.",
+    stat: "0ms",
+    statLabel: "Cold starts",
+  },
+];
+
+// Trust metrics
+const trustItems = [
+  { icon: Shield, label: 'SOC2 Type II', sublabel: 'Security certified' },
+  { icon: Globe, label: '150+ Regions', sublabel: 'Global coverage' },
+  { icon: Server, label: '99.99% Uptime', sublabel: 'SLA guaranteed' },
+  { icon: Users, label: '50,000+ Devs', sublabel: 'Trust Ovmon' },
+];
+
+// Why choose us benefits
+const whyChooseUs = [
+  {
+    icon: Zap,
+    title: "Lightning Fast Performance",
+    description: "Sub-50ms response times globally with our edge network and smart caching.",
+  },
+  {
+    icon: Shield,
+    title: "Enterprise-Grade Security",
+    description: "SOC2 certified with DDoS protection, WAF, and automatic SSL included.",
+  },
+  {
+    icon: BarChart3,
+    title: "Real-Time Analytics",
+    description: "Deep insights into traffic, performance, and user behavior in real-time.",
+  },
+  {
+    icon: Server,
+    title: "Automatic Scaling",
+    description: "Handle traffic spikes automatically without any configuration required.",
+  },
+  {
+    icon: Headphones,
+    title: "24/7 Expert Support",
+    description: "Round-the-clock support from our team of deployment experts.",
+  },
+  {
+    icon: Lock,
+    title: "Compliance Ready",
+    description: "GDPR, HIPAA, and PCI compliance features built into the platform.",
+  },
+];
+
+// Testimonials
+const solutionsTestimonials = [
+  {
+    quote: "Switching to Ovmon reduced our deployment time from 30 minutes to under 10 seconds. Our engineering team can now focus on building features instead of managing infrastructure.",
+    author: {
+      name: "Alex Thompson",
+      title: "VP of Engineering",
+      company: "ScaleUp Inc",
+    },
+    rating: 5,
+    featured: true,
+  },
+  {
+    quote: "The global edge network made a huge difference for our international customers. Page load times dropped by 60% in Asia Pacific.",
+    author: {
+      name: "Priya Sharma",
+      title: "Head of Platform",
+      company: "GlobalRetail",
+    },
+    rating: 5,
+  },
+  {
+    quote: "Managing 50+ client sites from one dashboard changed how our agency operates. We saved 20 hours per week on deployments alone.",
+    author: {
+      name: "Jordan Lee",
+      title: "Technical Director",
+      company: "Digital Agency Co",
+    },
+    rating: 5,
   },
 ];
 
@@ -99,137 +199,75 @@ export default function SolutionsPage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-28 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent" />
-        <div className="container relative">
-          <div className="max-w-3xl mx-auto text-center">
-            <Badge variant="outline" className="mb-6 border-accent/50 text-accent">
-              Solutions
-            </Badge>
-            <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
-              Built for every stage of growth
-            </h1>
-            <p className="text-lg text-foreground/70 mb-8 max-w-2xl mx-auto">
-              Whether you&apos;re a startup launching your first product or an enterprise serving millions, 
-              Ovmon scales with you.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="h-12 px-8 font-medium group" asChild>
-                <Link href="/auth/signup">
-                  Start for free
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" className="h-12 px-8 font-medium" asChild>
-                <Link href="/contact">Talk to sales</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        badge={{ text: "Solutions" }}
+        title="Built for every stage of"
+        titleHighlight="growth"
+        description="Whether you're a startup launching your first product or an enterprise serving millions, Ovmon scales with you."
+        actions={[
+          { label: "Start for free", href: "/auth/signup", variant: "primary" },
+          { label: "Talk to sales", href: "/contact", variant: "outline" },
+        ]}
+        variant="centered"
+        backgroundVariant="gradient"
+      />
 
       {/* Industry Solutions */}
-      <section className="py-16 lg:py-24">
-        <div className="container">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Solutions by industry
-            </h2>
-            <p className="text-foreground/60 max-w-xl mx-auto">
-              Purpose-built solutions designed for your specific industry needs.
-            </p>
-          </div>
+      <IndustryCards
+        badge="By Industry"
+        title="Solutions for every business"
+        description="Purpose-built solutions designed for your specific industry needs."
+        industries={industries}
+        variant="cards"
+      />
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {industries.map((industry) => (
-              <Link key={industry.href} href={industry.href} className="group">
-                <Card className="h-full bg-card/60 border-border/50 hover:border-accent/40 transition-all hover:shadow-lg">
-                  <CardContent className="p-8">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${industry.color} flex items-center justify-center mb-5`}>
-                      <industry.icon className="w-7 h-7 text-foreground" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-accent transition-colors">
-                      {industry.title}
-                    </h3>
-                    <p className="text-foreground/60 mb-5 leading-relaxed">
-                      {industry.description}
-                    </p>
-                    <ul className="space-y-2">
-                      {industry.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2 text-sm text-foreground/70">
-                          <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="flex items-center gap-2 mt-6 text-accent text-sm font-medium">
-                      Learn more
-                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </div>
+      {/* Trust Metrics */}
+      <TrustMetrics
+        items={trustItems}
+        variant="badges"
+        title="Trusted by leading companies worldwide"
+      />
+
+      {/* Core Capabilities */}
+      <FeatureShowcase
+        badge="Core Capabilities"
+        title="Enterprise-grade infrastructure"
+        description="The power and reliability your business demands."
+        features={capabilities}
+        variant="bento"
+      />
+
+      {/* Why Choose Us */}
+      <section className="bg-secondary/20">
+        <BenefitsGrid
+          badge="Why Ovmon"
+          title="Everything you need to succeed"
+          description="Comprehensive tools and infrastructure to power your growth."
+          benefits={whyChooseUs}
+          variant="cards"
+          columns={3}
+        />
       </section>
 
-      {/* Capabilities */}
-      <section className="py-16 lg:py-24 bg-secondary/20">
-        <div className="container">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Core capabilities
-            </h2>
-            <p className="text-foreground/60 max-w-xl mx-auto">
-              Enterprise-grade infrastructure that powers your success.
-            </p>
-          </div>
+      {/* Testimonials */}
+      <TestimonialSection
+        badge="Customer Stories"
+        title="Trusted by industry leaders"
+        description="See how companies are transforming their deployment workflow with Ovmon."
+        testimonials={solutionsTestimonials}
+        variant="featured"
+      />
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {capabilities.map((capability) => (
-              <Card key={capability.title} className="bg-card/40 border-border/40">
-                <CardContent className="p-6">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
-                    <capability.icon className="w-6 h-6 text-accent" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
-                    {capability.title}
-                  </h3>
-                  <p className="text-sm text-foreground/60">
-                    {capability.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 lg:py-24">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Ready to get started?
-            </h2>
-            <p className="text-foreground/60 mb-8">
-              Join 50,000+ developers who build and deploy with Ovmon.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="h-12 px-8 font-medium group" asChild>
-                <Link href="/auth/signup">
-                  Start building for free
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" className="h-12 px-8 font-medium" asChild>
-                <Link href="/demo">Watch demo</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Final CTA */}
+      <CTABand
+        title="Ready to transform your deployment workflow?"
+        description="Join 50,000+ developers who build and deploy with confidence."
+        actions={[
+          { label: "Start building for free", href: "/auth/signup", variant: "primary" },
+          { label: "Watch demo", href: "/demo", variant: "outline" },
+        ]}
+        variant="centered"
+      />
     </main>
   );
 }
