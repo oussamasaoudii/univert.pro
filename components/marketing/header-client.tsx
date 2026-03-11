@@ -250,7 +250,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                   Product
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[680px] p-5">
+                  <div className="w-[680px] p-5 bg-popover text-popover-foreground">
                     <div className="grid grid-cols-12 gap-6">
                       {/* Features grid */}
                       <div className="col-span-8">
@@ -315,7 +315,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                   Solutions
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[720px] p-5">
+                  <div className="w-[720px] p-5 bg-popover text-popover-foreground">
                     <div className="grid grid-cols-12 gap-6">
                       {/* By Industry */}
                       <div className="col-span-5">
@@ -398,7 +398,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                   Resources
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[520px] p-5">
+                  <div className="w-[520px] p-5 bg-popover text-popover-foreground">
                     <div className="grid grid-cols-2 gap-6">
                       {/* Learn */}
                       <div>
