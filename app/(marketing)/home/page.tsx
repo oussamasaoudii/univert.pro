@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion, useInView, animate } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { 
   Globe, 
@@ -22,7 +22,8 @@ import {
   BarChart3,
   Rocket,
   Lock,
-  RefreshCw
+  RefreshCw,
+  ExternalLink
 } from 'lucide-react';
 
 // Animated counter component
@@ -158,27 +159,6 @@ const plans = [
   },
 ];
 
-const testimonials = [
-  {
-    quote: "Ovmon cut our deployment time from hours to seconds. It's transformed how we ship products.",
-    author: 'Sarah Chen',
-    role: 'CTO at TechFlow',
-    avatar: 'SC',
-  },
-  {
-    quote: "The performance gains alone paid for the entire year's subscription in the first month.",
-    author: 'Marcus Johnson',
-    role: 'Lead Developer at Scale',
-    avatar: 'MJ',
-  },
-  {
-    quote: "Finally a platform that just works. No more DevOps headaches, just pure productivity.",
-    author: 'Emily Rodriguez',
-    role: 'Founder at LaunchPad',
-    avatar: 'ER',
-  },
-];
-
 const trustedCompanies = [
   'Acme Corp', 'TechFlow', 'Vertex', 'Quantum', 'Nexus', 'Pulse'
 ];
@@ -249,15 +229,34 @@ export default function HomePage() {
               </div>
 
               {/* Social proof mini */}
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <div className="flex -space-x-2">
-                  {['A', 'B', 'C', 'D'].map((letter, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-secondary border-2 border-background flex items-center justify-center text-xs font-medium">
-                      {letter}
-                    </div>
-                  ))}
+              <div className="flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    {['A', 'B', 'C', 'D'].map((letter, i) => (
+                      <div key={i} className="w-8 h-8 rounded-full bg-secondary border-2 border-background flex items-center justify-center text-xs font-medium">
+                        {letter}
+                      </div>
+                    ))}
+                  </div>
+                  <span>Join <strong className="text-foreground">50,000+</strong> developers</span>
                 </div>
-                <span>Join <strong className="text-foreground">50,000+</strong> developers</span>
+
+                {/* Trustpilot badge */}
+                <a
+                  href="https://www.trustpilot.com/review/ovmon.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border/60 bg-secondary/40 hover:border-accent/50 hover:bg-secondary/70 transition-all group"
+                  aria-label="View our Trustpilot reviews"
+                >
+                  {/* Trustpilot star (green) */}
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 2L14.09 8.26L21 9.27L16.5 13.64L17.82 20.5L12 17.27L6.18 20.5L7.5 13.64L3 9.27L9.91 8.26L12 2Z" fill="#00b67a"/>
+                  </svg>
+                  <span className="text-xs font-semibold text-foreground">4.8</span>
+                  <span className="text-xs text-muted-foreground">on Trustpilot</span>
+                  <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-accent transition-colors" />
+                </a>
               </div>
             </motion.div>
 
@@ -583,49 +582,101 @@ export default function HomePage() {
         </div>
       </AnimatedSection>
 
-      {/* Testimonials Section */}
+      {/* Trustpilot Reviews Section */}
       <AnimatedSection className="py-16 lg:py-24 bg-secondary/20">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4 border-accent/50 text-accent">
-              Customer Stories
-            </Badge>
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Loved by developers worldwide
-            </h2>
-          </div>
+          <div className="max-w-4xl mx-auto">
+            {/* Header with Trustpilot branding */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10">
+              <div>
+                <Badge variant="outline" className="mb-3 border-accent/50 text-accent">
+                  Verified Reviews
+                </Badge>
+                <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
+                  What our customers say
+                </h2>
+              </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {testimonials.map((testimonial, i) => (
-              <motion.div
-                key={testimonial.author}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -4 }}
+              {/* Trustpilot aggregate score block */}
+              <a
+                href="https://www.trustpilot.com/review/ovmon.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 flex flex-col items-center gap-2 px-6 py-5 rounded-xl border border-border/60 bg-card/60 hover:border-accent/50 hover:bg-card transition-all group shadow-sm"
+                aria-label="Read all reviews on Trustpilot"
               >
-                <Card className="h-full bg-card/50 border-border/50 hover:border-accent/30 transition-all">
-                  <CardContent className="p-6">
-                    <div className="flex gap-1 mb-4">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} className="w-4 h-4 fill-accent text-accent" />
-                      ))}
+                {/* Trustpilot wordmark */}
+                <div className="flex items-center gap-1.5">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 2L14.09 8.26L21 9.27L16.5 13.64L17.82 20.5L12 17.27L6.18 20.5L7.5 13.64L3 9.27L9.91 8.26L12 2Z" fill="#00b67a"/>
+                  </svg>
+                  <span className="text-sm font-bold text-foreground tracking-wide">Trustpilot</span>
+                </div>
+                {/* Stars */}
+                <div className="flex gap-0.5">
+                  {[1,2,3,4,5].map((s) => (
+                    <div key={s} className="w-7 h-7 bg-[#00b67a] rounded-sm flex items-center justify-center">
+                      <Star className="w-4 h-4 fill-white text-white" />
                     </div>
-                    <p className="text-foreground mb-6 leading-relaxed">&quot;{testimonial.quote}&quot;</p>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-sm font-medium text-accent">
-                        {testimonial.avatar}
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground text-sm">{testimonial.author}</p>
-                        <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                      </div>
+                  ))}
+                </div>
+                <div className="text-center">
+                  <span className="text-2xl font-bold text-foreground">4.8</span>
+                  <span className="text-xs text-muted-foreground block mt-0.5">Excellent</span>
+                </div>
+                <span className="text-xs text-accent group-hover:underline flex items-center gap-1">
+                  Read our reviews <ExternalLink className="w-3 h-3" />
+                </span>
+              </a>
+            </div>
+
+            {/* Trustpilot widget embed */}
+            <div
+              className="trustpilot-widget rounded-xl overflow-hidden border border-border/40"
+              data-locale="en-US"
+              data-template-id="53aa8912dec7e10d38f59f36"
+              data-businessunit-id="YOUR_TRUSTPILOT_BUSINESS_ID"
+              data-style-height="140px"
+              data-style-width="100%"
+              data-theme="dark"
+              data-stars="4,5"
+            >
+              {/* Fallback while widget loads or before business ID is set */}
+              <div className="flex flex-col items-center justify-center py-10 gap-3 text-center bg-card/30">
+                <div className="flex gap-1">
+                  {[1,2,3,4,5].map((s) => (
+                    <div key={s} className="w-8 h-8 bg-[#00b67a] rounded-sm flex items-center justify-center">
+                      <Star className="w-4.5 h-4.5 fill-white text-white" />
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground max-w-xs">
+                  Real customer reviews will appear here once your Trustpilot business account is connected.
+                </p>
+                <a
+                  href="https://www.trustpilot.com/review/ovmon.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-accent hover:underline flex items-center gap-1"
+                >
+                  Be the first to review us on Trustpilot <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+
+            {/* Invite customers to leave a review */}
+            <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <span>Had a great experience?</span>
+              <a
+                href="https://www.trustpilot.com/evaluate/ovmon.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline font-medium flex items-center gap-1"
+              >
+                Leave us a review
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
           </div>
         </div>
       </AnimatedSection>
