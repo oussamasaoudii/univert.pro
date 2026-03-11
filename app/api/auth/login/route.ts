@@ -15,6 +15,7 @@ import {
   getUserSessionCookieOptions,
 } from "@/lib/mysql/session";
 import { RateLimitError } from "@/lib/utils/errors";
+import { isPreviewMode } from "@/lib/preview-mode";
 
 const loginSchema = z
   .object({
@@ -63,6 +64,19 @@ export async function handleLoginPost(
   const userAgent = getRequestUserAgent(request);
 
   try {
+    if (isPreviewMode()) {
+      const body = await deps.parseJsonBody(request, loginSchema, {
+        maxBytes: 16 * 1024,
+      });
+      const isAdminPreview = body.email.trim().toLowerCase().includes("admin");
+
+      return NextResponse.json({
+        ok: true,
+        redirectTo: isAdminPreview ? "/admin" : "/dashboard",
+        preview: true,
+      });
+    }
+
     deps.assertTrustedOrigin(request);
     await deps.enforceRouteRateLimit({
       scope: "auth-login-ip",

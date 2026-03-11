@@ -13,7 +13,7 @@ function createDashboardBillingDeps(overrides: Record<string, unknown> = {}) {
       remaining: 19,
       retryAfterSeconds: 0,
     }),
-    getAuthenticatedRequestUser: async () => ({
+    getDashboardRequestUser: async () => ({
       id: "user-1",
       email: "user@example.com",
       role: "user",
@@ -135,7 +135,7 @@ test("handleDashboardBillingPatch rejects admin sessions on dashboard endpoints"
       enforceRouteRateLimit: async () => {
         throw new Error("rate limit should not run");
       },
-      getAuthenticatedRequestUser: async () => ({
+      getDashboardRequestUser: async () => ({
         id: "admin-1",
         email: "admin@example.com",
         role: "admin",

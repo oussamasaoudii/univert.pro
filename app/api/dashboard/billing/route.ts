@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getAuthenticatedRequestUser } from "@/lib/api-auth";
+import { getDashboardRequestUser } from "@/lib/api-auth";
 import {
   getUserBillingSnapshot,
   updateUserSubscriptionPlan,
@@ -14,6 +14,11 @@ import {
   parseJsonBody,
   toApiErrorResponse,
 } from "@/lib/security/request";
+import {
+  getPreviewBillingSnapshot,
+  updatePreviewBillingSnapshot,
+} from "@/lib/preview-data";
+import { isPreviewMode } from "@/lib/preview-mode";
 
 const PLAN_TIERS: BillingPlanTier[] = [
   "starter",
@@ -37,7 +42,7 @@ type DashboardBillingRouteDeps = {
   assertTrustedOrigin: typeof assertTrustedOrigin;
   createUserActivity: typeof createUserActivity;
   enforceRouteRateLimit: typeof enforceRouteRateLimit;
-  getAuthenticatedRequestUser: typeof getAuthenticatedRequestUser;
+  getDashboardRequestUser: typeof getDashboardRequestUser;
   getUserBillingSnapshot: typeof getUserBillingSnapshot;
   getUserSubscription: typeof getUserSubscription;
   parseJsonBody: typeof parseJsonBody;
@@ -48,7 +53,7 @@ const dashboardBillingRouteDeps: DashboardBillingRouteDeps = {
   assertTrustedOrigin,
   createUserActivity,
   enforceRouteRateLimit,
-  getAuthenticatedRequestUser,
+  getDashboardRequestUser,
   getUserBillingSnapshot,
   getUserSubscription,
   parseJsonBody,
@@ -69,7 +74,11 @@ export async function handleDashboardBillingGet(
   deps: DashboardBillingRouteDeps = dashboardBillingRouteDeps,
 ) {
   try {
-    const user = await deps.getAuthenticatedRequestUser();
+    if (isPreviewMode()) {
+      return NextResponse.json(getPreviewBillingSnapshot());
+    }
+
+    const user = await deps.getDashboardRequestUser();
     if (!user || user.source === "local_admin_fallback" || user.sessionType !== "user") {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }
@@ -94,8 +103,25 @@ export async function handleDashboardBillingPatch(
   deps: DashboardBillingRouteDeps = dashboardBillingRouteDeps,
 ) {
   try {
+    if (isPreviewMode()) {
+      const body = await deps.parseJsonBody(request, billingUpdateSchema, { maxBytes: 4 * 1024 });
+      const snapshot = updatePreviewBillingSnapshot({
+        planTier: body.planTier,
+        billingCycle: body.billingCycle,
+      });
+
+      return NextResponse.json({
+        ok: true,
+        subscription: snapshot.subscription,
+        currentPlan: snapshot.currentPlan,
+        plans: snapshot.plans,
+        invoices: snapshot.invoices,
+        paymentMethods: snapshot.paymentMethods,
+      });
+    }
+
     deps.assertTrustedOrigin(request);
-    const user = await deps.getAuthenticatedRequestUser();
+    const user = await deps.getDashboardRequestUser();
     if (!user || user.source === "local_admin_fallback" || user.sessionType !== "user") {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }

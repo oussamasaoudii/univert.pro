@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAuthenticatedRequestUser } from "@/lib/api-auth";
+import { getDashboardRequestUser } from "@/lib/api-auth";
 import { listDomainsByUser } from "@/lib/mysql/domains";
 import {
   listTemplates,
@@ -12,10 +12,17 @@ import {
   sanitizeDashboardDomainSummary,
   sanitizeDashboardWebsiteSummary,
 } from "@/lib/security/dashboard-response";
+import {
+  getPreviewActivityRecords,
+  getPreviewDomains,
+  getPreviewTemplateRecords,
+  getPreviewWebsiteRecords,
+} from "@/lib/preview-data";
+import { isPreviewMode } from "@/lib/preview-mode";
 
 type DashboardWebsitesRouteDeps = {
   enforceRouteRateLimit: typeof enforceRouteRateLimit;
-  getAuthenticatedRequestUser: typeof getAuthenticatedRequestUser;
+  getDashboardRequestUser: typeof getDashboardRequestUser;
   listDomainsByUser: typeof listDomainsByUser;
   listTemplates: typeof listTemplates;
   listUserActivities: typeof listUserActivities;
@@ -24,7 +31,7 @@ type DashboardWebsitesRouteDeps = {
 
 const dashboardWebsitesRouteDeps: DashboardWebsitesRouteDeps = {
   enforceRouteRateLimit,
-  getAuthenticatedRequestUser,
+  getDashboardRequestUser,
   listDomainsByUser,
   listTemplates,
   listUserActivities,
@@ -36,7 +43,16 @@ export async function handleDashboardWebsitesGet(
   deps: DashboardWebsitesRouteDeps = dashboardWebsitesRouteDeps,
 ) {
   try {
-    const user = await deps.getAuthenticatedRequestUser();
+    if (isPreviewMode()) {
+      return NextResponse.json({
+        websites: getPreviewWebsiteRecords().map(sanitizeDashboardWebsiteSummary),
+        domains: getPreviewDomains(),
+        activities: getPreviewActivityRecords(12).map(sanitizeDashboardActivitySummary),
+        templates: getPreviewTemplateRecords(),
+      });
+    }
+
+    const user = await deps.getDashboardRequestUser();
     if (!user || user.source === "local_admin_fallback" || user.sessionType !== "user") {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }

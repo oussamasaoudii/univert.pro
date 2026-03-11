@@ -14,7 +14,7 @@ test("handleDashboardWebsitesGet scopes data to the authenticated user and strip
         remaining: 179,
         retryAfterSeconds: 0,
       }),
-      getAuthenticatedRequestUser: async () => ({
+      getDashboardRequestUser: async () => ({
         id: "user-1",
         email: "user@example.com",
         role: "user",
@@ -108,7 +108,7 @@ test("handleDashboardWebsitesGet returns 401 for unauthenticated requests", asyn
       enforceRouteRateLimit: async () => {
         throw new Error("rate limit should not run");
       },
-      getAuthenticatedRequestUser: async () => null,
+      getDashboardRequestUser: async () => null,
       listDomainsByUser: async () => [],
       listTemplates: async () => [],
       listUserActivities: async () => [],
@@ -127,7 +127,7 @@ test("handleDashboardWebsitesGet rejects admin sessions on dashboard endpoints",
       enforceRouteRateLimit: async () => {
         throw new Error("rate limit should not run");
       },
-      getAuthenticatedRequestUser: async () => ({
+      getDashboardRequestUser: async () => ({
         id: "admin-1",
         email: "admin@example.com",
         role: "admin",

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAuthenticatedRequestUser } from "@/lib/api-auth";
+import { getDashboardRequestUser } from "@/lib/api-auth";
 import { listDomainsByUser } from "@/lib/mysql/domains";
 import {
   getUserSubscription,
@@ -14,6 +14,14 @@ import {
   sanitizeDashboardOverviewWebsite,
   sanitizeDashboardSubscriptionSummary,
 } from "@/lib/security/dashboard-response";
+import {
+  getPreviewActivityRecords,
+  getPreviewBillingSnapshot,
+  getPreviewDomains,
+  getPreviewNotificationRecords,
+  getPreviewWebsiteRecords,
+} from "@/lib/preview-data";
+import { isPreviewMode } from "@/lib/preview-mode";
 
 function buildTrafficData(totalViews: number, totalVisits: number) {
   const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -34,7 +42,7 @@ function buildTrafficData(totalViews: number, totalVisits: number) {
 
 type DashboardOverviewRouteDeps = {
   enforceRouteRateLimit: typeof enforceRouteRateLimit;
-  getAuthenticatedRequestUser: typeof getAuthenticatedRequestUser;
+  getDashboardRequestUser: typeof getDashboardRequestUser;
   getUserSubscription: typeof getUserSubscription;
   listDomainsByUser: typeof listDomainsByUser;
   listUserActivities: typeof listUserActivities;
@@ -44,7 +52,7 @@ type DashboardOverviewRouteDeps = {
 
 const dashboardOverviewRouteDeps: DashboardOverviewRouteDeps = {
   enforceRouteRateLimit,
-  getAuthenticatedRequestUser,
+  getDashboardRequestUser,
   getUserSubscription,
   listDomainsByUser,
   listUserActivities,
@@ -57,7 +65,32 @@ export async function handleDashboardOverviewGet(
   deps: DashboardOverviewRouteDeps = dashboardOverviewRouteDeps,
 ) {
   try {
-    const user = await deps.getAuthenticatedRequestUser();
+    if (isPreviewMode()) {
+      const websites = getPreviewWebsiteRecords();
+      const { subscription } = getPreviewBillingSnapshot();
+      const activities = getPreviewActivityRecords(8);
+      const notifications = getPreviewNotificationRecords(8);
+      const domains = getPreviewDomains();
+      const totals = websites.reduce(
+        (acc, website) => {
+          acc.views += website.pageViews;
+          acc.visits += website.visits;
+          return acc;
+        },
+        { views: 0, visits: 0 },
+      );
+
+      return NextResponse.json({
+        websites: websites.map(sanitizeDashboardOverviewWebsite),
+        domains,
+        subscription: sanitizeDashboardSubscriptionSummary(subscription),
+        activities: activities.map(sanitizeDashboardActivitySummary),
+        notifications: notifications.map(sanitizeDashboardNotificationSummary),
+        trafficData: buildTrafficData(totals.views, totals.visits),
+      });
+    }
+
+    const user = await deps.getDashboardRequestUser();
     if (!user || user.source === "local_admin_fallback" || user.sessionType !== "user") {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }

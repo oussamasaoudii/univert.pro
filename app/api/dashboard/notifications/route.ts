@@ -4,6 +4,8 @@ import { getDashboardRequestUser } from "@/lib/api-auth";
 import { listUserNotifications } from "@/lib/mysql/platform";
 import { sanitizeDashboardNotificationSummary } from "@/lib/security/dashboard-response";
 import { enforceRouteRateLimit, getRequestIp, toApiErrorResponse } from "@/lib/security/request";
+import { getPreviewNotificationRecords } from "@/lib/preview-data";
+import { isPreviewMode } from "@/lib/preview-mode";
 
 const querySchema = z.object({
   limit: z.coerce.number().int().min(1).max(50).default(8),
@@ -11,6 +13,19 @@ const querySchema = z.object({
 
 export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const query = querySchema.parse({
+      limit: searchParams.get("limit") || undefined,
+    });
+
+    if (isPreviewMode()) {
+      return NextResponse.json({
+        notifications: getPreviewNotificationRecords(query.limit).map(
+          sanitizeDashboardNotificationSummary,
+        ),
+      });
+    }
+
     const user = await getDashboardRequestUser();
     if (!user) {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
@@ -22,11 +37,6 @@ export async function GET(request: Request) {
       limit: 180,
       windowMs: 10 * 60 * 1000,
       blockDurationMs: 10 * 60 * 1000,
-    });
-
-    const { searchParams } = new URL(request.url);
-    const query = querySchema.parse({
-      limit: searchParams.get("limit") || undefined,
     });
 
     const notifications = await listUserNotifications(user.id, query.limit);

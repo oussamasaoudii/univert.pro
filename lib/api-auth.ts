@@ -9,17 +9,50 @@ import {
   type UserSessionRow,
 } from "@/lib/mysql/security";
 import { findUserById, type AppUser } from "@/lib/mysql/users";
+import { isPreviewMode } from "@/lib/preview-mode";
 
 export type AuthenticatedRequestUser = Pick<
   AppUser,
   "id" | "email" | "role" | "status" | "adminMfaEnabled" | "adminMfaEnrolledAt"
 > & {
-  source: "mysql" | "local_admin_fallback";
+  source: "mysql" | "local_admin_fallback" | "preview_mock";
   sessionId: string | null;
   sessionType: "user" | "admin" | null;
   mfaVerifiedAt: string | null;
   stepUpVerifiedAt: string | null;
 };
+
+function getPreviewDashboardUser(): AuthenticatedRequestUser {
+  return {
+    id: "preview-user",
+    email: "preview@univert.pro",
+    role: "user",
+    status: "active",
+    adminMfaEnabled: false,
+    adminMfaEnrolledAt: null,
+    source: "preview_mock",
+    sessionId: "preview-user-session",
+    sessionType: "user",
+    mfaVerifiedAt: "2026-03-11T18:30:00.000Z",
+    stepUpVerifiedAt: "2026-03-11T18:30:00.000Z",
+  };
+}
+
+function getPreviewAdminUser(): AuthenticatedRequestUser {
+  return {
+    id: "preview-admin",
+    email: "admin.preview@univert.pro",
+    role: "admin",
+    status: "active",
+    adminMfaEnabled: true,
+    adminMfaEnrolledAt: "2026-03-11T18:30:00.000Z",
+    source: "preview_mock",
+    sessionId: "preview-admin-session",
+    sessionType: "admin",
+    mfaVerifiedAt: "2026-03-11T18:30:00.000Z",
+    stepUpVerifiedAt: "2026-03-11T18:30:00.000Z",
+  };
+}
 
 function mapMysqlUser(user: AppUser, session: UserSessionRow): AuthenticatedRequestUser {
   return {
@@ -79,12 +112,25 @@ export async function getAuthenticatedRequestUser(options?: {
 }
 
 export async function getDashboardRequestUser(): Promise<AuthenticatedRequestUser | null> {
-  return getAuthenticatedRequestUser({ requiredSessionType: "user" });
+  const mysqlUser = await getAuthenticatedRequestUser({ requiredSessionType: "user" });
+  if (mysqlUser) {
+    return mysqlUser;
+  }
+
+  if (isPreviewMode()) {
+    return getPreviewDashboardUser();
+  }
+
+  return null;
 }
 
 export async function getAdminRequestUser(): Promise<AuthenticatedRequestUser | null> {
   const mysqlUser = await getAuthenticatedRequestUser();
   if (!mysqlUser || mysqlUser.role !== "admin") {
+    if (isPreviewMode()) {
+      return getPreviewAdminUser();
+    }
+
     return null;
   }
 
@@ -93,6 +139,10 @@ export async function getAdminRequestUser(): Promise<AuthenticatedRequestUser | 
   }
 
   if (!mysqlUser.mfaVerifiedAt) {
+    if (isPreviewMode()) {
+      return getPreviewAdminUser();
+    }
+
     return null;
   }
 

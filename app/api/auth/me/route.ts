@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAdminRequestUser, getAuthenticatedRequestUser } from "@/lib/api-auth";
+import { getAdminRequestUser, getDashboardRequestUser } from "@/lib/api-auth";
 import { logger } from "@/lib/utils/errors";
 
 export async function GET(request: Request) {
@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     const user =
       scope === "admin"
         ? await getAdminRequestUser()
-        : await getAuthenticatedRequestUser();
+        : await getDashboardRequestUser();
 
     if (!user) {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
