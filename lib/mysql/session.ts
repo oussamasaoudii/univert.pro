@@ -12,10 +12,10 @@ export type UserSessionPayload = {
   exp: number;
 };
 
-function getSessionSecret(): string {
+function getSessionSecret(): string | null {
   const secret = process.env.AUTH_SECRET || process.env.ADMIN_AUTH_SECRET;
   if (!secret || secret.trim().length < 32) {
-    throw new Error("AUTH_SECRET or ADMIN_AUTH_SECRET must be configured with at least 32 characters");
+    return null;
   }
 
   return secret;
@@ -28,6 +28,11 @@ export function createUserSessionToken(input: {
   sessionId: string;
   sessionVersion: number;
 }): string {
+  const secret = getSessionSecret();
+  if (!secret) {
+    throw new Error("AUTH_SECRET or ADMIN_AUTH_SECRET must be configured with at least 32 characters");
+  }
+
   const expiresAt = Math.floor(Date.now() / 1000) + USER_SESSION_TTL_SECONDS;
 
   return createSignedJwt(
@@ -41,16 +46,21 @@ export function createUserSessionToken(input: {
       iss: "univert-auth",
       aud: "univert-app",
     } satisfies UserSessionPayload & { iss: string; aud: string },
-    getSessionSecret(),
+    secret,
   );
 }
 
 export function verifyUserSessionToken(
   token: string | null | undefined,
 ): UserSessionPayload | null {
+  const secret = getSessionSecret();
+  if (!secret) {
+    return null;
+  }
+
   const data = verifySignedJwt<Partial<UserSessionPayload> & { iss?: string; aud?: string }>(
     token,
-    getSessionSecret(),
+    secret,
   );
 
   if (
