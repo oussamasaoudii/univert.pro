@@ -51,10 +51,17 @@ type MarketingSessionUser = {
 } | null;
 
 // Product menu items
+const productFeatured = {
+  title: "Platform Overview",
+  description: "Discover the complete Ovmon platform architecture",
+  href: "/product",
+  icon: Layers,
+};
+
 const productFeatures = [
   {
     title: "Global Edge Network",
-    description: "Deploy to 150+ locations worldwide",
+    description: "Deploy worldwide",
     href: "/features/edge-network",
     icon: Globe,
   },
@@ -66,25 +73,25 @@ const productFeatures = [
   },
   {
     title: "Auto-Scaling",
-    description: "Scale from zero to millions",
+    description: "Zero to millions",
     href: "/features/scaling",
     icon: Zap,
   },
   {
     title: "Enterprise Security",
-    description: "SOC2, DDoS protection, WAF",
+    description: "SOC2, DDoS, WAF",
     href: "/features/security",
     icon: Lock,
   },
   {
     title: "Serverless Functions",
-    description: "Run backend code at the edge",
+    description: "Backend at the edge",
     href: "/features/serverless",
     icon: Server,
   },
   {
     title: "Developer Tools",
-    description: "CLI, SDK, and API access",
+    description: "CLI, SDK, API access",
     href: "/features/developer-tools",
     icon: Code2,
   },
@@ -165,8 +172,14 @@ const solutionsHighlight = {
 // Resources menu items
 const resourcesLearn = [
   {
-    title: "Documentation",
-    description: "Guides and API reference",
+  title: "Resource Hub",
+  description: "All resources in one place",
+  href: "/resources",
+  icon: BookOpen,
+  },
+  {
+  title: "Documentation",
+  description: "Guides and API reference",
     href: "/docs",
     icon: BookOpen,
   },
@@ -214,6 +227,7 @@ const resourcesConnect = [
 // Company menu items
 const companyLinks = [
   { title: "About", description: "Our story and mission", href: "/about" },
+  { title: "Customers", description: "Customer success stories", href: "/customers" },
   { title: "Careers", description: "Join our team", href: "/careers", badge: "Hiring" },
   { title: "Partners", description: "Partner program", href: "/partners" },
   { title: "Press", description: "News and media", href: "/press" },
@@ -231,7 +245,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/85 backdrop-blur-xl supports-[backdrop-filter]:bg-background/65">
       <div className="container flex h-[72px] items-center justify-between">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2.5 group">
@@ -246,63 +260,85 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
             <NavigationMenuList className="gap-0">
               {/* Product Menu */}
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 data-[state=open]:bg-secondary/50 data-[state=open]:text-foreground">
+                <NavigationMenuTrigger className="bg-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/40 data-[state=open]:bg-secondary/30 data-[state=open]:text-foreground transition-colors">
                   Product
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[680px] p-5 bg-popover text-popover-foreground">
-                    <div className="grid grid-cols-12 gap-6">
-                      {/* Features grid */}
-                      <div className="col-span-8">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Features</p>
-                        <div className="grid grid-cols-2 gap-1">
-                          {productFeatures.map((feature) => (
-                            <NavigationMenuLink key={feature.href} asChild>
-                              <Link
-                                href={feature.href}
-                                className="group flex items-start gap-3 rounded-lg p-3 hover:bg-secondary/60 transition-colors"
-                              >
-                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent/20 transition-colors">
-                                  <feature.icon className="h-5 w-5" />
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-foreground">{feature.title}</p>
-                                  <p className="text-xs text-muted-foreground mt-0.5">{feature.description}</p>
-                                </div>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
+                  <div className="w-[820px] p-6 bg-popover text-popover-foreground overflow-visible">
+                    <div className="grid grid-cols-12 gap-8">
+                      {/* Featured item */}
+                      <div className="col-span-5 min-w-0">
+                        <div className="rounded-xl bg-gradient-to-br from-accent/15 via-accent/5 to-transparent border border-accent/20 p-5 h-full flex flex-col">
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/20 text-accent">
+                              {productFeatured.icon && <productFeatured.icon className="h-4 w-4" />}
+                            </div>
+                            <span className="text-xs font-semibold text-accent uppercase tracking-wider">Featured</span>
+                          </div>
+                          <p className="text-base font-semibold text-foreground mb-2">{productFeatured.title || 'Platform Overview'}</p>
+                          <p className="text-sm text-muted-foreground mb-4 flex-grow">{productFeatured.description || 'Discover the complete Ovmon platform'}</p>
+                          <Link
+                            href={productFeatured.href || '/product'}
+                            className="inline-flex items-center text-sm font-medium text-accent hover:text-accent transition-colors"
+                          >
+                            Explore platform
+                            <ArrowRight className="h-4 w-4 ml-2" />
+                          </Link>
                         </div>
                       </div>
 
-                      {/* Highlight card */}
-                      <div className="col-span-4">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Explore</p>
-                        <div className="rounded-xl bg-gradient-to-br from-accent/10 via-accent/5 to-transparent border border-accent/20 p-4">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Video className="h-4 w-4 text-accent" />
-                            <span className="text-xs font-medium text-accent">Demo</span>
-                          </div>
-                          <p className="text-sm font-medium text-foreground mb-1">{productHighlight.title}</p>
-                          <p className="text-xs text-muted-foreground mb-3">{productHighlight.description}</p>
-                          <Link
-                            href={productHighlight.href}
-                            className="inline-flex items-center text-xs font-medium text-accent hover:underline"
-                          >
-                            {productHighlight.cta}
-                            <ChevronRight className="h-3 w-3 ml-1" />
-                          </Link>
+                      {/* Core Features */}
+                      <div className="col-span-7 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Core Features</p>
+                        <div className="grid grid-cols-2 gap-4">
+                          {productFeatures && productFeatures.length > 0 ? (
+                            productFeatures.map((feature) => (
+                              <NavigationMenuLink key={feature.href} asChild>
+                                <Link
+                                  href={feature.href}
+                                  className="group flex flex-col p-4 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <div className="flex items-center gap-3 mb-2">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                                      {feature.icon && <feature.icon className="h-4 w-4" />}
+                                    </div>
+                                    <p className="text-sm font-medium text-foreground">{feature.title}</p>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground leading-relaxed">{feature.description}</p>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground col-span-2">Loading features...</p>
+                          )}
                         </div>
 
-                        <div className="mt-4 pt-4 border-t border-border/50">
+                        <div className="mt-5 pt-4 border-t border-border/50">
                           <Link
                             href="/features"
-                            className="flex items-center justify-between text-sm text-muted-foreground hover:text-foreground transition-colors"
+                            className="flex items-center justify-between text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                           >
                             View all features
                             <ArrowRight className="h-4 w-4" />
                           </Link>
                         </div>
+                      </div>
+                    </div>
+
+                    {/* Footer CTA */}
+                    <div className="mt-6 pt-6 border-t border-border/30">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-foreground mb-1">See Ovmon in action</p>
+                          <p className="text-xs text-muted-foreground">Watch a 2-minute demo of our platform</p>
+                        </div>
+                        <Link
+                          href={productHighlight.href}
+                          className="inline-flex items-center px-4 py-2 rounded-lg bg-accent text-accent-foreground text-xs font-medium hover:bg-accent/90 transition-colors"
+                        >
+                          <Video className="h-3.5 w-3.5 mr-2" />
+                          {productHighlight.cta}
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -311,82 +347,91 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
 
               {/* Solutions Menu */}
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 data-[state=open]:bg-secondary/50 data-[state=open]:text-foreground">
+                <NavigationMenuTrigger className="bg-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/40 data-[state=open]:bg-secondary/30 data-[state=open]:text-foreground transition-colors">
                   Solutions
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[720px] p-5 bg-popover text-popover-foreground">
-                    <div className="grid grid-cols-12 gap-6">
+                  <div className="w-[900px] p-6 bg-popover text-popover-foreground overflow-visible">
+                    <div className="grid grid-cols-12 gap-8">
                       {/* By Industry */}
-                      <div className="col-span-5">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">By Industry</p>
-                        <div className="grid grid-cols-1 gap-1">
-                          {solutionsByIndustry.map((solution) => (
-                            <NavigationMenuLink key={solution.href} asChild>
-                              <Link
-                                href={solution.href}
-                                className="group flex items-center gap-3 rounded-lg p-2.5 hover:bg-secondary/60 transition-colors"
-                              >
-                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-foreground/80 group-hover:bg-accent/10 group-hover:text-accent transition-colors">
-                                  <solution.icon className="h-4 w-4" />
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-foreground">{solution.title}</p>
-                                  <p className="text-xs text-muted-foreground">{solution.description}</p>
-                                </div>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
+                      <div className="col-span-4 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">By Industry</p>
+                        <div className="space-y-2">
+                          {solutionsByIndustry && solutionsByIndustry.length > 0 ? (
+                            solutionsByIndustry.map((solution) => (
+                              <NavigationMenuLink key={solution.href} asChild>
+                                <Link
+                                  href={solution.href}
+                                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                                    {solution.icon && <solution.icon className="h-4 w-4" />}
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-sm font-medium text-foreground">{solution.title}</p>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">{solution.description}</p>
+                                  </div>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Loading solutions...</p>
+                          )}
                         </div>
                       </div>
 
                       {/* By Use Case */}
-                      <div className="col-span-4">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">By Use Case</p>
-                        <div className="space-y-1">
-                          {solutionsByUseCase.map((useCase) => (
-                            <NavigationMenuLink key={useCase.href} asChild>
-                              <Link
-                                href={useCase.href}
-                                className="group flex flex-col rounded-lg p-3 hover:bg-secondary/60 transition-colors"
-                              >
-                                <p className="text-sm font-medium text-foreground">{useCase.title}</p>
-                                <p className="text-xs text-muted-foreground">{useCase.description}</p>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
-                        </div>
-
-                        <div className="mt-4 pt-4 border-t border-border/50">
-                          <Link
-                            href="/solutions"
-                            className="flex items-center justify-between text-sm text-muted-foreground hover:text-foreground transition-colors"
-                          >
-                            View all solutions
-                            <ArrowRight className="h-4 w-4" />
-                          </Link>
+                      <div className="col-span-4 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">By Use Case</p>
+                        <div className="space-y-2">
+                          {solutionsByUseCase && solutionsByUseCase.length > 0 ? (
+                            solutionsByUseCase.map((useCase) => (
+                              <NavigationMenuLink key={useCase.href} asChild>
+                                <Link
+                                  href={useCase.href}
+                                  className="group flex flex-col p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <p className="text-sm font-medium text-foreground">{useCase.title}</p>
+                                  <p className="text-xs text-muted-foreground leading-relaxed">{useCase.description}</p>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Loading use cases...</p>
+                          )}
                         </div>
                       </div>
 
                       {/* Trust highlight card */}
-                      <div className="col-span-3">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Trust</p>
-                        <div className="rounded-xl bg-gradient-to-br from-accent/10 via-accent/5 to-transparent border border-accent/20 p-4">
-                          <div className="flex items-center gap-2 mb-2">
+                      <div className="col-span-4 min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Trust & Security</p>
+                        <div className="rounded-xl bg-gradient-to-br from-accent/15 via-accent/5 to-transparent border border-accent/20 p-5 h-full flex flex-col">
+                          <div className="flex items-center gap-2 mb-3">
                             <Shield className="h-4 w-4 text-accent" />
-                            <span className="text-xs font-medium text-accent">Security</span>
+                            <span className="text-xs font-medium text-accent uppercase tracking-wider">Enterprise</span>
                           </div>
-                          <p className="text-sm font-medium text-foreground mb-1">{solutionsHighlight.title}</p>
-                          <p className="text-xs text-muted-foreground mb-3">{solutionsHighlight.description}</p>
+                          <p className="text-sm font-semibold text-foreground mb-2">{solutionsHighlight.title}</p>
+                          <p className="text-xs text-muted-foreground mb-4 flex-grow leading-relaxed">{solutionsHighlight.description}</p>
                           <Link
                             href={solutionsHighlight.href}
-                            className="inline-flex items-center text-xs font-medium text-accent hover:underline"
+                            className="inline-flex items-center text-sm font-medium text-accent hover:text-accent transition-colors"
                           >
                             {solutionsHighlight.cta}
-                            <ChevronRight className="h-3 w-3 ml-1" />
+                            <ArrowRight className="h-4 w-4 ml-2" />
                           </Link>
                         </div>
                       </div>
+                    </div>
+
+                    {/* Footer CTA */}
+                    <div className="mt-5 pt-5 border-t border-border/30">
+                      <Link
+                        href="/solutions"
+                        className="flex items-center justify-between text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        View all solutions
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
                     </div>
                   </div>
                 </NavigationMenuContent>
@@ -394,70 +439,84 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
 
               {/* Resources Menu */}
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 data-[state=open]:bg-secondary/50 data-[state=open]:text-foreground">
+                <NavigationMenuTrigger className="bg-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/40 data-[state=open]:bg-secondary/30 data-[state=open]:text-foreground transition-colors">
                   Resources
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[520px] p-5 bg-popover text-popover-foreground">
-                    <div className="grid grid-cols-2 gap-6">
+                  <div className="w-[700px] p-6 bg-popover text-popover-foreground overflow-visible">
+                    <div className="grid grid-cols-2 gap-8">
                       {/* Learn */}
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Learn</p>
-                        <div className="space-y-1">
-                          {resourcesLearn.map((resource) => (
-                            <NavigationMenuLink key={resource.href} asChild>
-                              <Link
-                                href={resource.href}
-                                className="group flex items-center gap-3 rounded-lg p-3 hover:bg-secondary/60 transition-colors"
-                              >
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-foreground/80 group-hover:bg-accent/10 group-hover:text-accent transition-colors">
-                                  <resource.icon className="h-4 w-4" />
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-foreground">{resource.title}</p>
-                                  <p className="text-xs text-muted-foreground">{resource.description}</p>
-                                </div>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Learn</p>
+                        <div className="space-y-2">
+                          {resourcesLearn && resourcesLearn.length > 0 ? (
+                            resourcesLearn.map((resource) => (
+                              <NavigationMenuLink key={resource.href} asChild>
+                                <Link
+                                  href={resource.href}
+                                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                                    {resource.icon && <resource.icon className="h-4 w-4" />}
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-sm font-medium text-foreground">{resource.title}</p>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">{resource.description}</p>
+                                  </div>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Loading resources...</p>
+                          )}
                         </div>
                       </div>
 
                       {/* Connect */}
-                      <div>
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Connect</p>
-                        <div className="space-y-1">
-                          {resourcesConnect.map((resource) => (
-                            <NavigationMenuLink key={resource.href} asChild>
-                              <Link
-                                href={resource.href}
-                                className="group flex items-center gap-3 rounded-lg p-3 hover:bg-secondary/60 transition-colors"
-                              >
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-foreground/80 group-hover:bg-accent/10 group-hover:text-accent transition-colors">
-                                  <resource.icon className="h-4 w-4" />
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-foreground">{resource.title}</p>
-                                  <p className="text-xs text-muted-foreground">{resource.description}</p>
-                                </div>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
-                        </div>
-
-                        <div className="mt-4 pt-4 border-t border-border/50">
-                          <Link
-                            href="/changelog"
-                            className="flex items-center justify-between text-sm text-muted-foreground hover:text-foreground transition-colors"
-                          >
-                            <div className="flex items-center gap-2">
-                              <Heart className="h-4 w-4 text-accent" />
-                              What&apos;s new
-                            </div>
-                            <ArrowRight className="h-4 w-4" />
-                          </Link>
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Connect</p>
+                        <div className="space-y-2">
+                          {resourcesConnect && resourcesConnect.length > 0 ? (
+                            resourcesConnect.map((resource) => (
+                              <NavigationMenuLink key={resource.href} asChild>
+                                <Link
+                                  href={resource.href}
+                                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                                    {resource.icon && <resource.icon className="h-4 w-4" />}
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-sm font-medium text-foreground">{resource.title}</p>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">{resource.description}</p>
+                                  </div>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Loading...</p>
+                          )}
                         </div>
                       </div>
+                    </div>
+
+                    {/* Footer Featured area */}
+                    <div className="mt-6 pt-6 border-t border-border/30">
+                      <Link
+                        href="/changelog"
+                        className="group flex items-center justify-between p-3 rounded-lg hover:bg-secondary/30 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent/20 transition-colors">
+                            <Heart className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-foreground">What&apos;s new</p>
+                            <p className="text-xs text-muted-foreground">Latest updates and features</p>
+                          </div>
+                        </div>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+                      </Link>
                     </div>
                   </div>
                 </NavigationMenuContent>
@@ -468,7 +527,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                 <NavigationMenuItem key={item.name}>
                   <Link
                     href={item.href}
-                    className="inline-flex h-9 items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary/50"
+                    className="inline-flex h-9 items-center justify-center rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary/40"
                   >
                     {item.name}
                   </Link>
@@ -481,29 +540,51 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
           <NavigationMenu viewport={false} className="hidden lg:flex">
             <NavigationMenuList className="gap-0">
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 data-[state=open]:bg-secondary/50 data-[state=open]:text-foreground">
+                <NavigationMenuTrigger className="bg-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/40 data-[state=open]:bg-secondary/30 data-[state=open]:text-foreground transition-colors">
                   Company
                 </NavigationMenuTrigger>
-                <NavigationMenuContent className="right-0 left-auto mt-1 min-w-[240px] rounded-xl border bg-popover p-2 shadow-lg">
-                  <div className="space-y-0.5">
-                    {companyLinks.map((link) => (
-                      <NavigationMenuLink key={link.href} asChild>
-                        <Link
-                          href={link.href}
-                          className="flex items-center justify-between rounded-lg px-3 py-2.5 hover:bg-secondary/60 transition-colors"
-                        >
-                          <div>
-                            <p className="text-sm font-medium text-foreground">{link.title}</p>
-                            <p className="text-xs text-muted-foreground">{link.description}</p>
-                          </div>
-                          {link.badge && (
-                            <span className="shrink-0 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
-                              {link.badge}
-                            </span>
-                          )}
-                        </Link>
-                      </NavigationMenuLink>
-                    ))}
+                <NavigationMenuContent className="right-0 left-auto mt-1 min-w-[300px] rounded-xl border bg-popover shadow-lg">
+                  <div className="p-4">
+                    <div className="space-y-1">
+                      {companyLinks && companyLinks.length > 0 ? (
+                        companyLinks.map((link) => (
+                          <NavigationMenuLink key={link.href} asChild>
+                            <Link
+                              href={link.href}
+                              className="flex items-center justify-between rounded-lg px-3 py-3 hover:bg-secondary/50 transition-colors"
+                            >
+                              <div className="flex-1">
+                                <p className="text-sm font-medium text-foreground">{link.title}</p>
+                                <p className="text-xs text-muted-foreground leading-relaxed">{link.description}</p>
+                              </div>
+                              {link.badge && (
+                                <span className="shrink-0 ml-3 rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
+                                  {link.badge}
+                                </span>
+                              )}
+                            </Link>
+                          </NavigationMenuLink>
+                        ))
+                      ) : (
+                        <p className="text-sm text-muted-foreground px-3 py-2">Loading...</p>
+                      )}
+                    </div>
+
+                    {/* Company menu footer */}
+                    <div className="mt-4 pt-4 border-t border-border/30">
+                      <Link
+                        href="/contact"
+                        className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/30 transition-colors"
+                      >
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                          <MessageSquare className="h-4 w-4" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-foreground">Get in touch</p>
+                          <p className="text-xs text-muted-foreground">Contact our team</p>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
