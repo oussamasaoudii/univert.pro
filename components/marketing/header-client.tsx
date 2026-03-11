@@ -271,14 +271,14 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                         <div className="rounded-xl bg-gradient-to-br from-accent/15 via-accent/5 to-transparent border border-accent/20 p-5 h-full flex flex-col">
                           <div className="flex items-center gap-2 mb-3">
                             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/20 text-accent">
-                              <productFeatured.icon className="h-4 w-4" />
+                              {productFeatured.icon && <productFeatured.icon className="h-4 w-4" />}
                             </div>
                             <span className="text-xs font-semibold text-accent uppercase tracking-wider">Featured</span>
                           </div>
-                          <p className="text-base font-semibold text-foreground mb-2">{productFeatured.title}</p>
-                          <p className="text-sm text-muted-foreground mb-4 flex-grow">{productFeatured.description}</p>
+                          <p className="text-base font-semibold text-foreground mb-2">{productFeatured.title || 'Platform Overview'}</p>
+                          <p className="text-sm text-muted-foreground mb-4 flex-grow">{productFeatured.description || 'Discover the complete Ovmon platform'}</p>
                           <Link
-                            href={productFeatured.href}
+                            href={productFeatured.href || '/product'}
                             className="inline-flex items-center text-sm font-medium text-accent hover:text-accent transition-colors"
                           >
                             Explore platform
@@ -291,22 +291,26 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       <div className="col-span-7">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Core Features</p>
                         <div className="grid grid-cols-2 gap-4">
-                          {productFeatures.map((feature) => (
-                            <NavigationMenuLink key={feature.href} asChild>
-                              <Link
-                                href={feature.href}
-                                className="group flex flex-col p-4 rounded-lg hover:bg-secondary/50 transition-colors"
-                              >
-                                <div className="flex items-center gap-3 mb-2">
-                                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
-                                    <feature.icon className="h-4 w-4" />
+                          {productFeatures && productFeatures.length > 0 ? (
+                            productFeatures.map((feature) => (
+                              <NavigationMenuLink key={feature.href} asChild>
+                                <Link
+                                  href={feature.href}
+                                  className="group flex flex-col p-4 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <div className="flex items-center gap-3 mb-2">
+                                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                                      {feature.icon && <feature.icon className="h-4 w-4" />}
+                                    </div>
+                                    <p className="text-sm font-medium text-foreground">{feature.title}</p>
                                   </div>
-                                  <p className="text-sm font-medium text-foreground">{feature.title}</p>
-                                </div>
-                                <p className="text-xs text-muted-foreground leading-relaxed">{feature.description}</p>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
+                                  <p className="text-xs text-muted-foreground leading-relaxed">{feature.description}</p>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground col-span-2">Loading features...</p>
+                          )}
                         </div>
 
                         <div className="mt-5 pt-4 border-t border-border/50">
@@ -353,22 +357,26 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       <div className="col-span-5">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">By Industry</p>
                         <div className="space-y-2">
-                          {solutionsByIndustry.map((solution) => (
-                            <NavigationMenuLink key={solution.href} asChild>
-                              <Link
-                                href={solution.href}
-                                className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
-                              >
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
-                                  <solution.icon className="h-4 w-4" />
-                                </div>
-                                <div className="flex-1">
-                                  <p className="text-sm font-medium text-foreground">{solution.title}</p>
-                                  <p className="text-xs text-muted-foreground leading-relaxed">{solution.description}</p>
-                                </div>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
+                          {solutionsByIndustry && solutionsByIndustry.length > 0 ? (
+                            solutionsByIndustry.map((solution) => (
+                              <NavigationMenuLink key={solution.href} asChild>
+                                <Link
+                                  href={solution.href}
+                                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                                    {solution.icon && <solution.icon className="h-4 w-4" />}
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-sm font-medium text-foreground">{solution.title}</p>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">{solution.description}</p>
+                                  </div>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Loading solutions...</p>
+                          )}
                         </div>
                       </div>
 
@@ -376,17 +384,21 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       <div className="col-span-4">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">By Use Case</p>
                         <div className="space-y-2">
-                          {solutionsByUseCase.map((useCase) => (
-                            <NavigationMenuLink key={useCase.href} asChild>
-                              <Link
-                                href={useCase.href}
-                                className="group flex flex-col p-3 rounded-lg hover:bg-secondary/50 transition-colors"
-                              >
-                                <p className="text-sm font-medium text-foreground">{useCase.title}</p>
-                                <p className="text-xs text-muted-foreground leading-relaxed">{useCase.description}</p>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
+                          {solutionsByUseCase && solutionsByUseCase.length > 0 ? (
+                            solutionsByUseCase.map((useCase) => (
+                              <NavigationMenuLink key={useCase.href} asChild>
+                                <Link
+                                  href={useCase.href}
+                                  className="group flex flex-col p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <p className="text-sm font-medium text-foreground">{useCase.title}</p>
+                                  <p className="text-xs text-muted-foreground leading-relaxed">{useCase.description}</p>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Loading use cases...</p>
+                          )}
                         </div>
                       </div>
 
@@ -437,22 +449,26 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       <div>
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Learn</p>
                         <div className="space-y-2">
-                          {resourcesLearn.map((resource) => (
-                            <NavigationMenuLink key={resource.href} asChild>
-                              <Link
-                                href={resource.href}
-                                className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
-                              >
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
-                                  <resource.icon className="h-4 w-4" />
-                                </div>
-                                <div className="flex-1">
-                                  <p className="text-sm font-medium text-foreground">{resource.title}</p>
-                                  <p className="text-xs text-muted-foreground leading-relaxed">{resource.description}</p>
-                                </div>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
+                          {resourcesLearn && resourcesLearn.length > 0 ? (
+                            resourcesLearn.map((resource) => (
+                              <NavigationMenuLink key={resource.href} asChild>
+                                <Link
+                                  href={resource.href}
+                                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                                    {resource.icon && <resource.icon className="h-4 w-4" />}
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-sm font-medium text-foreground">{resource.title}</p>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">{resource.description}</p>
+                                  </div>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Loading resources...</p>
+                          )}
                         </div>
                       </div>
 
@@ -460,22 +476,26 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       <div>
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Connect</p>
                         <div className="space-y-2">
-                          {resourcesConnect.map((resource) => (
-                            <NavigationMenuLink key={resource.href} asChild>
-                              <Link
-                                href={resource.href}
-                                className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
-                              >
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
-                                  <resource.icon className="h-4 w-4" />
-                                </div>
-                                <div className="flex-1">
-                                  <p className="text-sm font-medium text-foreground">{resource.title}</p>
-                                  <p className="text-xs text-muted-foreground leading-relaxed">{resource.description}</p>
-                                </div>
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
+                          {resourcesConnect && resourcesConnect.length > 0 ? (
+                            resourcesConnect.map((resource) => (
+                              <NavigationMenuLink key={resource.href} asChild>
+                                <Link
+                                  href={resource.href}
+                                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                                >
+                                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground group-hover:bg-accent/10 group-hover:text-accent transition-colors">
+                                    {resource.icon && <resource.icon className="h-4 w-4" />}
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-sm font-medium text-foreground">{resource.title}</p>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">{resource.description}</p>
+                                  </div>
+                                </Link>
+                              </NavigationMenuLink>
+                            ))
+                          ) : (
+                            <p className="text-sm text-muted-foreground">Loading...</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -526,24 +546,28 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                 <NavigationMenuContent className="right-0 left-auto mt-1 min-w-[300px] rounded-xl border bg-popover shadow-lg">
                   <div className="p-4">
                     <div className="space-y-1">
-                      {companyLinks.map((link) => (
-                        <NavigationMenuLink key={link.href} asChild>
-                          <Link
-                            href={link.href}
-                            className="flex items-center justify-between rounded-lg px-3 py-3 hover:bg-secondary/50 transition-colors"
-                          >
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-foreground">{link.title}</p>
-                              <p className="text-xs text-muted-foreground leading-relaxed">{link.description}</p>
-                            </div>
-                            {link.badge && (
-                              <span className="shrink-0 ml-3 rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
-                                {link.badge}
-                              </span>
-                            )}
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
+                      {companyLinks && companyLinks.length > 0 ? (
+                        companyLinks.map((link) => (
+                          <NavigationMenuLink key={link.href} asChild>
+                            <Link
+                              href={link.href}
+                              className="flex items-center justify-between rounded-lg px-3 py-3 hover:bg-secondary/50 transition-colors"
+                            >
+                              <div className="flex-1">
+                                <p className="text-sm font-medium text-foreground">{link.title}</p>
+                                <p className="text-xs text-muted-foreground leading-relaxed">{link.description}</p>
+                              </div>
+                              {link.badge && (
+                                <span className="shrink-0 ml-3 rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
+                                  {link.badge}
+                                </span>
+                              )}
+                            </Link>
+                          </NavigationMenuLink>
+                        ))
+                      ) : (
+                        <p className="text-sm text-muted-foreground px-3 py-2">Loading...</p>
+                      )}
                     </div>
 
                     {/* Company menu footer */}
