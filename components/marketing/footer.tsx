@@ -2,27 +2,29 @@ import Link from "next/link";
 
 const footerLinks = {
   product: [
-    { name: "Demos", href: "/demos" },
-    { name: "Pricing", href: "/pricing" },
     { name: "Features", href: "/#features" },
-    { name: "Templates", href: "/demos" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "Demos", href: "/demos" },
+    { name: "Integrations", href: "/integrations" },
   ],
   company: [
     { name: "About", href: "/about" },
-    { name: "Blog", href: "/blog" },
     { name: "Careers", href: "/careers" },
+    { name: "Partners", href: "/partners" },
     { name: "Contact", href: "/contact" },
   ],
   resources: [
     { name: "Documentation", href: "/docs" },
+    { name: "Case Studies", href: "/case-studies" },
+    { name: "Webinars", href: "/webinars" },
+    { name: "Blog", href: "/blog" },
     { name: "Support", href: "/support" },
-    { name: "Status", href: "/status" },
-    { name: "API", href: "/api-docs" },
   ],
   legal: [
     { name: "Privacy", href: "/privacy" },
     { name: "Terms", href: "/terms" },
     { name: "Security", href: "/security" },
+    { name: "Status", href: "/status" },
   ],
 };
 
