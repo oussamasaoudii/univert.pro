@@ -54,6 +54,22 @@ const industries = [
     features: ["Multi-site management", "White-label options", "Client billing integration"],
     color: "from-green-500/20 to-green-500/5",
   },
+  {
+    title: "Creators",
+    description: "Build your online presence with beautiful, fast websites. Perfect for content creators and personal brands.",
+    href: "/solutions/creators",
+    icon: Zap,
+    features: ["Beautiful templates", "Built-in analytics", "Social integrations"],
+    color: "from-pink-500/20 to-pink-500/5",
+  },
+  {
+    title: "Teams",
+    description: "Collaborate seamlessly with role-based access, shared workspaces, and powerful deployment workflows.",
+    href: "/solutions/teams",
+    icon: Globe,
+    features: ["Role-based access", "Preview deployments", "Team analytics"],
+    color: "from-cyan-500/20 to-cyan-500/5",
+  },
 ];
 
 const capabilities = [
