@@ -30,6 +30,14 @@ import {
   Headphones
 } from 'lucide-react';
 
+// Import reusable section components
+import { 
+  CTABand, 
+  TrustMetrics, 
+  FAQSection,
+  TestimonialSection 
+} from '@/components/marketing/sections';
+
 // Animated counter component
 function AnimatedCounter({ value, suffix = '', prefix = '' }: { value: number; suffix?: string; prefix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -180,6 +188,58 @@ const developerSignals = [
   { label: '2B+', sublabel: 'Monthly requests served', icon: BarChart3 },
   { label: '<50ms', sublabel: 'Global P95 latency', icon: Zap },
   { label: '3s', sublabel: 'Average deploy time', icon: Rocket },
+];
+
+// FAQ data for homepage
+const homepageFAQs = [
+  {
+    question: 'How do I get started with Ovmon?',
+    answer: 'Getting started is easy! Sign up for a free account, connect your Git repository, and deploy with a single click. Your site will be live in under 60 seconds.',
+  },
+  {
+    question: 'What frameworks does Ovmon support?',
+    answer: 'Ovmon supports all major frameworks including Next.js, React, Vue, Nuxt, Angular, Svelte, and more. We also support static sites, serverless functions, and full-stack applications.',
+  },
+  {
+    question: 'Is there a free tier available?',
+    answer: 'Yes! Our Starter plan is completely free and includes 3 projects, 100GB bandwidth, free SSL, and community support. No credit card required.',
+  },
+  {
+    question: 'What kind of support do you offer?',
+    answer: 'We offer community support for free users, priority email support for Pro users, and dedicated support with SLA guarantees for Enterprise customers.',
+  },
+];
+
+// Testimonials data
+const homepageTestimonials = [
+  {
+    quote: 'Ovmon transformed our deployment workflow. What used to take hours now takes seconds. Our team productivity has increased dramatically.',
+    author: {
+      name: 'Sarah Chen',
+      title: 'CTO',
+      company: 'TechFlow',
+    },
+    rating: 5,
+    featured: true,
+  },
+  {
+    quote: 'The global edge network is incredible. Our users in Asia saw a 60% improvement in load times.',
+    author: {
+      name: 'Marcus Rivera',
+      title: 'Lead Engineer',
+      company: 'GlobalApp',
+    },
+    rating: 5,
+  },
+  {
+    quote: 'Best developer experience I have ever used. The preview deployments for PRs changed how our team works.',
+    author: {
+      name: 'Emma Wilson',
+      title: 'Frontend Developer',
+      company: 'StartupXYZ',
+    },
+    rating: 5,
+  },
 ];
 
 export default function HomePage() {
@@ -975,55 +1035,34 @@ export default function HomePage() {
         </div>
       </AnimatedSection>
 
-      {/* Final CTA Section - Enhanced */}
-      <section className="py-20 lg:py-28 relative overflow-hidden">
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_120%,rgba(45,212,191,0.2),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_80%,rgba(45,212,191,0.08),transparent_50%)]" />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <h2 className="text-3xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
-              Start shipping faster today
-            </h2>
-            <p className="text-lg text-foreground/70 mb-8 max-w-xl mx-auto">
-              Join 50,000+ developers who build and deploy with confidence. Get started in under 60 seconds.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground h-14 px-8 text-base font-medium shadow-xl shadow-accent/30 hover:shadow-2xl hover:shadow-accent/40 transition-all" asChild>
-                <Link href="/auth/signup">
-                  Start Building Free
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" className="h-14 px-8 text-base hover:border-accent/50" asChild>
-                <Link href="/contact">Talk to Sales</Link>
-              </Button>
-            </div>
-            
-            {/* Reassurance */}
-            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-accent" />
-                Free forever plan
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-accent" />
-                No credit card needed
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-accent" />
-                Setup in 60 seconds
-              </span>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* Testimonials Section - Using reusable component */}
+      <TestimonialSection
+        badge="Customer Stories"
+        title="Loved by developers worldwide"
+        description="See what developers and teams are saying about building with Ovmon."
+        testimonials={homepageTestimonials}
+        variant="featured"
+      />
+
+      {/* FAQ Section - Using reusable component */}
+      <FAQSection
+        badge="FAQ"
+        title="Frequently Asked Questions"
+        description="Everything you need to know about getting started with Ovmon."
+        faqs={homepageFAQs}
+        variant="default"
+      />
+
+      {/* Final CTA Section - Using reusable component */}
+      <CTABand
+        title="Start shipping faster today"
+        description="Join 50,000+ developers who build and deploy with confidence. Get started in under 60 seconds."
+        actions={[
+          { label: 'Start Building Free', href: '/auth/signup', variant: 'primary' },
+          { label: 'Talk to Sales', href: '/contact', variant: 'outline' },
+        ]}
+        variant="centered"
+      />
     </div>
   );
 }

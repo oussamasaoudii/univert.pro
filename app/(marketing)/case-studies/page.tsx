@@ -13,6 +13,7 @@ import {
   Layers,
   Globe,
 } from "lucide-react";
+import { HeroSection, CTABand, TestimonialSection } from "@/components/marketing/sections";
 
 export const metadata: Metadata = {
   title: "Case Studies - Ovmon",
@@ -88,23 +89,16 @@ export default function CaseStudiesPage() {
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-28 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent" />
-        <div className="container relative">
-          <div className="max-w-3xl mx-auto text-center">
-            <Badge variant="outline" className="mb-6 border-accent/50 text-accent">
-              Case Studies
-            </Badge>
-            <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
-              Customer success stories
-            </h1>
-            <p className="text-lg text-foreground/70 mb-8 max-w-2xl mx-auto">
-              See how leading companies use Ovmon to build faster, scale bigger, and deliver 
-              exceptional web experiences.
-            </p>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        badge="Customer Stories"
+        title="Real success stories from industry leaders"
+        description="See how leading companies use Ovmon to build faster, scale bigger, and deliver exceptional web experiences."
+        actions={[
+          { label: 'Explore Stories', href: '#studies', variant: 'primary' },
+          { label: 'Schedule Demo', href: '/contact', variant: 'outline' },
+        ]}
+        variant="centered"
+      />
 
       {/* Highlights */}
       <section className="py-12 border-y border-border/50 bg-secondary/20">
@@ -173,29 +167,15 @@ export default function CaseStudiesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 lg:py-24 bg-secondary/20">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-              Ready to write your success story?
-            </h2>
-            <p className="text-foreground/60 mb-8">
-              Join thousands of companies who build and deploy with Ovmon.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="h-12 px-8 font-medium group" asChild>
-                <Link href="/auth/signup">
-                  Start for free
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" className="h-12 px-8 font-medium" asChild>
-                <Link href="/contact">Talk to sales</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CTABand
+        title="Ready to write your success story?"
+        description="Join thousands of companies who build and deploy with confidence on Ovmon."
+        actions={[
+          { label: 'Start Your Free Trial', href: '/auth/signup', variant: 'primary' },
+          { label: 'Talk to Sales', href: '/contact', variant: 'outline' },
+        ]}
+        variant="centered"
+      />
     </main>
   );
 }
