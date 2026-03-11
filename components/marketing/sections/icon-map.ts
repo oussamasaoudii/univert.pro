@@ -21,6 +21,16 @@ import {
   Play,
   Check,
   ChevronRight,
+  Building2,
+  ShoppingCart,
+  Briefcase,
+  Heart,
+  GraduationCap,
+  Users,
+  FileText,
+  BookOpen,
+  Video,
+  MessageCircle,
   type LucideIcon
 } from 'lucide-react';
 
@@ -47,6 +57,16 @@ export const iconMap: Record<string, LucideIcon> = {
   Play,
   Check,
   ChevronRight,
+  Building2,
+  ShoppingCart,
+  Briefcase,
+  Heart,
+  GraduationCap,
+  Users,
+  FileText,
+  BookOpen,
+  Video,
+  MessageCircle,
 };
 
 export type IconName = keyof typeof iconMap;
