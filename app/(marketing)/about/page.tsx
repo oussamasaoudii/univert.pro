@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -21,24 +19,12 @@ import {
 } from 'lucide-react';
 import {
   HeroSection,
-  StatsSection,
-  BenefitsGrid,
   CTABand,
   TestimonialSection,
   LogoCloud,
 } from '@/components/marketing/sections';
-
-// Icon map for client-side rendering
-const iconMap = {
-  zap: Zap,
-  users: Users,
-  target: Target,
-  heart: Heart,
-  shield: Shield,
-  globe: Globe,
-  server: Server,
-  chart: BarChart3,
-} as const;
+import { StatsSectionWrapper } from '@/components/marketing/sections/stats-section-wrapper';
+import { BenefitsGridWrapper } from '@/components/marketing/sections/benefits-grid-wrapper';
 
 // Company values - without icon components
 const values = [
@@ -157,13 +143,8 @@ export default function AboutPage() {
       />
 
       {/* Stats */}
-      <StatsSection
-        stats={companyStats.map(stat => ({
-          value: stat.value,
-          suffix: stat.suffix,
-          label: stat.label,
-          icon: iconMap[stat.iconKey],
-        }))}
+      <StatsSectionWrapper
+        stats={companyStats}
         variant="contained"
         columns={4}
       />
@@ -203,15 +184,11 @@ export default function AboutPage() {
 
       {/* Values */}
       <section className="bg-secondary/20">
-        <BenefitsGrid
+        <BenefitsGridWrapper
           badge="Our Values"
           title="What drives us"
           description="These principles guide every decision we make and every feature we build."
-          benefits={values.map(v => ({
-            icon: iconMap[v.iconKey],
-            title: v.title,
-            description: v.description,
-          }))}
+          benefits={values}
           variant="cards"
           columns={3}
         />
