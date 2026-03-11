@@ -19,6 +19,33 @@ test("middleware rejects cross-origin mutating API requests", async () => {
   assert.deepEqual(await response.json(), { error: "invalid_request_origin" });
 });
 
+test("middleware allows preview deployment mutating API requests", async () => {
+  const previousNodeEnv = process.env.NODE_ENV;
+  const previousVercelEnv = process.env.VERCEL_ENV;
+  const previousAppUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  process.env.NODE_ENV = "production";
+  process.env.VERCEL_ENV = "preview";
+  process.env.NEXT_PUBLIC_APP_URL = "https://univert.pro";
+
+  try {
+    const response = await middleware(
+      new NextRequest("https://univert-pro-git-main-oussamasaoudii.vercel.app/api/auth/login", {
+        method: "POST",
+        headers: {
+          origin: "https://univert-pro-git-main-oussamasaoudii.vercel.app",
+        },
+      }),
+    );
+
+    assert.equal(response.status, 200);
+  } finally {
+    process.env.NODE_ENV = previousNodeEnv;
+    process.env.VERCEL_ENV = previousVercelEnv;
+    process.env.NEXT_PUBLIC_APP_URL = previousAppUrl;
+  }
+});
+
 test("middleware enforces API request body size limits", async () => {
   process.env.NEXT_PUBLIC_APP_URL = "https://univert.pro";
 

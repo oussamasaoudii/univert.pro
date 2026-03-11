@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { isTrustedOrigin } from "@/lib/security/trusted-origin";
 
 const MUTATING_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 const API_BODY_LIMIT_BYTES = 1024 * 1024;
@@ -16,25 +17,11 @@ function hasTrustedInternalBearer(request: NextRequest): boolean {
 }
 
 function hasTrustedOrigin(request: NextRequest): boolean {
-  const expectedOrigin = new URL(
-    process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin,
-  ).origin;
-
-  const origin = request.headers.get("origin");
-  if (origin) {
-    return origin === expectedOrigin;
-  }
-
-  const referer = request.headers.get("referer");
-  if (referer) {
-    try {
-      return new URL(referer).origin === expectedOrigin;
-    } catch {
-      return false;
-    }
-  }
-
-  return false;
+  return isTrustedOrigin(
+    request.nextUrl.toString(),
+    request.headers.get("origin"),
+    request.headers.get("referer"),
+  );
 }
 
 function applySecurityHeaders(response: NextResponse, request: NextRequest) {

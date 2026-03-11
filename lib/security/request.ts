@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { isTrustedOrigin } from "./trusted-origin";
 import { consumeRateLimit } from "@/lib/mysql/security";
 import {
   queueSecurityRequestAuditLog,
@@ -68,25 +69,10 @@ export function assertTrustedOrigin(request: Request) {
     return;
   }
 
-  const expectedOrigin = new URL(
-    process.env.NEXT_PUBLIC_APP_URL || request.url,
-  ).origin;
-
-  const origin = request.headers.get("origin");
-  if (origin) {
-    if (origin === expectedOrigin) {
-      return;
-    }
-
-    throw new AuthorizationError("invalid_request_origin");
-  }
-
-  const referer = request.headers.get("referer");
-  if (referer) {
-    const refererOrigin = new URL(referer).origin;
-    if (refererOrigin === expectedOrigin) {
-      return;
-    }
+  if (
+    isTrustedOrigin(request.url, request.headers.get("origin"), request.headers.get("referer"))
+  ) {
+    return;
   }
 
   throw new AuthorizationError("invalid_request_origin");

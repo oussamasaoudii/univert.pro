@@ -36,6 +36,56 @@ test("assertTrustedOrigin rejects cross-origin mutating requests", () => {
   });
 });
 
+test("assertTrustedOrigin allows preview deployment origins", () => {
+  const previousNodeEnv = process.env.NODE_ENV;
+  const previousVercelEnv = process.env.VERCEL_ENV;
+  const previousAppUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  process.env.NODE_ENV = "production";
+  process.env.VERCEL_ENV = "preview";
+  process.env.NEXT_PUBLIC_APP_URL = "https://univert.pro";
+
+  try {
+    const request = new Request("https://univert-pro-git-main-oussamasaoudii.vercel.app/api/auth/login", {
+      method: "POST",
+      headers: {
+        origin: "https://univert-pro-git-main-oussamasaoudii.vercel.app",
+      },
+    });
+
+    assert.doesNotThrow(() => assertTrustedOrigin(request));
+  } finally {
+    process.env.NODE_ENV = previousNodeEnv;
+    process.env.VERCEL_ENV = previousVercelEnv;
+    process.env.NEXT_PUBLIC_APP_URL = previousAppUrl;
+  }
+});
+
+test("assertTrustedOrigin allows explicitly configured additional origins", () => {
+  const previousNodeEnv = process.env.NODE_ENV;
+  const previousAllowedOrigins = process.env.ALLOWED_REQUEST_ORIGINS;
+  const previousAppUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+  process.env.NODE_ENV = "production";
+  process.env.NEXT_PUBLIC_APP_URL = "https://univert.pro";
+  process.env.ALLOWED_REQUEST_ORIGINS = "https://preview.v0.dev, preview.vusercontent.net";
+
+  try {
+    const request = new Request("https://univert.pro/api/auth/login", {
+      method: "POST",
+      headers: {
+        origin: "https://preview.v0.dev",
+      },
+    });
+
+    assert.doesNotThrow(() => assertTrustedOrigin(request));
+  } finally {
+    process.env.NODE_ENV = previousNodeEnv;
+    process.env.ALLOWED_REQUEST_ORIGINS = previousAllowedOrigins;
+    process.env.NEXT_PUBLIC_APP_URL = previousAppUrl;
+  }
+});
+
 test("hasValidInternalBearer accepts configured internal secrets", () => {
   process.env.CRON_SECRET = "cron-secret";
 
