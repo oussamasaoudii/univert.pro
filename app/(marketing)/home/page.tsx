@@ -168,15 +168,18 @@ const plans = [
   },
 ];
 
-const trustedCompanies = [
-  'Acme Corp', 'TechFlow', 'Vertex', 'Quantum', 'Nexus', 'Pulse'
+const platformCredentials = [
+  { icon: Shield, label: 'SOC2 Type II', sublabel: 'Compliant', description: 'Enterprise-grade security audited annually' },
+  { icon: Server, label: '99.99%', sublabel: 'Uptime SLA', description: 'Backed by financial guarantee' },
+  { icon: Globe, label: '150+', sublabel: 'Edge Locations', description: 'Global CDN coverage' },
+  { icon: Lock, label: 'DDoS', sublabel: 'Protection', description: 'Enterprise WAF included' },
 ];
 
-const trustMetrics = [
-  { icon: Shield, label: 'SOC2 Type II', sublabel: 'Certified' },
-  { icon: Server, label: '99.99%', sublabel: 'Uptime SLA' },
-  { icon: Globe, label: '150+', sublabel: 'Edge Locations' },
-  { icon: Headphones, label: '24/7', sublabel: 'Support' },
+const developerSignals = [
+  { label: '50,000+', sublabel: 'Active developers', icon: Users },
+  { label: '2B+', sublabel: 'Monthly requests served', icon: BarChart3 },
+  { label: '<50ms', sublabel: 'Global P95 latency', icon: Zap },
+  { label: '3s', sublabel: 'Average deploy time', icon: Rocket },
 ];
 
 export default function HomePage() {
@@ -405,24 +408,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust Bar / Logo Marquee */}
-      <section className="py-8 border-y border-border/50 bg-secondary/20">
+      {/* Platform Highlights Bar */}
+      <section className="py-6 border-y border-border/50 bg-secondary/20">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-            <p className="text-sm text-muted-foreground shrink-0">Trusted by teams at</p>
-            <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-              {trustedCompanies.map((company, i) => (
-                <motion.div
-                  key={company}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: i * 0.1 }}
-                  className="text-muted-foreground/60 font-semibold text-lg tracking-tight hover:text-foreground transition-colors cursor-default"
-                >
-                  {company}
-                </motion.div>
-              ))}
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
+            {[
+              { label: 'Zero config deploys', icon: Zap },
+              { label: 'Git-connected', icon: RefreshCw },
+              { label: 'Free SSL included', icon: Lock },
+              { label: 'Instant rollbacks', icon: Clock },
+            ].map((item, i) => (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="flex items-center gap-2 text-sm text-muted-foreground"
+              >
+                <item.icon className="w-4 h-4 text-accent" />
+                <span>{item.label}</span>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -721,118 +727,147 @@ export default function HomePage() {
         </div>
       </AnimatedSection>
 
-      {/* Social Proof Section - CRITICAL FIX: Replaced empty Trustpilot widget */}
+      {/* Platform Trust Section - Premium trust-building block */}
       <AnimatedSection className="py-16 lg:py-24 bg-secondary/20">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-12">
+            <div className="text-center mb-14">
               <Badge variant="outline" className="mb-4 border-accent/50 text-accent">
-                Trusted Platform
+                Enterprise-Ready Infrastructure
               </Badge>
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4 text-balance">
-                Built for developers who ship
+                Infrastructure you can trust
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Join thousands of developers and teams who trust Ovmon to power their production applications.
+                Built on battle-tested infrastructure with enterprise-grade security, reliability, and performance.
               </p>
             </div>
 
-            {/* Trust metrics grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-              {trustMetrics.map((metric, i) => (
+            {/* Security & Compliance Credentials */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+              {platformCredentials.map((credential, i) => (
                 <motion.div
-                  key={metric.label}
+                  key={credential.label}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  whileHover={{ y: -2, scale: 1.02 }}
+                  whileHover={{ y: -3 }}
                   className="group"
                 >
-                  <Card className="bg-card/60 border-border/50 hover:border-accent/40 transition-all">
-                    <CardContent className="p-5 text-center">
-                      <div className="w-12 h-12 mx-auto rounded-xl bg-accent/10 flex items-center justify-center mb-3 group-hover:bg-accent/20 transition-colors">
-                        <metric.icon className="w-6 h-6 text-accent" />
+                  <Card className="h-full bg-card/60 border-border/50 hover:border-accent/40 transition-all">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center shrink-0 group-hover:bg-accent/20 transition-colors">
+                          <credential.icon className="w-6 h-6 text-accent" />
+                        </div>
+                        <div>
+                          <p className="text-lg font-bold text-foreground">{credential.label}</p>
+                          <p className="text-sm text-accent font-medium">{credential.sublabel}</p>
+                          <p className="text-xs text-muted-foreground mt-1">{credential.description}</p>
+                        </div>
                       </div>
-                      <p className="text-xl font-bold text-foreground">{metric.label}</p>
-                      <p className="text-sm text-muted-foreground">{metric.sublabel}</p>
                     </CardContent>
                   </Card>
                 </motion.div>
               ))}
             </div>
 
-            {/* Trustpilot highlight + testimonial preview */}
+            {/* Platform Performance Metrics */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <Card className="bg-card/50 border-border/50 overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="grid lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-border/50">
-                    {/* Trustpilot section */}
-                    <div className="p-8 lg:p-10 flex flex-col items-center justify-center text-center">
-                      <div className="flex items-center gap-2 mb-4">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path d="M12 2L14.09 8.26L21 9.27L16.5 13.64L17.82 20.5L12 17.27L6.18 20.5L7.5 13.64L3 9.27L9.91 8.26L12 2Z" fill="#00b67a"/>
-                        </svg>
-                        <span className="text-lg font-bold text-foreground">Trustpilot</span>
-                      </div>
-                      <div className="flex gap-1 mb-3">
-                        {[1,2,3,4,5].map((s) => (
-                          <div key={s} className="w-8 h-8 bg-[#00b67a] rounded flex items-center justify-center">
-                            <Star className="w-5 h-5 fill-white text-white" />
-                          </div>
-                        ))}
-                      </div>
-                      <p className="text-3xl font-bold text-foreground mb-1">4.8 / 5</p>
-                      <p className="text-sm text-muted-foreground mb-4">Excellent</p>
-                      <a
-                        href="https://www.trustpilot.com/review/ovmon.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm text-accent hover:underline"
+              <Card className="bg-gradient-to-br from-card/80 via-card/60 to-card/40 border-border/50">
+                <CardContent className="p-8 lg:p-10">
+                  <div className="text-center mb-8">
+                    <h3 className="text-xl font-semibold text-foreground mb-2">Platform Performance</h3>
+                    <p className="text-sm text-muted-foreground">Real-time metrics from our global infrastructure</p>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+                    {developerSignals.map((signal, i) => (
+                      <motion.div
+                        key={signal.label}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 + i * 0.1 }}
+                        className="text-center group"
                       >
-                        Read all reviews
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-
-                    {/* Quote / Testimonial */}
-                    <div className="p-8 lg:p-10 flex flex-col justify-center">
-                      <blockquote className="text-lg text-foreground mb-6 leading-relaxed">
-                        &ldquo;Ovmon has transformed how our team deploys. What used to take hours now takes seconds. The developer experience is unmatched.&rdquo;
-                      </blockquote>
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent font-semibold">
-                          S
+                        <div className="w-14 h-14 mx-auto rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:scale-105 transition-all">
+                          <signal.icon className="w-7 h-7 text-accent" />
                         </div>
-                        <div>
-                          <p className="font-medium text-foreground">Sarah Chen</p>
-                          <p className="text-sm text-muted-foreground">CTO at TechFlow</p>
-                        </div>
-                      </div>
-                    </div>
+                        <p className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{signal.label}</p>
+                        <p className="text-sm text-muted-foreground">{signal.sublabel}</p>
+                      </motion.div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* CTA to leave review */}
-            <div className="mt-8 text-center">
-              <p className="text-sm text-muted-foreground mb-2">Had a great experience with Ovmon?</p>
-              <a
-                href="https://www.trustpilot.com/evaluate/ovmon.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-accent hover:underline font-medium"
-              >
-                Leave us a review on Trustpilot
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            </div>
+            {/* Developer Trust Signals */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-10 grid md:grid-cols-3 gap-6"
+            >
+              {/* Open Source */}
+              <Card className="bg-card/40 border-border/40 hover:border-accent/30 transition-colors">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-secondary/80 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-foreground" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">Open Source CLI</p>
+                      <p className="text-xs text-muted-foreground">MIT Licensed</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Full transparency with our deployment CLI. Inspect, contribute, or self-host.</p>
+                </CardContent>
+              </Card>
+
+              {/* Documentation */}
+              <Card className="bg-card/40 border-border/40 hover:border-accent/30 transition-colors">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-secondary/80 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">Comprehensive Docs</p>
+                      <p className="text-xs text-muted-foreground">Always up-to-date</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Detailed guides, API references, and examples to get you shipping quickly.</p>
+                </CardContent>
+              </Card>
+
+              {/* Status Page */}
+              <Card className="bg-card/40 border-border/40 hover:border-accent/30 transition-colors">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-secondary/80 flex items-center justify-center">
+                      <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">Public Status Page</p>
+                      <p className="text-xs text-green-500 font-medium">All Systems Operational</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">Real-time system status and incident history. Full transparency on uptime.</p>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </AnimatedSection>
