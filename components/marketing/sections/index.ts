@@ -15,3 +15,4 @@ export { BenefitsGrid } from './benefits-grid';
 export { IntegrationGrid } from './integration-grid';
 export { IndustryCards } from './industry-cards';
 export { ComparisonTable } from './comparison-table';
+export { type IconName, iconMap, getIcon } from './icon-map';

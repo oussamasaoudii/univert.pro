@@ -383,7 +383,7 @@ const testimonials = [
       <HeroSection
         badge={{
           text: 'Product Overview',
-          icon: Sparkles,
+          iconName: 'Sparkles',
         }}
         title="Everything you need to build, deploy, and scale modern websites"
         description="Ovmon is the unified platform for high-performance, globally distributed applications. Deploy to 150+ edge locations, scale instantly, and sleep soundly with enterprise security."
@@ -397,7 +397,7 @@ const testimonials = [
             label: 'Book a Demo',
             href: '/contact-sales',
             variant: 'outline',
-            icon: Play,
+            iconName: 'Play',
           },
         ]}
         socialProof={

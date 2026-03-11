@@ -4,11 +4,11 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { Check, ChevronRight, type LucideIcon } from 'lucide-react';
+import { Check, ChevronRight } from 'lucide-react';
+import { getIcon, type IconName } from './icon-map';
 
 interface Benefit {
-  icon?: LucideIcon;
-  iconKey?: string;
+  iconName?: IconName;
   title: string;
   description: string;
   href?: string;
@@ -160,24 +160,27 @@ export function BenefitsGrid({
           )}
 
           <div className={`grid md:grid-cols-2 ${colsClass} gap-8 lg:gap-12`}>
-            {benefits.map((benefit, i) => (
-              <motion.div
-                key={benefit.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="text-center"
-              >
-                {benefit.icon && (
-                  <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center mx-auto mb-4">
-                    <benefit.icon className="w-7 h-7 text-accent" />
-                  </div>
-                )}
-                <h3 className="font-semibold text-foreground mb-2">{benefit.title}</h3>
-                <p className="text-foreground/60 text-sm leading-relaxed">{benefit.description}</p>
-              </motion.div>
-            ))}
+            {benefits.map((benefit, i) => {
+              const Icon = benefit.iconName ? getIcon(benefit.iconName) : null;
+              return (
+                <motion.div
+                  key={benefit.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="text-center"
+                >
+                  {Icon && (
+                    <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center mx-auto mb-4">
+                      <Icon className="w-7 h-7 text-accent" />
+                    </div>
+                  )}
+                  <h3 className="font-semibold text-foreground mb-2">{benefit.title}</h3>
+                  <p className="text-foreground/60 text-sm leading-relaxed">{benefit.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -209,38 +212,41 @@ export function BenefitsGrid({
         )}
 
         <div className={`grid md:grid-cols-2 ${colsClass} gap-6`}>
-          {benefits.map((benefit, i) => (
-            <motion.div
-              key={benefit.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -4 }}
-              className="group"
-            >
-              <Card className="h-full bg-card hover:border-accent/40 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10">
-                <CardContent className="p-6">
-                  {benefit.icon && (
-                    <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4 group-hover:bg-accent/30 transition-colors">
-                      <benefit.icon className="w-6 h-6 text-accent" />
-                    </div>
-                  )}
-                  <h3 className="font-semibold text-foreground mb-2">{benefit.title}</h3>
-                  <p className="text-foreground/60 text-sm leading-relaxed">{benefit.description}</p>
-                  {benefit.href && (
-                    <Link 
-                      href={benefit.href}
-                      className="inline-flex items-center text-accent text-sm font-medium mt-4 hover:underline group/link"
-                    >
-                      Learn more 
-                      <ChevronRight className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform" />
-                    </Link>
-                  )}
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+          {benefits.map((benefit, i) => {
+            const Icon = benefit.iconName ? getIcon(benefit.iconName) : null;
+            return (
+              <motion.div
+                key={benefit.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -4 }}
+                className="group"
+              >
+                <Card className="h-full bg-card hover:border-accent/40 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10">
+                  <CardContent className="p-6">
+                    {Icon && (
+                      <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mb-4 group-hover:bg-accent/30 transition-colors">
+                        <Icon className="w-6 h-6 text-accent" />
+                      </div>
+                    )}
+                    <h3 className="font-semibold text-foreground mb-2">{benefit.title}</h3>
+                    <p className="text-foreground/60 text-sm leading-relaxed">{benefit.description}</p>
+                    {benefit.href && (
+                      <Link 
+                        href={benefit.href}
+                        className="inline-flex items-center text-accent text-sm font-medium mt-4 hover:underline group/link"
+                      >
+                        Learn more 
+                        <ChevronRight className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform" />
+                      </Link>
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

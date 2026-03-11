@@ -4,20 +4,21 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'framer-motion';
-import { ArrowRight, Play, type LucideIcon } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import { ReactNode } from 'react';
+import { getIcon, type IconName } from './icon-map';
 
 interface HeroAction {
   label: string;
   href: string;
   variant?: 'primary' | 'secondary' | 'outline';
-  icon?: LucideIcon;
+  iconName?: IconName;
 }
 
 interface HeroSectionProps {
   badge?: {
     text: string;
-    icon?: LucideIcon;
+    iconName?: IconName;
   };
   title: string;
   titleHighlight?: string;
@@ -83,7 +84,10 @@ export function HeroSection({
                 transition={{ delay: 0.2 }}
               >
                 <Badge variant="outline" className="mb-6 border-accent/50 text-accent px-4 py-1.5 text-sm font-medium">
-                  {badge.icon && <badge.icon className="w-3.5 h-3.5 mr-2" />}
+                  {badge.iconName && (() => {
+                    const BadgeIcon = getIcon(badge.iconName);
+                    return BadgeIcon ? <BadgeIcon className="w-3.5 h-3.5 mr-2" /> : null;
+                  })()}
                   {badge.text}
                 </Badge>
               </motion.div>
@@ -107,8 +111,7 @@ export function HeroSection({
               <div className={`flex ${isCentered ? 'justify-center' : ''} flex-col sm:flex-row gap-4 mb-8`}>
                 {actions.map((action, index) => {
                   const isPrimary = action.variant === 'primary' || (index === 0 && !action.variant);
-                  const isOutline = action.variant === 'outline' || (index > 0 && !action.variant);
-                  const ActionIcon = action.icon || (isPrimary ? ArrowRight : Play);
+                  const ActionIcon = action.iconName ? getIcon(action.iconName) : (isPrimary ? ArrowRight : Play);
 
                   if (isPrimary) {
                     return (
@@ -120,7 +123,7 @@ export function HeroSection({
                       >
                         <Link href={action.href}>
                           {action.label}
-                          <ActionIcon className="ml-2 h-4 w-4" />
+                          {ActionIcon && <ActionIcon className="ml-2 h-4 w-4" />}
                         </Link>
                       </Button>
                     );
@@ -135,7 +138,7 @@ export function HeroSection({
                       asChild
                     >
                       <Link href={action.href}>
-                        <ActionIcon className="mr-2 h-4 w-4 group-hover:text-accent transition-colors" />
+                        {ActionIcon && <ActionIcon className="mr-2 h-4 w-4 group-hover:text-accent transition-colors" />}
                         {action.label}
                       </Link>
                     </Button>
