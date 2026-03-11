@@ -41,6 +41,13 @@ export function getTrustedOrigins(requestUrl: string): Set<string> {
 
   if (isPreviewLikeRuntime()) {
     addOrigin(trustedOrigins, requestUrl);
+    // Extract origin from the full request URL
+    try {
+      const requestUrlObj = new URL(requestUrl);
+      trustedOrigins.add(requestUrlObj.origin);
+    } catch {
+      // Ignore if URL parsing fails
+    }
     addOrigin(trustedOrigins, process.env.VERCEL_URL);
     addOrigin(trustedOrigins, process.env.VERCEL_BRANCH_URL);
   }

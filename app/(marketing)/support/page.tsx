@@ -19,7 +19,7 @@ export default function SupportPage() {
       icon: MessageSquare,
       title: 'Community',
       description: 'Connect with other Ovmon users',
-      link: '#'
+      link: '/community'
     },
     {
       icon: AlertCircle,
@@ -31,7 +31,7 @@ export default function SupportPage() {
       icon: Lightbulb,
       title: 'Tutorials',
       description: 'Step-by-step guides and walkthroughs',
-      link: '/docs'
+      link: '/tutorials'
     }
   ];
 
@@ -83,26 +83,29 @@ export default function SupportPage() {
         <h2 className="text-3xl font-bold">Popular Topics</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
-            'Getting Started with Ovmon',
-            'Deploying Your First Website',
-            'Domain Configuration',
-            'SSL Certificates',
-            'Monitoring and Analytics',
-            'Backup and Restore',
-            'API Authentication',
-            'Troubleshooting Common Issues',
-            'Performance Optimization',
-            'Security Best Practices',
-            'Team Management',
-            'Billing and Payments'
+            { title: 'Getting Started with Ovmon', link: '/docs/getting-started', description: 'Learn the basics and deploy your first site' },
+            { title: 'Deploying Your First Website', link: '/docs/deployment', description: 'Step-by-step deployment guide' },
+            { title: 'Domain Configuration', link: '/docs/configuration', description: 'Set up custom domains and DNS' },
+            { title: 'SSL Certificates', link: '/docs/configuration', description: 'Automatic SSL and HTTPS setup' },
+            { title: 'Environment Variables', link: '/docs/configuration', description: 'Manage secrets and configuration' },
+            { title: 'API Authentication', link: '/docs/api', description: 'Secure your API with tokens' },
+            { title: 'Webhooks Setup', link: '/docs/api', description: 'Real-time event notifications' },
+            { title: 'CI/CD Integration', link: '/docs/deployment', description: 'Automate your deployments' },
+            { title: 'Rollbacks & Recovery', link: '/docs/deployment', description: 'Instant rollback to previous versions' },
+            { title: 'Security Best Practices', link: '/docs/security', description: 'Protect your applications' },
+            { title: 'CLI Commands', link: '/docs/cli', description: 'Command-line interface reference' },
+            { title: 'Rate Limiting', link: '/docs/api', description: 'API usage limits and quotas' }
           ].map((topic, idx) => (
             <a
               key={idx}
-              href="/docs"
+              href={topic.link}
               className="p-4 rounded-lg border border-border bg-background hover:border-accent transition-colors group flex items-start gap-3"
             >
-              <div className="w-2 h-2 rounded-full bg-accent mt-2 group-hover:scale-150 transition-transform" />
-              <span className="text-foreground group-hover:text-accent transition-colors">{topic}</span>
+              <div className="w-2 h-2 rounded-full bg-accent mt-2 group-hover:scale-150 transition-transform flex-shrink-0" />
+              <div>
+                <span className="text-foreground group-hover:text-accent transition-colors font-medium">{topic.title}</span>
+                <p className="text-xs text-muted-foreground mt-1">{topic.description}</p>
+              </div>
             </a>
           ))}
         </div>

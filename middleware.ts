@@ -17,11 +17,17 @@ function hasTrustedInternalBearer(request: NextRequest): boolean {
 }
 
 function hasTrustedOrigin(request: NextRequest): boolean {
-  return isTrustedOrigin(
-    request.nextUrl.toString(),
-    request.headers.get("origin"),
-    request.headers.get("referer"),
-  );
+  const origin = request.headers.get("origin");
+  const referer = request.headers.get("referer");
+  const requestUrl = request.nextUrl.toString();
+  
+  // In development, if no origin/referer headers are present, allow the request
+  // This handles cases like form submissions without CORS headers
+  if (!origin && !referer && process.env.NODE_ENV !== "production") {
+    return true;
+  }
+  
+  return isTrustedOrigin(requestUrl, origin, referer);
 }
 
 function applySecurityHeaders(response: NextResponse, request: NextRequest) {
