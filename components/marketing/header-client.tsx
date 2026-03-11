@@ -435,34 +435,36 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                   </Link>
                 </NavigationMenuItem>
               ))}
+            </NavigationMenuList>
+          </NavigationMenu>
 
-              {/* Company Menu */}
+          {/* Company — separate NavigationMenu with viewport=false to avoid offset issues */}
+          <NavigationMenu viewport={false} className="hidden lg:flex">
+            <NavigationMenuList className="gap-0">
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 data-[state=open]:bg-secondary/50 data-[state=open]:text-foreground">
                   Company
                 </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="w-[280px] p-4">
-                    <div className="space-y-1">
-                      {companyLinks.map((link) => (
-                        <NavigationMenuLink key={link.href} asChild>
-                          <Link
-                            href={link.href}
-                            className="flex items-center justify-between rounded-lg p-3 hover:bg-secondary/60 transition-colors"
-                          >
-                            <div>
-                              <p className="text-sm font-medium text-foreground">{link.title}</p>
-                              <p className="text-xs text-muted-foreground">{link.description}</p>
-                            </div>
-                            {link.badge && (
-                              <span className="shrink-0 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
-                                {link.badge}
-                              </span>
-                            )}
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
-                    </div>
+                <NavigationMenuContent className="right-0 left-auto mt-1 min-w-[240px] rounded-xl border bg-popover p-2 shadow-lg">
+                  <div className="space-y-0.5">
+                    {companyLinks.map((link) => (
+                      <NavigationMenuLink key={link.href} asChild>
+                        <Link
+                          href={link.href}
+                          className="flex items-center justify-between rounded-lg px-3 py-2.5 hover:bg-secondary/60 transition-colors"
+                        >
+                          <div>
+                            <p className="text-sm font-medium text-foreground">{link.title}</p>
+                            <p className="text-xs text-muted-foreground">{link.description}</p>
+                          </div>
+                          {link.badge && (
+                            <span className="shrink-0 rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                              {link.badge}
+                            </span>
+                          )}
+                        </Link>
+                      </NavigationMenuLink>
+                    ))}
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
