@@ -1,6 +1,7 @@
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
 import { Suspense } from "react";
+import Script from "next/script";
 
 function HeaderFallback() {
   return (
@@ -28,6 +29,12 @@ export default function MarketingLayout({
       <Suspense fallback={<FooterFallback />}>
         <Footer />
       </Suspense>
+      {/* Trustpilot widget loader */}
+      <Script
+        id="trustpilot-widget"
+        src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+        strategy="lazyOnload"
+      />
     </div>
   );
 }
