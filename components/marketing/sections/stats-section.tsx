@@ -10,6 +10,7 @@ interface Stat {
   prefix?: string;
   label: string;
   icon?: LucideIcon;
+  iconKey?: string;
 }
 
 interface StatsSectionProps {

@@ -8,6 +8,7 @@ import { Check, ChevronRight, type LucideIcon } from 'lucide-react';
 
 interface Benefit {
   icon?: LucideIcon;
+  iconKey?: string;
   title: string;
   description: string;
   href?: string;

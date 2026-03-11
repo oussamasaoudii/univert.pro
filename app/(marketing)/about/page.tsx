@@ -28,46 +28,58 @@ import {
   LogoCloud,
 } from '@/components/marketing/sections';
 
-// Company values
+// Icon map for client-side rendering
+const iconMap = {
+  zap: Zap,
+  users: Users,
+  target: Target,
+  heart: Heart,
+  shield: Shield,
+  globe: Globe,
+  server: Server,
+  chart: BarChart3,
+} as const;
+
+// Company values - without icon components
 const values = [
   {
-    icon: Zap,
+    iconKey: 'zap' as const,
     title: 'Performance First',
     description: 'We optimize for speed and reliability at every layer of our platform, delivering sub-50ms response times globally.',
   },
   {
-    icon: Users,
+    iconKey: 'users' as const,
     title: 'Developer Friendly',
     description: 'Intuitive tools, comprehensive APIs, and seamless Git integration designed for modern development workflows.',
   },
   {
-    icon: Target,
+    iconKey: 'target' as const,
     title: 'Mission Focused',
     description: 'We empower teams to deploy, monitor, and scale their applications effortlessly without infrastructure headaches.',
   },
   {
-    icon: Heart,
+    iconKey: 'heart' as const,
     title: 'Customer Obsessed',
     description: 'Every feature and decision is driven by the needs of our customers. Your success is our success.',
   },
   {
-    icon: Shield,
+    iconKey: 'shield' as const,
     title: 'Security & Trust',
     description: 'Enterprise-grade security with SOC2 certification, ensuring your data and applications are protected.',
   },
   {
-    icon: Globe,
+    iconKey: 'globe' as const,
     title: 'Global Reach',
     description: 'Infrastructure spanning 150+ locations worldwide, bringing your applications closer to your users.',
   },
 ];
 
-// Stats
+// Stats - without icon components
 const companyStats = [
-  { value: 50000, suffix: '+', label: 'Active Developers', icon: Users },
-  { value: 150, suffix: '+', label: 'Edge Locations', icon: Globe },
-  { value: 99.99, suffix: '%', label: 'Uptime SLA', icon: Server },
-  { value: 2, suffix: 'B+', label: 'Monthly Requests', icon: BarChart3 },
+  { value: 50000, suffix: '+', label: 'Active Developers', iconKey: 'users' as const },
+  { value: 150, suffix: '+', label: 'Edge Locations', iconKey: 'globe' as const },
+  { value: 99.99, suffix: '%', label: 'Uptime SLA', iconKey: 'server' as const },
+  { value: 2, suffix: 'B+', label: 'Monthly Requests', iconKey: 'chart' as const },
 ];
 
 // Investor logos (placeholder names)
@@ -146,7 +158,12 @@ export default function AboutPage() {
 
       {/* Stats */}
       <StatsSection
-        stats={companyStats}
+        stats={companyStats.map(stat => ({
+          value: stat.value,
+          suffix: stat.suffix,
+          label: stat.label,
+          icon: iconMap[stat.iconKey],
+        }))}
         variant="contained"
         columns={4}
       />
@@ -190,7 +207,11 @@ export default function AboutPage() {
           badge="Our Values"
           title="What drives us"
           description="These principles guide every decision we make and every feature we build."
-          benefits={values}
+          benefits={values.map(v => ({
+            icon: iconMap[v.iconKey],
+            title: v.title,
+            description: v.description,
+          }))}
           variant="cards"
           columns={3}
         />
