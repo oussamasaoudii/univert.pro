@@ -1,6 +1,7 @@
 import { MarketingLayout } from '@/components/marketing/marketing-layout';
 import { Code, Settings, Zap, Shield, BookOpen, GitBranch } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Documentation - Ovmon',
@@ -13,37 +14,43 @@ export default function DocumentationPage() {
       icon: BookOpen,
       title: 'Getting Started',
       description: 'Learn the basics of Ovmon and deploy your first website',
-      topics: ['Installation', 'Quick Start', 'Configuration', 'First Deployment']
+      topics: ['Installation', 'Quick Start', 'Configuration', 'First Deployment'],
+      href: '/docs/getting-started'
     },
     {
       icon: Code,
       title: 'API Reference',
       description: 'Complete API documentation with code examples',
-      topics: ['Authentication', 'Endpoints', 'Webhooks', 'Rate Limiting']
+      topics: ['Authentication', 'Endpoints', 'Webhooks', 'Rate Limiting'],
+      href: '/docs/api'
     },
     {
       icon: Settings,
       title: 'Configuration',
       description: 'Configure your websites, domains, and deployment settings',
-      topics: ['Environment Variables', 'Domains', 'SSL', 'Monitoring']
+      topics: ['Environment Variables', 'Domains', 'SSL', 'Monitoring'],
+      href: '/docs/configuration'
     },
     {
       icon: Zap,
       title: 'Deployment',
       description: 'Deploy and manage your applications',
-      topics: ['Deployment Process', 'CI/CD Integration', 'Rollbacks', 'Scaling']
+      topics: ['Deployment Process', 'CI/CD Integration', 'Rollbacks', 'Scaling'],
+      href: '/docs/deployment'
     },
     {
       icon: Shield,
       title: 'Security',
       description: 'Best practices and security guidelines',
-      topics: ['Data Encryption', 'Access Control', 'Backups', 'Compliance']
+      topics: ['Data Encryption', 'Access Control', 'Backups', 'Compliance'],
+      href: '/docs/security'
     },
     {
       icon: GitBranch,
       title: 'CLI Tools',
       description: 'Command-line interface for Ovmon',
-      topics: ['Installation', 'Commands', 'Configuration', 'Troubleshooting']
+      topics: ['Installation', 'Commands', 'Configuration', 'Troubleshooting'],
+      href: '/docs/cli'
     }
   ];
 
@@ -57,7 +64,7 @@ export default function DocumentationPage() {
         {sections.map((section, idx) => {
           const Icon = section.icon;
           return (
-            <div key={idx} className="p-6 rounded-lg border border-border bg-secondary/50 hover:bg-secondary hover:border-accent transition-colors group">
+            <Link key={idx} href={section.href} className="p-6 rounded-lg border border-border bg-secondary/50 hover:bg-secondary hover:border-accent transition-colors group block">
               <Icon className="w-8 h-8 text-accent mb-3 group-hover:scale-110 transition-transform" />
               <h3 className="text-lg font-semibold mb-2">{section.title}</h3>
               <p className="text-sm text-muted-foreground mb-4">{section.description}</p>
@@ -70,7 +77,7 @@ export default function DocumentationPage() {
                 ))}
               </ul>
               <Button variant="outline" size="sm">View Docs</Button>
-            </div>
+            </Link>
           );
         })}
       </section>
