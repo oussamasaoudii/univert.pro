@@ -264,10 +264,10 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                   Product
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[720px] p-6 bg-popover text-popover-foreground">
+                  <div className="w-[820px] p-6 bg-popover text-popover-foreground overflow-visible">
                     <div className="grid grid-cols-12 gap-8">
                       {/* Featured item */}
-                      <div className="col-span-5">
+                      <div className="col-span-5 min-w-0">
                         <div className="rounded-xl bg-gradient-to-br from-accent/15 via-accent/5 to-transparent border border-accent/20 p-5 h-full flex flex-col">
                           <div className="flex items-center gap-2 mb-3">
                             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/20 text-accent">
@@ -288,7 +288,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       </div>
 
                       {/* Core Features */}
-                      <div className="col-span-7">
+                      <div className="col-span-7 min-w-0">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Core Features</p>
                         <div className="grid grid-cols-2 gap-4">
                           {productFeatures && productFeatures.length > 0 ? (
@@ -351,10 +351,10 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                   Solutions
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[760px] p-6 bg-popover text-popover-foreground">
+                  <div className="w-[900px] p-6 bg-popover text-popover-foreground overflow-visible">
                     <div className="grid grid-cols-12 gap-8">
                       {/* By Industry */}
-                      <div className="col-span-5">
+                      <div className="col-span-4 min-w-0">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">By Industry</p>
                         <div className="space-y-2">
                           {solutionsByIndustry && solutionsByIndustry.length > 0 ? (
@@ -381,7 +381,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       </div>
 
                       {/* By Use Case */}
-                      <div className="col-span-4">
+                      <div className="col-span-4 min-w-0">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">By Use Case</p>
                         <div className="space-y-2">
                           {solutionsByUseCase && solutionsByUseCase.length > 0 ? (
@@ -403,7 +403,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       </div>
 
                       {/* Trust highlight card */}
-                      <div className="col-span-3">
+                      <div className="col-span-4 min-w-0">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Trust & Security</p>
                         <div className="rounded-xl bg-gradient-to-br from-accent/15 via-accent/5 to-transparent border border-accent/20 p-5 h-full flex flex-col">
                           <div className="flex items-center gap-2 mb-3">
@@ -443,10 +443,10 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                   Resources
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[580px] p-6 bg-popover text-popover-foreground">
+                  <div className="w-[700px] p-6 bg-popover text-popover-foreground overflow-visible">
                     <div className="grid grid-cols-2 gap-8">
                       {/* Learn */}
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Learn</p>
                         <div className="space-y-2">
                           {resourcesLearn && resourcesLearn.length > 0 ? (
@@ -473,7 +473,7 @@ export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUse
                       </div>
 
                       {/* Connect */}
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Connect</p>
                         <div className="space-y-2">
                           {resourcesConnect && resourcesConnect.length > 0 ? (
