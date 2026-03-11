@@ -1,3 +1,5 @@
+'use client';
+
 // Marketing Section Components
 // Reusable, consistent section patterns for marketing pages
 
