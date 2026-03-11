@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertCircle, ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { motion } from "framer-motion";
+import { AlertCircle, ArrowRight, Eye, EyeOff, Lock, Mail, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useSiteLanguage } from "@/hooks/use-site-language";
 import { cn } from "@/lib/utils";
@@ -14,39 +14,37 @@ import { cn } from "@/lib/utils";
 const LOGIN_COPY = {
   en: {
     welcomeTitle: "Welcome back",
-    welcomeDescription: "Sign in to your Ovmon account",
-    formTitle: "Sign in",
-    formDescription: "Enter your account credentials",
-    emailLabel: "Email",
+    welcomeDescription: "Sign in to continue to your dashboard",
+    emailLabel: "Email address",
     emailPlaceholder: "you@example.com",
     passwordLabel: "Password",
-    passwordPlaceholder: "••••••••",
-    forgotPassword: "Forgot?",
+    passwordPlaceholder: "Enter your password",
+    forgotPassword: "Forgot password?",
     submit: "Sign in",
     loading: "Signing in...",
-    noAccount: "Don\'t have an account?",
+    noAccount: "Don't have an account?",
     createAccount: "Create one",
-    adminPortal: "Admin login",
+    adminPortal: "Admin portal",
     requiredFields: "Email and password are required",
     defaultError: "Sign in failed",
+    secureNote: "Your connection is secure and encrypted",
   },
   ar: {
     welcomeTitle: "أهلاً بعودتك",
-    welcomeDescription: "سجل الدخول إلى حسابك على Ovmon",
-    formTitle: "تسجيل الدخول",
-    formDescription: "أدخل بيانات حسابك للوصول إلى لوحة التحكم",
+    welcomeDescription: "سجل الدخول للمتابعة إلى لوحة التحكم",
     emailLabel: "البريد الإلكتروني",
     emailPlaceholder: "you@example.com",
     passwordLabel: "كلمة المرور",
-    passwordPlaceholder: "••••••••",
-    forgotPassword: "هل نسيت؟",
+    passwordPlaceholder: "أدخل كلمة المرور",
+    forgotPassword: "نسيت كلمة المرور؟",
     submit: "تسجيل الدخول",
     loading: "جاري تسجيل الدخول...",
     noAccount: "ليس لديك حساب؟",
     createAccount: "إنشاء حساب",
-    adminPortal: "دخول الإدارة",
+    adminPortal: "بوابة الإدارة",
     requiredFields: "البريد الإلكتروني وكلمة المرور مطلوبان",
     defaultError: "فشل تسجيل الدخول",
+    secureNote: "اتصالك آمن ومشفر",
   },
 } as const;
 
@@ -159,106 +157,167 @@ export default function LoginPage() {
   };
 
   return (
-    <div dir={isArabic ? "rtl" : "ltr"} className={cn("space-y-6", isArabic ? "text-right" : "text-left")}>
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      dir={isArabic ? "rtl" : "ltr"} 
+      className={cn("space-y-8", isArabic ? "text-right" : "text-left")}
+    >
+      {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-foreground">{copy.welcomeTitle}</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          {copy.welcomeTitle}
+        </h1>
         <p className="text-muted-foreground">{copy.welcomeDescription}</p>
       </div>
 
+      {/* Error Alert */}
       {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Alert variant="destructive" className="border-destructive/50 bg-destructive/10">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </motion.div>
       )}
 
-      <Card className="border border-border bg-card/50 backdrop-blur-sm">
-        <CardHeader className="space-y-1">
-          <CardTitle>{copy.formTitle}</CardTitle>
-          <CardDescription>{copy.formDescription}</CardDescription>
-        </CardHeader>
-
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-foreground">{copy.emailLabel}</label>
-              <div className="relative">
-                <Mail
-                  className={cn(
-                    "absolute top-3 h-4 w-4 text-muted-foreground",
-                    isArabic ? "right-3" : "left-3",
-                  )}
-                />
-                <Input
-                  type="email"
-                  placeholder={copy.emailPlaceholder}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className={cn(isArabic ? "pr-10" : "pl-10")}
-                  disabled={loading}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-foreground">{copy.passwordLabel}</label>
-                <Link href="/auth/forgot-password" className="text-xs text-accent hover:underline">
-                  {copy.forgotPassword}
-                </Link>
-              </div>
-              <div className="relative">
-                <Lock
-                  className={cn(
-                    "absolute top-3 h-4 w-4 text-muted-foreground",
-                    isArabic ? "right-3" : "left-3",
-                  )}
-                />
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder={copy.passwordPlaceholder}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={cn(isArabic ? "pr-10 pl-10" : "pl-10 pr-10")}
-                  disabled={loading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className={cn(
-                    "absolute top-3 text-muted-foreground hover:text-foreground",
-                    isArabic ? "left-3" : "right-3",
-                  )}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-accent hover:bg-accent/90 text-background font-medium"
+      {/* Form */}
+      <form onSubmit={handleLogin} className="space-y-5">
+        {/* Email Field */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-foreground">{copy.emailLabel}</label>
+          <div className="relative group">
+            <Mail
+              className={cn(
+                "absolute top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-accent",
+                isArabic ? "right-4" : "left-4"
+              )}
+            />
+            <Input
+              type="email"
+              placeholder={copy.emailPlaceholder}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={cn(
+                "h-12 bg-secondary/30 border-border/50 focus:border-accent focus:ring-accent/20 transition-all",
+                isArabic ? "pr-12" : "pl-12"
+              )}
               disabled={loading}
+            />
+          </div>
+        </div>
+
+        {/* Password Field */}
+        <div className="space-y-2">
+          <div className={cn("flex items-center justify-between", isArabic && "flex-row-reverse")}>
+            <label className="text-sm font-medium text-foreground">{copy.passwordLabel}</label>
+            <Link 
+              href="/auth/forgot-password" 
+              className="text-xs text-accent hover:text-accent/80 hover:underline transition-colors"
             >
-              {loading ? copy.loading : copy.submit}
+              {copy.forgotPassword}
+            </Link>
+          </div>
+          <div className="relative group">
+            <Lock
+              className={cn(
+                "absolute top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-accent",
+                isArabic ? "right-4" : "left-4"
+              )}
+            />
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder={copy.passwordPlaceholder}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={cn(
+                "h-12 bg-secondary/30 border-border/50 focus:border-accent focus:ring-accent/20 transition-all",
+                isArabic ? "pr-12 pl-12" : "pl-12 pr-12"
+              )}
+              disabled={loading}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className={cn(
+                "absolute top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors",
+                isArabic ? "left-4" : "right-4"
+              )}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <Button
+          type="submit"
+          className="w-full h-12 bg-accent hover:bg-accent/90 text-accent-foreground font-medium shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all"
+          disabled={loading}
+        >
+          {loading ? (
+            <span className="flex items-center gap-2">
+              <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              {copy.loading}
+            </span>
+          ) : (
+            <>
+              {copy.submit}
               <ArrowRight className={cn("h-4 w-4", isArabic ? "mr-2 rotate-180" : "ml-2")} />
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+            </>
+          )}
+        </Button>
+      </form>
 
-      <div className={cn("text-sm text-muted-foreground", isArabic ? "text-right" : "text-left")}>
-        {copy.noAccount}{" "}
-        <Link href="/auth/signup" className="font-medium text-accent hover:underline">
-          {copy.createAccount}
-        </Link>
+      {/* Security Note */}
+      <div className={cn(
+        "flex items-center gap-2 text-xs text-muted-foreground justify-center",
+        isArabic && "flex-row-reverse"
+      )}>
+        <Shield className="h-3.5 w-3.5 text-accent" />
+        <span>{copy.secureNote}</span>
       </div>
 
-      <div className={cn("text-sm", isArabic ? "text-right" : "text-left")}>
-        <Link href="/admin/login" className="font-medium text-accent hover:underline">
-          {copy.adminPortal}
+      {/* Divider */}
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-border/50" />
+        </div>
+      </div>
+
+      {/* Footer Links */}
+      <div className="space-y-3">
+        <p className={cn(
+          "text-sm text-muted-foreground",
+          isArabic ? "text-right" : "text-left"
+        )}>
+          {copy.noAccount}{" "}
+          <Link 
+            href="/auth/signup" 
+            className="font-medium text-accent hover:text-accent/80 hover:underline transition-colors"
+          >
+            {copy.createAccount}
+          </Link>
+        </p>
+        
+        <Link 
+          href="/admin/login" 
+          className={cn(
+            "inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors",
+            isArabic && "flex-row-reverse"
+          )}
+        >
+          <span>{copy.adminPortal}</span>
+          <ArrowRight className={cn("h-3 w-3", isArabic && "rotate-180")} />
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }
