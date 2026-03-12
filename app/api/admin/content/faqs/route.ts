@@ -21,7 +21,7 @@ const faqSchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    await requireAdminRouteAccess(request);
+    await requireAdminRouteAccess(request, { scope: "admin-content-faqs-read" });
     
     const faqs = await getAllFAQs(true); // Include inactive for admin
     
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await requireAdminRouteAccess(request);
+    await requireAdminRouteAccess(request, { scope: "admin-content-faqs-write" });
     
     const body = await request.json();
     const data = faqSchema.parse(body);
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    await requireAdminRouteAccess(request);
+    await requireAdminRouteAccess(request, { scope: "admin-content-faqs-write" });
     
     const body = await request.json();
     const { id, ...data } = body;
@@ -103,7 +103,7 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    await requireAdminRouteAccess(request);
+    await requireAdminRouteAccess(request, { scope: "admin-content-faqs-write" });
     
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");

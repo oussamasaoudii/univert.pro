@@ -25,7 +25,7 @@ const pageSectionSchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    await requireAdminRouteAccess(request);
+    await requireAdminRouteAccess(request, { scope: "admin-content-sections-read" });
     
     const { searchParams } = new URL(request.url);
     const pageKey = searchParams.get("page_key");
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await requireAdminRouteAccess(request);
+    await requireAdminRouteAccess(request, { scope: "admin-content-sections-write" });
     
     const body = await request.json();
     const data = pageSectionSchema.parse(body);
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    await requireAdminRouteAccess(request);
+    await requireAdminRouteAccess(request, { scope: "admin-content-sections-write" });
     
     const body = await request.json();
     const data = pageSectionSchema.parse(body);
@@ -110,7 +110,7 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    await requireAdminRouteAccess(request);
+    await requireAdminRouteAccess(request, { scope: "admin-content-sections-write" });
     
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
