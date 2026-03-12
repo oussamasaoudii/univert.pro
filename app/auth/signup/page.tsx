@@ -382,33 +382,30 @@ export default function SignupPage() {
 
       {/* Security Note */}
       <div className={cn(
-        "flex items-center gap-2 text-xs text-muted-foreground justify-center",
+        "flex items-center gap-1.5 text-[11px] text-muted-foreground/70 justify-center",
         isArabic && "flex-row-reverse"
       )}>
-        <Shield className="h-3.5 w-3.5 text-accent" />
+        <Shield className="h-3 w-3 text-accent/70" />
         <span>{copy.secureNote}</span>
       </div>
 
-      {/* Divider */}
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border/50" />
+      {/* Footer Links */}
+      <div className="pt-5">
+        <div className="p-3 rounded-lg bg-secondary/20 border border-border/30">
+          <p className={cn(
+            "text-sm text-muted-foreground text-center"
+          )}>
+            {copy.loginHint}{" "}
+            <Link 
+              href="/auth/login" 
+              className="font-medium text-accent hover:text-accent/80 transition-colors inline-flex items-center gap-1"
+            >
+              {copy.login}
+              <ArrowRight className={cn("h-3 w-3", isArabic && "rotate-180")} />
+            </Link>
+          </p>
         </div>
       </div>
-
-      {/* Footer Links */}
-      <p className={cn(
-        "text-sm text-muted-foreground",
-        isArabic ? "text-right" : "text-left"
-      )}>
-        {copy.loginHint}{" "}
-        <Link 
-          href="/auth/login" 
-          className="font-medium text-accent hover:text-accent/80 hover:underline transition-colors"
-        >
-          {copy.login}
-        </Link>
-      </p>
     </motion.div>
   );
 }

@@ -13,8 +13,6 @@ import {
   Globe, 
   BarChart3,
   Star,
-  TrendingUp,
-  Rocket,
   Activity
 } from "lucide-react";
 
@@ -30,11 +28,11 @@ const AUTH_LAYOUT_COPY = {
     ],
     rights: "2026 Ovmon. All rights reserved.",
     trustedBy: "Trusted by 50,000+ developers",
-    productUpdates: [
-      { icon: Rocket, title: "New: Edge Functions", time: "2 hours ago", color: "text-emerald-400" },
-      { icon: Activity, title: "Performance +23%", time: "Yesterday", color: "text-accent" },
-      { icon: TrendingUp, title: "10M requests/sec", time: "This week", color: "text-blue-400" },
-    ],
+    liveActivity: {
+      label: "Live",
+      deploysNow: "247 deploys",
+      timeLabel: "right now",
+    },
     platformStats: {
       deployments: "2.8M+",
       deploymentsLabel: "Deployments",
@@ -75,11 +73,11 @@ const AUTH_LAYOUT_COPY = {
     ],
     rights: "2026 Ovmon. جميع الحقوق محفوظة.",
     trustedBy: "موثوق من قبل أكثر من 50,000 مطور",
-    productUpdates: [
-      { icon: Rocket, title: "جديد: Edge Functions", time: "قبل ساعتين", color: "text-emerald-400" },
-      { icon: Activity, title: "تحسين الأداء +23%", time: "أمس", color: "text-accent" },
-      { icon: TrendingUp, title: "10M طلب/ثانية", time: "هذا الأسبوع", color: "text-blue-400" },
-    ],
+    liveActivity: {
+      label: "مباشر",
+      deploysNow: "247 نشر",
+      timeLabel: "الآن",
+    },
     platformStats: {
       deployments: "+2.8M",
       deploymentsLabel: "عملية نشر",
@@ -177,33 +175,18 @@ export default function AuthLayout({
                 </div>
               </div>
 
-              {/* Product Updates - 2 cols */}
-              <div className="col-span-2 p-3 rounded-xl bg-card/30 border border-border/40 overflow-hidden">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentTestimonial}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {(() => {
-                      const update = copy.productUpdates[currentTestimonial % copy.productUpdates.length];
-                      const IconComponent = update.icon;
-                      return (
-                        <div className={cn("flex items-center gap-2", isArabic && "flex-row-reverse")}>
-                          <div className={cn("w-8 h-8 rounded-lg bg-secondary/50 flex items-center justify-center shrink-0")}>
-                            <IconComponent className={cn("w-4 h-4", update.color)} />
-                          </div>
-                          <div className={cn("min-w-0", isArabic ? "text-right" : "text-left")}>
-                            <p className="text-xs font-medium text-foreground truncate">{update.title}</p>
-                            <p className="text-[10px] text-muted-foreground">{update.time}</p>
-                          </div>
-                        </div>
-                      );
-                    })()}
-                  </motion.div>
-                </AnimatePresence>
+              {/* Live Activity - 2 cols */}
+              <div className="col-span-2 p-3 rounded-xl bg-card/30 border border-border/40 flex items-center justify-center">
+                <div className={cn("flex items-center gap-2.5", isArabic && "flex-row-reverse")}>
+                  <div className="relative">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-500 animate-ping opacity-75" />
+                  </div>
+                  <div className={cn("", isArabic ? "text-right" : "text-left")}>
+                    <p className="text-xs font-medium text-foreground">{copy.liveActivity.deploysNow}</p>
+                    <p className="text-[10px] text-muted-foreground">{copy.liveActivity.timeLabel}</p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -231,41 +214,66 @@ export default function AuthLayout({
               })}
             </div>
 
-            {/* Testimonial - More Integrated */}
+            {/* Mini Dashboard Preview */}
+            <div className="mb-6 p-3 rounded-xl bg-card/20 border border-border/30">
+              <div className={cn("flex items-center justify-between mb-3", isArabic && "flex-row-reverse")}>
+                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                  {isArabic ? "معاينة اللوحة" : "Dashboard Preview"}
+                </span>
+                <div className="flex gap-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent/60" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
+                </div>
+              </div>
+              <div className="flex gap-2">
+                {[65, 45, 80, 55, 70, 40].map((h, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ height: 0 }}
+                    animate={{ height: h * 0.35 }}
+                    transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
+                    className="flex-1 bg-gradient-to-t from-accent/40 to-accent/10 rounded-sm"
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Testimonial */}
             <div className="relative">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentTestimonial}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
+                  initial={{ opacity: 0, x: isArabic ? -10 : 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: isArabic ? 10 : -10 }}
+                  transition={{ duration: 0.35 }}
                 >
                   <div className={cn(
-                    "flex gap-4 p-4 rounded-xl bg-gradient-to-r from-card/50 to-card/30 border border-border/40",
+                    "flex gap-3 p-3.5 rounded-xl bg-gradient-to-r from-card/40 to-card/20 border border-border/30",
                     isArabic && "flex-row-reverse"
                   )}>
                     <Image
                       src={copy.testimonials[currentTestimonial].avatar}
                       alt={copy.testimonials[currentTestimonial].author}
-                      width={48}
-                      height={48}
+                      width={44}
+                      height={44}
                       className="rounded-full border-2 border-accent/20 shrink-0"
                     />
                     <div className={cn("flex-1 min-w-0", isArabic ? "text-right" : "text-left")}>
-                      <p className="text-sm text-foreground/80 leading-relaxed line-clamp-2 mb-2">
+                      <p className="text-[13px] text-foreground/80 leading-relaxed line-clamp-2 mb-1.5">
                         &ldquo;{copy.testimonials[currentTestimonial].quote}&rdquo;
                       </p>
-                      <div className={cn("flex items-center gap-2", isArabic && "flex-row-reverse")}>
+                      <div className={cn("flex items-center gap-1.5", isArabic && "flex-row-reverse")}>
                         <span className="text-xs font-medium text-foreground">
                           {copy.testimonials[currentTestimonial].author}
                         </span>
-                        <span className="text-[10px] text-muted-foreground">
+                        <span className="text-[10px] text-muted-foreground/70">
                           {copy.testimonials[currentTestimonial].role}
                         </span>
                         <div className={cn("flex gap-0.5", isArabic ? "mr-auto" : "ml-auto")}>
                           {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-3 h-3 fill-accent text-accent" />
+                            <Star key={i} className="w-2.5 h-2.5 fill-accent text-accent" />
                           ))}
                         </div>
                       </div>
@@ -276,7 +284,7 @@ export default function AuthLayout({
               
               {/* Carousel Indicators */}
               <div className={cn(
-                "flex gap-1 mt-3",
+                "flex gap-1.5 mt-2.5",
                 isArabic ? "justify-end" : "justify-start"
               )}>
                 {copy.testimonials.map((_, index) => (
@@ -286,8 +294,8 @@ export default function AuthLayout({
                     className={cn(
                       "h-1 rounded-full transition-all duration-300",
                       currentTestimonial === index 
-                        ? "w-5 bg-accent" 
-                        : "w-1 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                        ? "w-4 bg-accent" 
+                        : "w-1 bg-muted-foreground/25 hover:bg-muted-foreground/40"
                     )}
                   />
                 ))}
