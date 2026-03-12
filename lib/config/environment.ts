@@ -13,31 +13,31 @@ function parseBooleanFlag(value: string | undefined) {
 
 const environmentSchema = z.object({
   // App
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('production'),
-  NEXT_PUBLIC_APP_URL: z.string().url(),
-  DEPLOYMENT_ENVIRONMENT: z.string().default('production'),
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
+  DEPLOYMENT_ENVIRONMENT: z.string().default('development'),
 
-  // Database
+  // Database (optional for dev)
   DATABASE_URL: z.string().url().optional(),
   MYSQL_HOST: z.string().default('127.0.0.1'),
   MYSQL_PORT: z.coerce.number().default(3306),
-  MYSQL_USER: z.string().min(1),
-  MYSQL_PASSWORD: z.string().min(1),
-  MYSQL_DATABASE: z.string().min(1),
+  MYSQL_USER: z.string().optional(),
+  MYSQL_PASSWORD: z.string().optional(),
+  MYSQL_DATABASE: z.string().optional(),
 
-  // Billing
-  STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith('pk_'),
-  STRIPE_WEBHOOK_SECRET: z.string(),
+  // Billing (optional for dev)
+  STRIPE_SECRET_KEY: z.string().optional(),
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
+  STRIPE_WEBHOOK_SECRET: z.string().optional(),
 
-  // aaPanel
-  AAPANEL_BASE_URL: z.string().url(),
+  // aaPanel (optional for dev)
+  AAPANEL_BASE_URL: z.string().url().optional(),
   AAPANEL_PORT: z.coerce.number().default(7800),
-  AAPANEL_API_KEY: z.string(),
+  AAPANEL_API_KEY: z.string().optional(),
   AAPANEL_REQUEST_TIMEOUT: z.coerce.number().default(30000),
 
-  // DNS/Domains
-  DNS_PROVIDER: z.enum(['cloudflare', 'route53', 'digitalocean']),
+  // DNS/Domains (optional for dev)
+  DNS_PROVIDER: z.enum(['cloudflare', 'route53', 'digitalocean', 'none']).default('none'),
   CLOUDFLARE_API_TOKEN: z.string().optional(),
   CLOUDFLARE_GLOBAL_API_KEY: z.string().optional(),
   CLOUDFLARE_EMAIL: z.string().email().optional(),
@@ -50,9 +50,9 @@ const environmentSchema = z.object({
   ROUTE53_SECRET_ACCESS_KEY: z.string().optional(),
   DIGITALOCEAN_TOKEN: z.string().optional(),
 
-  // SSL
-  LETSENCRYPT_EMAIL: z.string().email(),
-  LETSENCRYPT_API_ENDPOINT: z.string().url(),
+  // SSL (optional for dev)
+  LETSENCRYPT_EMAIL: z.string().email().optional(),
+  LETSENCRYPT_API_ENDPOINT: z.string().url().optional(),
   CUSTOM_DOMAIN_TARGET_HOST: z.string().optional(),
 
   // Queue/Redis
@@ -60,8 +60,8 @@ const environmentSchema = z.object({
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
 
-  // Storage
-  STORAGE_PROVIDER: z.enum(['s3', 'gcs']),
+  // Storage (optional for dev)
+  STORAGE_PROVIDER: z.enum(['s3', 'gcs', 'none']).default('none'),
   AWS_ACCESS_KEY_ID: z.string().optional(),
   AWS_SECRET_ACCESS_KEY: z.string().optional(),
   AWS_S3_BUCKET: z.string().optional(),
@@ -82,8 +82,8 @@ const environmentSchema = z.object({
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
   LOG_SERVICE: z.string().default('ovmon'),
 
-  // Email
-  EMAIL_PROVIDER: z.enum(['sendgrid', 'resend']),
+  // Email (optional for dev)
+  EMAIL_PROVIDER: z.enum(['sendgrid', 'resend', 'none']).default('none'),
   SENDGRID_API_KEY: z.string().optional(),
   SENDGRID_FROM_EMAIL: z.string().email().optional(),
   RESEND_API_KEY: z.string().optional(),
@@ -91,9 +91,9 @@ const environmentSchema = z.object({
   TWILIO_AUTH_TOKEN: z.string().optional(),
   TWILIO_PHONE_NUMBER: z.string().optional(),
 
-  // Security
-  ENCRYPTION_KEY: z.string().min(32),
-  WEBHOOK_SECRET: z.string().min(32),
+  // Security (with dev defaults)
+  ENCRYPTION_KEY: z.string().min(32).default('dev-encryption-key-32-chars-min!!'),
+  WEBHOOK_SECRET: z.string().min(32).default('dev-webhook-secret-32-chars-min!!'),
 
   // Features
   FEATURE_ENABLE_CUSTOM_DOMAINS: z.string().transform(v => v === 'true').default('true'),
