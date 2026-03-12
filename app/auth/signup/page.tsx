@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { AlertCircle, ArrowRight, Check, Eye, EyeOff, Lock, Mail, Shield } from "lucide-react";
+// ArrowRight kept for submit button
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -389,30 +390,7 @@ export default function SignupPage() {
         <span>{copy.secureNote}</span>
       </div>
 
-      {/* Auth Switch */}
-      <div className="pt-4">
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-border/40" />
-          </div>
-          <div className="relative flex justify-center">
-            <span className="bg-background px-3 text-xs text-muted-foreground/60">
-              {copy.loginHint}
-            </span>
-          </div>
-        </div>
-        
-        <Link 
-          href="/auth/login" 
-          className={cn(
-            "mt-4 w-full h-10 flex items-center justify-center gap-2 rounded-lg border border-border/50 bg-secondary/10 text-sm font-medium text-foreground hover:bg-secondary/20 hover:border-accent/30 transition-all",
-            isArabic && "flex-row-reverse"
-          )}
-        >
-          {copy.login}
-          <ArrowRight className={cn("h-3.5 w-3.5", isArabic && "rotate-180")} />
-        </Link>
-      </div>
+
     </motion.div>
   );
 }

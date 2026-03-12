@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { LanguageSwitcher } from "@/components/language/language-switcher";
 import { useSiteLanguage } from "@/hooks/use-site-language";
@@ -13,8 +14,18 @@ import {
   Globe, 
   BarChart3,
   Star,
-  Activity
 } from "lucide-react";
+
+const AUTH_TABS = {
+  en: {
+    signIn: "Sign in",
+    createAccount: "Create account",
+  },
+  ar: {
+    signIn: "تسجيل الدخول",
+    createAccount: "إنشاء حساب",
+  },
+} as const;
 
 const AUTH_LAYOUT_COPY = {
   en: {
@@ -115,9 +126,14 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const language = useSiteLanguage();
+  const pathname = usePathname();
   const isArabic = language === "ar";
   const copy = AUTH_LAYOUT_COPY[language];
+  const tabs = AUTH_TABS[language];
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  
+  const isLoginPage = pathname === "/auth/login" || pathname === "/auth/signin";
+  const isSignupPage = pathname === "/auth/signup" || pathname === "/auth/register";
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -333,12 +349,42 @@ export default function AuthLayout({
 
         <div className="w-full max-w-[420px] relative z-10">
           {/* Mobile Logo */}
-          <Link href="/" className="lg:hidden flex items-center gap-2.5 mb-10">
+          <Link href="/" className="lg:hidden flex items-center gap-2.5 mb-8">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent shadow-lg shadow-accent/20">
               <span className="text-sm font-bold text-accent-foreground">O</span>
             </div>
             <span className="text-xl font-semibold tracking-tight">Ovmon</span>
           </Link>
+          
+          {/* Auth Tabs */}
+          {(isLoginPage || isSignupPage) && (
+            <div className="mb-6">
+              <div className="flex p-1 bg-secondary/30 rounded-lg border border-border/40">
+                <Link
+                  href="/auth/login"
+                  className={cn(
+                    "flex-1 py-2.5 px-4 text-sm font-medium rounded-md text-center transition-all duration-200",
+                    isLoginPage 
+                      ? "bg-background text-foreground shadow-sm" 
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {tabs.signIn}
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className={cn(
+                    "flex-1 py-2.5 px-4 text-sm font-medium rounded-md text-center transition-all duration-200",
+                    isSignupPage 
+                      ? "bg-background text-foreground shadow-sm" 
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {tabs.createAccount}
+                </Link>
+              </div>
+            </div>
+          )}
           
           {children}
           

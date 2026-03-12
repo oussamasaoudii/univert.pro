@@ -285,42 +285,18 @@ export default function LoginPage() {
         <span>{copy.secureNote}</span>
       </div>
 
-      {/* Auth Switch */}
-      <div className="pt-4">
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-border/40" />
-          </div>
-          <div className="relative flex justify-center">
-            <span className="bg-background px-3 text-xs text-muted-foreground/60">
-              {copy.noAccount}
-            </span>
-          </div>
-        </div>
-        
+      {/* Admin Portal Link */}
+      <div className="flex justify-center pt-4">
         <Link 
-          href="/auth/signup" 
+          href="/admin/login" 
           className={cn(
-            "mt-4 w-full h-10 flex items-center justify-center gap-2 rounded-lg border border-border/50 bg-secondary/10 text-sm font-medium text-foreground hover:bg-secondary/20 hover:border-accent/30 transition-all",
+            "inline-flex items-center gap-1.5 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors",
             isArabic && "flex-row-reverse"
           )}
         >
-          {copy.createAccount}
-          <ArrowRight className={cn("h-3.5 w-3.5", isArabic && "rotate-180")} />
+          <span>{copy.adminPortal}</span>
+          <ArrowRight className={cn("h-3 w-3", isArabic && "rotate-180")} />
         </Link>
-        
-        <div className="flex justify-center mt-3">
-          <Link 
-            href="/admin/login" 
-            className={cn(
-              "inline-flex items-center gap-1.5 text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors",
-              isArabic && "flex-row-reverse"
-            )}
-          >
-            <span>{copy.adminPortal}</span>
-            <ArrowRight className={cn("h-2.5 w-2.5", isArabic && "rotate-180")} />
-          </Link>
-        </div>
       </div>
     </motion.div>
   );
