@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { AlertCircle, ArrowRight, Check, Eye, EyeOff, Lock, Mail, Shield } from "lucide-react";
+// ArrowRight kept for submit button
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -389,23 +390,7 @@ export default function SignupPage() {
         <span>{copy.secureNote}</span>
       </div>
 
-      {/* Footer Links */}
-      <div className="pt-5">
-        <div className="p-3 rounded-lg bg-secondary/20 border border-border/30">
-          <p className={cn(
-            "text-sm text-muted-foreground text-center"
-          )}>
-            {copy.loginHint}{" "}
-            <Link 
-              href="/auth/login" 
-              className="font-medium text-accent hover:text-accent/80 transition-colors inline-flex items-center gap-1"
-            >
-              {copy.login}
-              <ArrowRight className={cn("h-3 w-3", isArabic && "rotate-180")} />
-            </Link>
-          </p>
-        </div>
-      </div>
+
     </motion.div>
   );
 }

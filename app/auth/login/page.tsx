@@ -285,35 +285,18 @@ export default function LoginPage() {
         <span>{copy.secureNote}</span>
       </div>
 
-      {/* Footer Links */}
-      <div className="pt-5 space-y-3">
-        <div className="p-3 rounded-lg bg-secondary/20 border border-border/30">
-          <p className={cn(
-            "text-sm text-muted-foreground text-center"
-          )}>
-            {copy.noAccount}{" "}
-            <Link 
-              href="/auth/signup" 
-              className="font-medium text-accent hover:text-accent/80 transition-colors inline-flex items-center gap-1"
-            >
-              {copy.createAccount}
-              <ArrowRight className={cn("h-3 w-3", isArabic && "rotate-180")} />
-            </Link>
-          </p>
-        </div>
-        
-        <div className="flex justify-center">
-          <Link 
-            href="/admin/login" 
-            className={cn(
-              "inline-flex items-center gap-1 text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors",
-              isArabic && "flex-row-reverse"
-            )}
-          >
-            <span>{copy.adminPortal}</span>
-            <ArrowRight className={cn("h-2 w-2", isArabic && "rotate-180")} />
-          </Link>
-        </div>
+      {/* Admin Portal Link */}
+      <div className="flex justify-center pt-4">
+        <Link 
+          href="/admin/login" 
+          className={cn(
+            "inline-flex items-center gap-1.5 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors",
+            isArabic && "flex-row-reverse"
+          )}
+        >
+          <span>{copy.adminPortal}</span>
+          <ArrowRight className={cn("h-3 w-3", isArabic && "rotate-180")} />
+        </Link>
       </div>
     </motion.div>
   );

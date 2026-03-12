@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { LanguageSwitcher } from "@/components/language/language-switcher";
 import { useSiteLanguage } from "@/hooks/use-site-language";
@@ -13,8 +14,18 @@ import {
   Globe, 
   BarChart3,
   Star,
-  Activity
 } from "lucide-react";
+
+const AUTH_TABS = {
+  en: {
+    signIn: "Sign in",
+    createAccount: "Create account",
+  },
+  ar: {
+    signIn: "تسجيل الدخول",
+    createAccount: "إنشاء حساب",
+  },
+} as const;
 
 const AUTH_LAYOUT_COPY = {
   en: {
@@ -115,9 +126,14 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const language = useSiteLanguage();
+  const pathname = usePathname();
   const isArabic = language === "ar";
   const copy = AUTH_LAYOUT_COPY[language];
+  const tabs = AUTH_TABS[language];
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  
+  const isLoginPage = pathname === "/auth/login" || pathname === "/auth/signin";
+  const isSignupPage = pathname === "/auth/signup" || pathname === "/auth/register";
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -144,9 +160,9 @@ export default function AuthLayout({
           </Link>
 
           {/* Main Content */}
-          <div className={cn("flex-1 flex flex-col justify-center max-w-xl", isArabic ? "text-right" : "text-left")}>
+          <div className={cn("flex-1 flex flex-col justify-center max-w-xl py-4", isArabic ? "text-right" : "text-left")}>
             {/* Heading */}
-            <div className="space-y-3 mb-8">
+            <div className="space-y-2.5 mb-6">
               <h1 className="text-3xl xl:text-4xl font-bold tracking-tight leading-[1.15]">
                 {copy.heading}
               </h1>
@@ -156,7 +172,7 @@ export default function AuthLayout({
             </div>
 
             {/* Unified Stats Row */}
-            <div className="p-4 rounded-xl bg-card/30 border border-border/40 mb-6">
+            <div className="p-3.5 rounded-xl bg-card/30 border border-border/40 mb-5">
               <div className={cn("grid grid-cols-4 gap-3", isArabic && "direction-rtl")}>
                 <div className="text-center">
                   <div className="text-lg xl:text-xl font-bold text-accent">{copy.platformStats.deployments}</div>
@@ -184,7 +200,7 @@ export default function AuthLayout({
             </div>
 
             {/* Features List */}
-            <div className="space-y-2.5 mb-6">
+            <div className="space-y-2 mb-5">
               {copy.features.map((feature, index) => {
                 const IconComponent = feature.icon;
                 return (
@@ -208,7 +224,7 @@ export default function AuthLayout({
             </div>
 
             {/* Mini Dashboard Preview */}
-            <div className="mb-5 p-3.5 rounded-xl bg-card/25 border border-border/30 overflow-hidden">
+            <div className="p-3 rounded-xl bg-card/25 border border-border/30 overflow-hidden">
               {/* Window chrome */}
               <div className={cn("flex items-center justify-between mb-3", isArabic && "flex-row-reverse")}>
                 <div className="flex gap-1.5">
@@ -252,75 +268,44 @@ export default function AuthLayout({
                   ))}
                 </div>
               </div>
-            </div>
-
-            {/* Testimonial */}
-            <div className="relative mt-auto">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentTestimonial}
-                  initial={{ opacity: 0, x: isArabic ? -10 : 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: isArabic ? 10 : -10 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  <div className={cn(
-                    "flex gap-3 p-3.5 rounded-xl bg-gradient-to-r from-card/40 to-card/20 border border-border/30",
-                    isArabic && "flex-row-reverse"
-                  )}>
+              
+              {/* Testimonial - Integrated at bottom */}
+              <div className={cn("mt-3 pt-3 border-t border-border/20 flex items-center gap-2.5", isArabic && "flex-row-reverse")}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentTestimonial}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className={cn("flex items-center gap-2.5 flex-1 min-w-0", isArabic && "flex-row-reverse")}
+                  >
                     <Image
                       src={copy.testimonials[currentTestimonial].avatar}
                       alt={copy.testimonials[currentTestimonial].author}
-                      width={44}
-                      height={44}
-                      className="rounded-full border-2 border-accent/20 shrink-0"
+                      width={28}
+                      height={28}
+                      className="rounded-full shrink-0"
                     />
-                    <div className={cn("flex-1 min-w-0", isArabic ? "text-right" : "text-left")}>
-                      <p className="text-[13px] text-foreground/80 leading-relaxed line-clamp-2 mb-1.5">
-                        &ldquo;{copy.testimonials[currentTestimonial].quote}&rdquo;
-                      </p>
-                      <div className={cn("flex items-center gap-1.5", isArabic && "flex-row-reverse")}>
-                        <span className="text-xs font-medium text-foreground">
-                          {copy.testimonials[currentTestimonial].author}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground/70">
-                          {copy.testimonials[currentTestimonial].role}
-                        </span>
-                        <div className={cn("flex gap-0.5", isArabic ? "mr-auto" : "ml-auto")}>
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-2.5 h-2.5 fill-accent text-accent" />
-                          ))}
-                        </div>
-                      </div>
+                    <div className={cn("flex items-center gap-1.5 text-[11px] text-muted-foreground min-w-0", isArabic && "flex-row-reverse")}>
+                      <span className="font-medium text-foreground truncate">{copy.testimonials[currentTestimonial].author}</span>
+                      <span className="text-muted-foreground/40 shrink-0">·</span>
+                      <span className="truncate">{copy.testimonials[currentTestimonial].role}</span>
                     </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-              
-              {/* Carousel Indicators */}
-              <div className={cn(
-                "flex gap-1.5 mt-2.5",
-                isArabic ? "justify-end" : "justify-start"
-              )}>
-                {copy.testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={cn(
-                      "h-1 rounded-full transition-all duration-300",
-                      currentTestimonial === index 
-                        ? "w-4 bg-accent" 
-                        : "w-1 bg-muted-foreground/25 hover:bg-muted-foreground/40"
-                    )}
-                  />
-                ))}
+                  </motion.div>
+                </AnimatePresence>
+                <div className={cn("flex gap-0.5 shrink-0", isArabic && "flex-row-reverse")}>
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-2.5 h-2.5 fill-accent text-accent" />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
 
           {/* Footer */}
           <div className={cn(
-            "mt-auto pt-6 flex items-center justify-between text-xs text-muted-foreground",
+            "mt-auto pt-3 flex items-center justify-between text-xs text-muted-foreground",
             isArabic && "flex-row-reverse"
           )}>
             <p>{copy.rights}</p>
@@ -364,12 +349,42 @@ export default function AuthLayout({
 
         <div className="w-full max-w-[420px] relative z-10">
           {/* Mobile Logo */}
-          <Link href="/" className="lg:hidden flex items-center gap-2.5 mb-10">
+          <Link href="/" className="lg:hidden flex items-center gap-2.5 mb-8">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent shadow-lg shadow-accent/20">
               <span className="text-sm font-bold text-accent-foreground">O</span>
             </div>
             <span className="text-xl font-semibold tracking-tight">Ovmon</span>
           </Link>
+          
+          {/* Auth Tabs */}
+          {(isLoginPage || isSignupPage) && (
+            <div className="mb-6">
+              <div className="flex p-1 bg-secondary/30 rounded-lg border border-border/40">
+                <Link
+                  href="/auth/login"
+                  className={cn(
+                    "flex-1 py-2.5 px-4 text-sm font-medium rounded-md text-center transition-all duration-200",
+                    isLoginPage 
+                      ? "bg-background text-foreground shadow-sm" 
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {tabs.signIn}
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className={cn(
+                    "flex-1 py-2.5 px-4 text-sm font-medium rounded-md text-center transition-all duration-200",
+                    isSignupPage 
+                      ? "bg-background text-foreground shadow-sm" 
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {tabs.createAccount}
+                </Link>
+              </div>
+            </div>
+          )}
           
           {children}
           

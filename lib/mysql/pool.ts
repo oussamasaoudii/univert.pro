@@ -14,7 +14,16 @@ export function isMySQLConfigured(): boolean {
 }
 
 /**
+ * Detect if this is a TiDB Cloud connection (requires SSL)
+ */
+function isTiDBCloud(): boolean {
+  const host = process.env.MYSQL_HOST || "";
+  return host.includes("tidbcloud.com") || host.includes("tidb.cloud");
+}
+
+/**
  * Get the MySQL pool. Returns null if environment variables are not configured.
+ * Supports TiDB Cloud with automatic SSL configuration.
  */
 export function getMySQLPool(): mysql.Pool | null {
   if (pool) return pool;
@@ -25,18 +34,36 @@ export function getMySQLPool(): mysql.Pool | null {
     return null;
   }
 
+  const isTiDB = isTiDBCloud();
+  const defaultPort = isTiDB ? "4000" : "3306";
+  // For TiDB Cloud, always use 'ovmon' database (ignore 'sys' from env var)
+  const database = isTiDB && process.env.MYSQL_DATABASE === 'sys' 
+    ? 'ovmon' 
+    : process.env.MYSQL_DATABASE!;
+
   pool = mysql.createPool({
     host: process.env.MYSQL_HOST || "127.0.0.1",
-    port: parseInt(process.env.MYSQL_PORT || "3306", 10),
+    port: parseInt(process.env.MYSQL_PORT || defaultPort, 10),
     user: process.env.MYSQL_USER!,
     password: process.env.MYSQL_PASSWORD!,
-    database: process.env.MYSQL_DATABASE!,
+    database,
     charset: "utf8mb4",
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
     timezone: "Z",
+    // TiDB Cloud requires SSL
+    ...(isTiDB && {
+      ssl: {
+        minVersion: "TLSv1.2",
+        rejectUnauthorized: true,
+      },
+    }),
   });
+
+  if (isTiDB) {
+    console.log("[MySQL] Connected to TiDB Cloud with SSL enabled");
+  }
 
   return pool;
 }

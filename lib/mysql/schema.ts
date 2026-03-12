@@ -4,8 +4,14 @@ import { hashPassword } from "@/lib/mysql/password";
 import { getLocalAdminCredentials } from "@/lib/local-admin-auth";
 
 let schemaReadyPromise: Promise<void> | null = null;
+let schemaInitialized = false;
 
 export async function ensureCoreSchema(): Promise<void> {
+  // If already verified, skip
+  if (schemaInitialized) {
+    return;
+  }
+  
   if (!schemaReadyPromise) {
     schemaReadyPromise = initializeCoreSchema().catch((error) => {
       // Allow retry on next request if initial bootstrap failed transiently.
@@ -17,9 +23,52 @@ export async function ensureCoreSchema(): Promise<void> {
   return schemaReadyPromise;
 }
 
+/**
+ * Check if the required tables already exist in the database.
+ * This is used to skip schema creation when tables are pre-created (e.g., TiDB Cloud).
+ */
+async function checkTablesExist(pool: ReturnType<typeof getMySQLPool>): Promise<boolean> {
+  try {
+    // Try to select from users table directly - if it exists, we're good
+    await pool.query(`SELECT 1 FROM users LIMIT 1`);
+    return true;
+  } catch (error: unknown) {
+    // Table doesn't exist error code is 1146
+    const mysqlError = error as { code?: string };
+    if (mysqlError.code === 'ER_NO_SUCH_TABLE') {
+      return false;
+    }
+    // For other errors (like permission errors), assume tables exist to avoid DDL
+    return true;
+  }
+}
+
 async function initializeCoreSchema() {
   const pool = getMySQLPool();
+  
+  if (!pool) {
+    console.warn("[Schema] MySQL pool not available, skipping schema initialization");
+    schemaInitialized = true;
+    return;
+  }
+  
+  // For TiDB Cloud and pre-provisioned databases, skip all DDL operations.
+  // Tables should be created via migration scripts (setup-tidb.js)
+  // This prevents "CREATE command denied" errors when user lacks DDL permissions.
+  
+  try {
+    await ensureDefaultAdminUser();
+  } catch (error) {
+    console.warn("[Schema] Could not ensure default admin user:", error);
+  }
+  
+  schemaInitialized = true;
+  return;
+  
+  // The following DDL code is kept for reference but disabled for TiDB Cloud compatibility
+  // Tables must be created via scripts/setup-tidb.js
 
+  /* DISABLED - DDL not allowed on TiDB Cloud
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id CHAR(36) PRIMARY KEY,
@@ -217,7 +266,7 @@ async function initializeCoreSchema() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  await ensureDefaultAdminUser();
+  */
 }
 
 async function ensureDefaultAdminUser() {

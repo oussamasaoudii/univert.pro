@@ -150,6 +150,22 @@ type InvoiceCountersRow = {
 };
 
 let billingSchemaPromise: Promise<void> | null = null;
+let billingSchemaInitialized = false;
+
+async function checkBillingTablesExist(): Promise<boolean> {
+  try {
+    const pool = getMySQLPool();
+    if (!pool) return true; // Skip DDL if no pool
+    await pool.query(`SELECT 1 FROM billing_plans LIMIT 1`);
+    return true;
+  } catch (error: unknown) {
+    const mysqlError = error as { code?: string };
+    if (mysqlError.code === 'ER_NO_SUCH_TABLE') {
+      return false;
+    }
+    return true; // Assume exists to avoid DDL on permission errors
+  }
+}
 
 function normalizePlan(row: BillingPlanRow, features: string[]): BillingPlanRecord {
   return {
@@ -238,6 +254,10 @@ function formatMonthLabel(key: string): string {
 }
 
 async function ensureBillingSchema() {
+  if (billingSchemaInitialized) {
+    return;
+  }
+  
   if (!billingSchemaPromise) {
     billingSchemaPromise = initializeBillingSchema();
   }
@@ -249,8 +269,20 @@ async function initializeBillingSchema() {
   await ensureCoreSchema();
   await ensurePlatformDataSchema();
 
-  const pool = getMySQLPool();
+  // For TiDB Cloud and pre-provisioned databases, skip all DDL operations.
+  // Tables should be created via migration scripts (setup-tidb.js)
+  
+  try {
+    await seedBillingPlans();
+  } catch (error) {
+    console.warn("[Billing] Could not seed billing plans:", error);
+  }
+  
+  billingSchemaInitialized = true;
+  return;
 
+  /* DISABLED - DDL not allowed on TiDB Cloud
+  const pool = getMySQLPool();
   await pool.query(`
     CREATE TABLE IF NOT EXISTS billing_plans (
       id CHAR(36) PRIMARY KEY,
@@ -324,7 +356,7 @@ async function initializeBillingSchema() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  await seedBillingPlans();
+  */
 }
 
 async function seedBillingPlans() {

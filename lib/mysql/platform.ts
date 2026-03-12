@@ -188,6 +188,22 @@ type AdminRecipientRow = {
 };
 
 let platformSchemaPromise: Promise<void> | null = null;
+let platformSchemaInitialized = false;
+
+async function checkPlatformTablesExist(): Promise<boolean> {
+  try {
+    const pool = getMySQLPool();
+    if (!pool) return true; // Skip DDL if no pool
+    await pool.query(`SELECT 1 FROM templates LIMIT 1`);
+    return true;
+  } catch (error: unknown) {
+    const mysqlError = error as { code?: string };
+    if (mysqlError.code === 'ER_NO_SUCH_TABLE') {
+      return false;
+    }
+    return true; // Assume exists to avoid DDL on permission errors
+  }
+}
 
 function normalizeTemplate(row: TemplateRow): TemplateRecord {
   return {
@@ -293,6 +309,10 @@ function toSlug(value: string): string {
 }
 
 export async function ensurePlatformDataSchema(): Promise<void> {
+  if (platformSchemaInitialized) {
+    return;
+  }
+  
   if (!platformSchemaPromise) {
     platformSchemaPromise = initializePlatformDataSchema();
   }
@@ -302,8 +322,21 @@ export async function ensurePlatformDataSchema(): Promise<void> {
 
 async function initializePlatformDataSchema() {
   await ensureCoreSchema();
+  
+  // For TiDB Cloud and pre-provisioned databases, skip all DDL operations.
+  // Tables should be created via migration scripts (setup-tidb.js)
+  
+  try {
+    await seedDefaultTemplates();
+  } catch (error) {
+    console.warn("[Platform] Could not seed default templates:", error);
+  }
+  
+  platformSchemaInitialized = true;
+  return;
+  
+  /* DISABLED - DDL not allowed on TiDB Cloud
   const pool = getMySQLPool();
-
   await pool.query(`
     CREATE TABLE IF NOT EXISTS templates (
       id CHAR(36) PRIMARY KEY,
@@ -425,7 +458,7 @@ async function initializePlatformDataSchema() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  await seedDefaultTemplates();
+  */
 }
 
 async function seedDefaultTemplates() {
