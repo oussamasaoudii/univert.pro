@@ -144,9 +144,9 @@ export default function AuthLayout({
           </Link>
 
           {/* Main Content */}
-          <div className={cn("flex-1 flex flex-col justify-center max-w-xl", isArabic ? "text-right" : "text-left")}>
+          <div className={cn("flex-1 flex flex-col justify-center max-w-xl py-6", isArabic ? "text-right" : "text-left")}>
             {/* Heading */}
-            <div className="space-y-3 mb-8">
+            <div className="space-y-2.5 mb-6">
               <h1 className="text-3xl xl:text-4xl font-bold tracking-tight leading-[1.15]">
                 {copy.heading}
               </h1>
@@ -156,7 +156,7 @@ export default function AuthLayout({
             </div>
 
             {/* Unified Stats Row */}
-            <div className="p-4 rounded-xl bg-card/30 border border-border/40 mb-6">
+            <div className="p-3.5 rounded-xl bg-card/30 border border-border/40 mb-5">
               <div className={cn("grid grid-cols-4 gap-3", isArabic && "direction-rtl")}>
                 <div className="text-center">
                   <div className="text-lg xl:text-xl font-bold text-accent">{copy.platformStats.deployments}</div>
@@ -184,7 +184,7 @@ export default function AuthLayout({
             </div>
 
             {/* Features List */}
-            <div className="space-y-2.5 mb-6">
+            <div className="space-y-2 mb-5">
               {copy.features.map((feature, index) => {
                 const IconComponent = feature.icon;
                 return (
@@ -208,7 +208,7 @@ export default function AuthLayout({
             </div>
 
             {/* Mini Dashboard Preview */}
-            <div className="mb-5 p-3.5 rounded-xl bg-card/25 border border-border/30 overflow-hidden">
+            <div className="mb-4 p-3 rounded-xl bg-card/25 border border-border/30 overflow-hidden">
               {/* Window chrome */}
               <div className={cn("flex items-center justify-between mb-3", isArabic && "flex-row-reverse")}>
                 <div className="flex gap-1.5">
@@ -255,7 +255,7 @@ export default function AuthLayout({
             </div>
 
             {/* Testimonial */}
-            <div className="relative mt-auto">
+            <div className="relative">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentTestimonial}
@@ -265,15 +265,15 @@ export default function AuthLayout({
                   transition={{ duration: 0.35 }}
                 >
                   <div className={cn(
-                    "flex gap-3 p-3.5 rounded-xl bg-gradient-to-r from-card/40 to-card/20 border border-border/30",
+                    "flex gap-3 p-3 rounded-lg bg-card/30 border border-border/30",
                     isArabic && "flex-row-reverse"
                   )}>
                     <Image
                       src={copy.testimonials[currentTestimonial].avatar}
                       alt={copy.testimonials[currentTestimonial].author}
-                      width={44}
-                      height={44}
-                      className="rounded-full border-2 border-accent/20 shrink-0"
+                      width={40}
+                      height={40}
+                      className="rounded-full border border-accent/20 shrink-0"
                     />
                     <div className={cn("flex-1 min-w-0", isArabic ? "text-right" : "text-left")}>
                       <p className="text-[13px] text-foreground/80 leading-relaxed line-clamp-2 mb-1.5">
@@ -299,7 +299,7 @@ export default function AuthLayout({
               
               {/* Carousel Indicators */}
               <div className={cn(
-                "flex gap-1.5 mt-2.5",
+                "flex gap-1 mt-2",
                 isArabic ? "justify-end" : "justify-start"
               )}>
                 {copy.testimonials.map((_, index) => (
@@ -320,7 +320,7 @@ export default function AuthLayout({
 
           {/* Footer */}
           <div className={cn(
-            "mt-auto pt-6 flex items-center justify-between text-xs text-muted-foreground",
+            "mt-auto pt-4 flex items-center justify-between text-xs text-muted-foreground",
             isArabic && "flex-row-reverse"
           )}>
             <p>{copy.rights}</p>

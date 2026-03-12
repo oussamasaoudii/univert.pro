@@ -1,4 +1,6 @@
-import { Metadata } from 'next';
+'use client';
+
+// Note: Metadata export removed as this is now a client component
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -17,11 +19,6 @@ import {
   Network,
   Cpu
 } from 'lucide-react';
-
-export const metadata: Metadata = {
-  title: 'Edge Network - Ovmon',
-  description: 'Global edge network with 150+ locations for ultra-low latency content delivery.',
-};
 
 const edgeStats = [
   { value: '150+', label: 'Edge Locations', icon: MapPin },
