@@ -285,28 +285,35 @@ export default function LoginPage() {
         <span>{copy.secureNote}</span>
       </div>
 
-      {/* Footer Links */}
-      <div className="pt-5 space-y-3">
-        <div className="p-3 rounded-lg bg-secondary/20 border border-border/30">
-          <p className={cn(
-            "text-sm text-muted-foreground text-center"
-          )}>
-            {copy.noAccount}{" "}
-            <Link 
-              href="/auth/signup" 
-              className="font-medium text-accent hover:text-accent/80 transition-colors inline-flex items-center gap-1"
-            >
-              {copy.createAccount}
-              <ArrowRight className={cn("h-3 w-3", isArabic && "rotate-180")} />
-            </Link>
-          </p>
+      {/* Auth Switch */}
+      <div className="pt-4">
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-border/40" />
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-background px-3 text-xs text-muted-foreground/60">
+              {copy.noAccount}
+            </span>
+          </div>
         </div>
         
-        <div className="flex justify-center">
+        <Link 
+          href="/auth/signup" 
+          className={cn(
+            "mt-4 w-full h-10 flex items-center justify-center gap-2 rounded-lg border border-border/50 bg-secondary/10 text-sm font-medium text-foreground hover:bg-secondary/20 hover:border-accent/30 transition-all",
+            isArabic && "flex-row-reverse"
+          )}
+        >
+          {copy.createAccount}
+          <ArrowRight className={cn("h-3.5 w-3.5", isArabic && "rotate-180")} />
+        </Link>
+        
+        <div className="flex justify-center mt-4">
           <Link 
             href="/admin/login" 
             className={cn(
-              "inline-flex items-center gap-1 text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors",
+              "inline-flex items-center gap-1 text-[10px] text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors",
               isArabic && "flex-row-reverse"
             )}
           >

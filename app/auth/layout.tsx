@@ -254,65 +254,36 @@ export default function AuthLayout({
               </div>
             </div>
 
-            {/* Testimonial */}
-            <div className="relative">
+            {/* Testimonial - Inline style */}
+            <div className={cn("flex items-center gap-3", isArabic && "flex-row-reverse")}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentTestimonial}
-                  initial={{ opacity: 0, x: isArabic ? -10 : 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: isArabic ? 10 : -10 }}
-                  transition={{ duration: 0.35 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex items-center gap-3"
                 >
-                  <div className={cn(
-                    "flex gap-3 p-3 rounded-lg bg-card/30 border border-border/30",
-                    isArabic && "flex-row-reverse"
-                  )}>
-                    <Image
-                      src={copy.testimonials[currentTestimonial].avatar}
-                      alt={copy.testimonials[currentTestimonial].author}
-                      width={40}
-                      height={40}
-                      className="rounded-full border border-accent/20 shrink-0"
-                    />
-                    <div className={cn("flex-1 min-w-0", isArabic ? "text-right" : "text-left")}>
-                      <p className="text-[13px] text-foreground/80 leading-relaxed line-clamp-2 mb-1.5">
-                        &ldquo;{copy.testimonials[currentTestimonial].quote}&rdquo;
-                      </p>
-                      <div className={cn("flex items-center gap-1.5", isArabic && "flex-row-reverse")}>
-                        <span className="text-xs font-medium text-foreground">
-                          {copy.testimonials[currentTestimonial].author}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground/70">
-                          {copy.testimonials[currentTestimonial].role}
-                        </span>
-                        <div className={cn("flex gap-0.5", isArabic ? "mr-auto" : "ml-auto")}>
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-2.5 h-2.5 fill-accent text-accent" />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
+                  <Image
+                    src={copy.testimonials[currentTestimonial].avatar}
+                    alt={copy.testimonials[currentTestimonial].author}
+                    width={32}
+                    height={32}
+                    className="rounded-full shrink-0"
+                  />
+                  <div className={cn("flex items-center gap-1.5 text-xs text-muted-foreground", isArabic && "flex-row-reverse")}>
+                    <span className="font-medium text-foreground">{copy.testimonials[currentTestimonial].author}</span>
+                    <span className="text-muted-foreground/50">·</span>
+                    <span>{copy.testimonials[currentTestimonial].role}</span>
                   </div>
                 </motion.div>
               </AnimatePresence>
               
-              {/* Carousel Indicators */}
-              <div className={cn(
-                "flex gap-1 mt-2",
-                isArabic ? "justify-end" : "justify-start"
-              )}>
-                {copy.testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={cn(
-                      "h-1 rounded-full transition-all duration-300",
-                      currentTestimonial === index 
-                        ? "w-4 bg-accent" 
-                        : "w-1 bg-muted-foreground/25 hover:bg-muted-foreground/40"
-                    )}
-                  />
+              {/* Stars */}
+              <div className={cn("flex gap-0.5", isArabic ? "mr-auto" : "ml-auto")}>
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3 h-3 fill-accent text-accent" />
                 ))}
               </div>
             </div>
