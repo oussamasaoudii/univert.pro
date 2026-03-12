@@ -322,20 +322,21 @@ export async function ensurePlatformDataSchema(): Promise<void> {
 
 async function initializePlatformDataSchema() {
   await ensureCoreSchema();
-  const pool = getMySQLPool();
   
-  // Check if tables already exist (pre-created via migration script)
-  const tablesExist = await checkPlatformTablesExist();
+  // For TiDB Cloud and pre-provisioned databases, skip all DDL operations.
+  // Tables should be created via migration scripts (setup-tidb.js)
   
-  if (tablesExist) {
-    // Tables exist, just seed default data if needed
+  try {
     await seedDefaultTemplates();
-    platformSchemaInitialized = true;
-    return;
+  } catch (error) {
+    console.warn("[Platform] Could not seed default templates:", error);
   }
   
-  // Tables don't exist, try to create them
-
+  platformSchemaInitialized = true;
+  return;
+  
+  /* DISABLED - DDL not allowed on TiDB Cloud
+  const pool = getMySQLPool();
   await pool.query(`
     CREATE TABLE IF NOT EXISTS templates (
       id CHAR(36) PRIMARY KEY,
@@ -457,8 +458,7 @@ async function initializePlatformDataSchema() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  await seedDefaultTemplates();
-  platformSchemaInitialized = true;
+  */
 }
 
 async function seedDefaultTemplates() {

@@ -269,20 +269,20 @@ async function initializeBillingSchema() {
   await ensureCoreSchema();
   await ensurePlatformDataSchema();
 
-  const pool = getMySQLPool();
+  // For TiDB Cloud and pre-provisioned databases, skip all DDL operations.
+  // Tables should be created via migration scripts (setup-tidb.js)
   
-  // Check if tables already exist (pre-created via migration script)
-  const tablesExist = await checkBillingTablesExist();
-  
-  if (tablesExist) {
-    // Tables exist, just seed default data if needed
+  try {
     await seedBillingPlans();
-    billingSchemaInitialized = true;
-    return;
+  } catch (error) {
+    console.warn("[Billing] Could not seed billing plans:", error);
   }
   
-  // Tables don't exist, try to create them
+  billingSchemaInitialized = true;
+  return;
 
+  /* DISABLED - DDL not allowed on TiDB Cloud
+  const pool = getMySQLPool();
   await pool.query(`
     CREATE TABLE IF NOT EXISTS billing_plans (
       id CHAR(36) PRIMARY KEY,
@@ -356,8 +356,7 @@ async function initializeBillingSchema() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  await seedBillingPlans();
-  billingSchemaInitialized = true;
+  */
 }
 
 async function seedBillingPlans() {

@@ -52,17 +52,23 @@ async function initializeCoreSchema() {
     return;
   }
   
-  // Check if tables already exist (pre-created via migration script)
-  const tablesExist = await checkTablesExist(pool);
+  // For TiDB Cloud and pre-provisioned databases, skip all DDL operations.
+  // Tables should be created via migration scripts (setup-tidb.js)
+  // This prevents "CREATE command denied" errors when user lacks DDL permissions.
   
-  if (tablesExist) {
-    // Tables exist, just ensure default admin and mark as initialized
+  try {
     await ensureDefaultAdminUser();
-    schemaInitialized = true;
-    return;
+  } catch (error) {
+    console.warn("[Schema] Could not ensure default admin user:", error);
   }
-  // Tables don't exist, try to create them (will fail on TiDB Cloud if no DDL permissions)
+  
+  schemaInitialized = true;
+  return;
+  
+  // The following DDL code is kept for reference but disabled for TiDB Cloud compatibility
+  // Tables must be created via scripts/setup-tidb.js
 
+  /* DISABLED - DDL not allowed on TiDB Cloud
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id CHAR(36) PRIMARY KEY,
@@ -260,8 +266,7 @@ async function initializeCoreSchema() {
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
   `);
 
-  await ensureDefaultAdminUser();
-  schemaInitialized = true;
+  */
 }
 
 async function ensureDefaultAdminUser() {
