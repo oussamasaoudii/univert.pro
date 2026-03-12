@@ -1,15 +1,21 @@
 import mysql from 'mysql2/promise';
 
-const config = {
+const TARGET_DATABASE = 'ovmon';
+
+const configWithoutDB = {
   host: process.env.MYSQL_HOST || 'gateway01.eu-central-1.prod.aws.tidbcloud.com',
   port: parseInt(process.env.MYSQL_PORT || '4000', 10),
   user: process.env.MYSQL_USER || '2FzxXgtpJmH4GCG.root',
   password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE || 'sys',
   ssl: {
     minVersion: 'TLSv1.2',
     rejectUnauthorized: true,
   },
+};
+
+const config = {
+  ...configWithoutDB,
+  database: TARGET_DATABASE,
 };
 
 const TABLES_SQL = `
@@ -265,21 +271,34 @@ INSERT IGNORE INTO plans (id, name, slug, description, price_monthly, price_year
 
 async function main() {
   console.log('Connecting to TiDB Cloud...');
-  console.log('Host:', config.host);
-  console.log('Port:', config.port);
-  console.log('User:', config.user);
-  console.log('Database:', config.database);
+  console.log('Host:', configWithoutDB.host);
+  console.log('Port:', configWithoutDB.port);
+  console.log('User:', configWithoutDB.user);
+  console.log('Target Database:', TARGET_DATABASE);
   
-  if (!config.password) {
+  if (!configWithoutDB.password) {
     console.error('ERROR: MYSQL_PASSWORD environment variable is not set');
     process.exit(1);
   }
 
   let connection;
   try {
+    // First connect without database to create it
+    console.log('\nStep 1: Creating database...');
+    connection = await mysql.createConnection(configWithoutDB);
+    
+    await connection.execute(`CREATE DATABASE IF NOT EXISTS ${TARGET_DATABASE}`);
+    console.log(`Database '${TARGET_DATABASE}' created or already exists.`);
+    
+    await connection.end();
+    
+    // Now connect to the new database
+    console.log('\nStep 2: Connecting to database...');
     connection = await mysql.createConnection(config);
     console.log('Connected successfully!');
 
+    console.log('\nStep 3: Creating tables...');
+    
     // Split SQL statements properly (handle multi-line and comments)
     const statements = [];
     let currentStatement = '';
