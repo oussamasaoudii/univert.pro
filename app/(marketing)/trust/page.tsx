@@ -1,20 +1,5 @@
 import { Metadata } from 'next';
 import {
-  Shield,
-  Lock,
-  Server,
-  Globe,
-  CheckCircle,
-  FileCheck,
-  Key,
-  Eye,
-  AlertTriangle,
-  Clock,
-  Users,
-  Building2,
-  Headphones,
-} from 'lucide-react';
-import {
   HeroSection,
   TrustMetrics,
   FeatureShowcase,
@@ -33,7 +18,7 @@ export const metadata: Metadata = {
 // Security features
 const securityFeatures = [
   {
-    icon: Shield,
+    iconName: 'Shield' as const,
     title: 'SOC2 Type II Certified',
     description: 'Independently audited security controls with annual assessments by third-party auditors.',
     stat: 'SOC2',
@@ -41,21 +26,21 @@ const securityFeatures = [
     highlight: true,
   },
   {
-    icon: Lock,
+    iconName: 'Lock' as const,
     title: 'DDoS Protection',
     description: 'Enterprise-grade protection against distributed denial-of-service attacks included by default.',
     stat: '10Tbps',
     statLabel: 'Mitigation',
   },
   {
-    icon: Globe,
+    iconName: 'Globe' as const,
     title: 'Web Application Firewall',
     description: 'Advanced WAF rules protect against OWASP Top 10 vulnerabilities and zero-day threats.',
     stat: '24/7',
     statLabel: 'Protection',
   },
   {
-    icon: Key,
+    iconName: 'Lock' as const,
     title: 'Automatic SSL/TLS',
     description: 'Free SSL certificates with automatic renewal and support for custom certificates.',
     stat: 'TLS 1.3',
@@ -65,41 +50,41 @@ const securityFeatures = [
 
 // Trust metrics
 const trustItems = [
-  { icon: Shield, label: 'SOC2 Type II', sublabel: 'Certified', description: 'Annual security audits' },
-  { icon: Server, label: '99.99%', sublabel: 'Uptime SLA', description: 'Financial guarantee' },
-  { icon: Globe, label: '150+', sublabel: 'Edge Locations', description: 'Global coverage' },
-  { icon: Lock, label: 'Zero', sublabel: 'Data Breaches', description: 'Security first' },
+  { iconName: 'Shield' as const, label: 'SOC2 Type II', sublabel: 'Certified', description: 'Annual security audits' },
+  { iconName: 'Server' as const, label: '99.99%', sublabel: 'Uptime SLA', description: 'Financial guarantee' },
+  { iconName: 'Globe' as const, label: '150+', sublabel: 'Edge Locations', description: 'Global coverage' },
+  { iconName: 'Lock' as const, label: 'Zero', sublabel: 'Data Breaches', description: 'Security first' },
 ];
 
 // Compliance certifications
 const complianceBenefits = [
   {
-    icon: FileCheck,
+    iconName: 'Check' as const,
     title: 'SOC2 Type II',
     description: 'Comprehensive security controls audited annually by independent assessors.',
   },
   {
-    icon: Shield,
+    iconName: 'Shield' as const,
     title: 'GDPR Compliant',
     description: 'Full compliance with EU data protection regulations and data residency options.',
   },
   {
-    icon: Building2,
+    iconName: 'Server' as const,
     title: 'HIPAA Ready',
     description: 'BAA agreements available for healthcare organizations handling PHI.',
   },
   {
-    icon: Lock,
+    iconName: 'Lock' as const,
     title: 'PCI DSS',
     description: 'Payment card industry compliance for e-commerce and payment processing.',
   },
   {
-    icon: Eye,
+    iconName: 'Shield' as const,
     title: 'Privacy Shield',
     description: 'EU-US and Swiss-US Privacy Shield framework compliance.',
   },
   {
-    icon: Key,
+    iconName: 'Lock' as const,
     title: 'ISO 27001',
     description: 'Information security management system certification in progress.',
   },
@@ -108,32 +93,32 @@ const complianceBenefits = [
 // Infrastructure security
 const infrastructureSecurity = [
   {
-    icon: Server,
+    iconName: 'Server' as const,
     title: 'Encrypted at Rest',
     description: 'All data encrypted using AES-256 encryption at rest.',
   },
   {
-    icon: Lock,
+    iconName: 'Lock' as const,
     title: 'Encrypted in Transit',
     description: 'TLS 1.3 encryption for all data in transit with perfect forward secrecy.',
   },
   {
-    icon: Key,
+    iconName: 'Lock' as const,
     title: 'Key Management',
     description: 'Hardware security modules (HSM) for cryptographic key management.',
   },
   {
-    icon: Eye,
+    iconName: 'Shield' as const,
     title: 'Access Controls',
     description: 'Role-based access with multi-factor authentication and audit logging.',
   },
   {
-    icon: AlertTriangle,
+    iconName: 'Shield' as const,
     title: 'Intrusion Detection',
     description: 'Real-time monitoring and automated threat detection systems.',
   },
   {
-    icon: Clock,
+    iconName: 'Clock' as const,
     title: 'Incident Response',
     description: '24/7 security team with defined incident response procedures.',
   },
@@ -216,7 +201,7 @@ export default function TrustPage() {
     <main className="min-h-screen">
       {/* Hero Section */}
       <HeroSection
-        badge={{ text: 'Trust & Security', icon: Shield }}
+        badge={{ text: 'Trust & Security', iconName: 'Shield' }}
         title="Security you can"
         titleHighlight="trust"
         description="Enterprise-grade security, compliance certifications, and a commitment to protecting your data. Your security is our priority."

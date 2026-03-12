@@ -16,7 +16,7 @@ interface CTAAction {
 interface CTABandProps {
   title: string;
   description?: string;
-  actions: CTAAction[];
+  actions?: CTAAction[];
   variant?: 'default' | 'gradient' | 'minimal' | 'centered';
   visual?: ReactNode;
 }
@@ -24,7 +24,7 @@ interface CTABandProps {
 export function CTABand({
   title,
   description,
-  actions,
+  actions = [],
   variant = 'default',
   visual,
 }: CTABandProps) {

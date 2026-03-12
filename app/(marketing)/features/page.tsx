@@ -1,28 +1,4 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import {
-  Globe,
-  Zap,
-  Shield,
-  Clock,
-  Server,
-  BarChart3,
-  Lock,
-  Layers,
-  Cpu,
-  Database,
-  RefreshCw,
-  Headphones,
-  ArrowRight,
-  Sparkles,
-  Workflow,
-  Settings2,
-  MonitorSmartphone,
-  Code2,
-  Rocket
-} from 'lucide-react';
 import {
   HeroSection,
   FeatureShowcase,
@@ -41,7 +17,7 @@ export const metadata: Metadata = {
 // Core features for hero section
 const coreFeatures = [
   {
-    icon: Zap,
+    iconName: 'Zap' as const,
     title: 'Instant Deployment',
     description: 'Deploy your website in seconds with one-click provisioning and automated CI/CD pipelines.',
     stat: '<3s',
@@ -49,21 +25,21 @@ const coreFeatures = [
     highlight: true,
   },
   {
-    icon: Globe,
+    iconName: 'Globe' as const,
     title: 'Global CDN',
     description: 'Lightning-fast content delivery with edge nodes in 150+ locations worldwide.',
     stat: '150+',
     statLabel: 'Edge Locations',
   },
   {
-    icon: Shield,
+    iconName: 'Shield' as const,
     title: 'Enterprise Security',
     description: 'Bank-grade security with SSL, DDoS protection, and SOC2 compliance built-in.',
     stat: 'SOC2',
     statLabel: 'Certified',
   },
   {
-    icon: Clock,
+    iconName: 'Clock' as const,
     title: '99.99% Uptime SLA',
     description: 'Guaranteed reliability with automatic failover and redundant infrastructure.',
     stat: '99.99%',
@@ -74,25 +50,25 @@ const coreFeatures = [
 // Infrastructure features
 const infrastructureFeatures = [
   {
-    icon: RefreshCw,
+    iconName: 'RefreshCw' as const,
     title: 'Auto-Scaling',
     description: 'Automatically scale resources based on traffic demand without any manual intervention.',
     href: '/features/scaling',
   },
   {
-    icon: Cpu,
+    iconName: 'Cpu' as const,
     title: 'Edge Computing',
     description: 'Run serverless functions at the edge for ultra-low latency responses.',
     href: '/features/edge-network',
   },
   {
-    icon: Database,
+    iconName: 'Database' as const,
     title: 'Managed Databases',
     description: 'Fully managed PostgreSQL, MySQL, and Redis with automatic backups.',
     href: '/features/databases',
   },
   {
-    icon: Server,
+    iconName: 'Server' as const,
     title: 'Serverless Functions',
     description: 'Run backend code without managing servers. Scale automatically.',
     href: '/features/serverless',
@@ -102,25 +78,25 @@ const infrastructureFeatures = [
 // Developer experience features
 const devExperienceFeatures = [
   {
-    icon: Layers,
+    iconName: 'Layers' as const,
     title: 'Git Integration',
     description: 'Connect your GitHub, GitLab, or Bitbucket repositories for automatic deployments.',
     href: '/features/git-integration',
   },
   {
-    icon: MonitorSmartphone,
+    iconName: 'MonitorSmartphone' as const,
     title: 'Preview Deployments',
     description: 'Every pull request gets a unique preview URL for testing and collaboration.',
     href: '/features/previews',
   },
   {
-    icon: Settings2,
+    iconName: 'Settings2' as const,
     title: 'Environment Variables',
     description: 'Securely manage secrets and configuration across all environments.',
     href: '/features/env-vars',
   },
   {
-    icon: Code2,
+    iconName: 'Code2' as const,
     title: 'Developer Tools',
     description: 'CLI, SDK, and comprehensive API access for full control.',
     href: '/features/developer-tools',
@@ -129,10 +105,10 @@ const devExperienceFeatures = [
 
 // Trust metrics
 const trustItems = [
-  { icon: Shield, label: 'SOC2 Type II', sublabel: 'Certified', description: 'Annual security audits' },
-  { icon: Server, label: '99.99%', sublabel: 'Uptime SLA', description: 'Financial guarantee' },
-  { icon: Globe, label: '150+', sublabel: 'Edge Locations', description: 'Global CDN coverage' },
-  { icon: Lock, label: 'DDoS', sublabel: 'Protected', description: 'Enterprise WAF included' },
+  { iconName: 'Shield' as const, label: 'SOC2 Type II', sublabel: 'Certified', description: 'Annual security audits' },
+  { iconName: 'Server' as const, label: '99.99%', sublabel: 'Uptime SLA', description: 'Financial guarantee' },
+  { iconName: 'Globe' as const, label: '150+', sublabel: 'Edge Locations', description: 'Global CDN coverage' },
+  { iconName: 'Lock' as const, label: 'DDoS', sublabel: 'Protected', description: 'Enterprise WAF included' },
 ];
 
 // Comparison table data
@@ -180,7 +156,7 @@ export default function FeaturesPage() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <HeroSection
-        badge={{ text: 'Platform Features', icon: Sparkles }}
+        badge={{ text: 'Platform Features', iconName: 'Sparkles' }}
         title="Everything You Need to"
         titleHighlight="Ship Faster"
         description="Ovmon provides a complete suite of tools for deploying, managing, and scaling your web applications with enterprise-grade reliability."
@@ -236,12 +212,12 @@ export default function FeaturesPage() {
         title="Enterprise-grade security"
         description="Protect your applications with industry-leading security measures."
         benefits={[
-          { icon: Shield, title: 'Automatic SSL', description: 'SSL/TLS certificates provisioned automatically with zero configuration.' },
-          { icon: Lock, title: 'DDoS Protection', description: 'Advanced protection against distributed denial-of-service attacks.' },
-          { icon: Settings2, title: 'Role-Based Access', description: 'Fine-grained permissions and audit logs for team collaboration.' },
-          { icon: BarChart3, title: 'Real-time Monitoring', description: 'Continuous health checks with instant alerts.' },
-          { icon: Headphones, title: '24/7 Support', description: 'Round-the-clock support for enterprise customers.' },
-          { icon: Workflow, title: 'Compliance Ready', description: 'SOC2 Type II certified with GDPR compliance.' },
+          { iconName: 'Shield' as const, title: 'Automatic SSL', description: 'SSL/TLS certificates provisioned automatically with zero configuration.' },
+          { iconName: 'Lock' as const, title: 'DDoS Protection', description: 'Advanced protection against distributed denial-of-service attacks.' },
+          { iconName: 'Settings2' as const, title: 'Role-Based Access', description: 'Fine-grained permissions and audit logs for team collaboration.' },
+          { iconName: 'BarChart3' as const, title: 'Real-time Monitoring', description: 'Continuous health checks with instant alerts.' },
+          { iconName: 'Headphones' as const, title: '24/7 Support', description: 'Round-the-clock support for enterprise customers.' },
+          { iconName: 'Workflow' as const, title: 'Compliance Ready', description: 'SOC2 Type II certified with GDPR compliance.' },
         ]}
         variant="cards"
         columns={3}
