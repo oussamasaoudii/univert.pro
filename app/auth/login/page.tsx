@@ -158,18 +158,18 @@ export default function LoginPage() {
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.35 }}
       dir={isArabic ? "rtl" : "ltr"} 
-      className={cn("space-y-8", isArabic ? "text-right" : "text-left")}
+      className={cn("space-y-6", isArabic ? "text-right" : "text-left")}
     >
       {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+      <div className="space-y-1.5">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
           {copy.welcomeTitle}
         </h1>
-        <p className="text-muted-foreground">{copy.welcomeDescription}</p>
+        <p className="text-sm text-muted-foreground">{copy.welcomeDescription}</p>
       </div>
 
       {/* Error Alert */}
@@ -186,15 +186,15 @@ export default function LoginPage() {
       )}
 
       {/* Form */}
-      <form onSubmit={handleLogin} className="space-y-5">
+      <form onSubmit={handleLogin} className="space-y-4">
         {/* Email Field */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">{copy.emailLabel}</label>
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-foreground/80">{copy.emailLabel}</label>
           <div className="relative group">
             <Mail
               className={cn(
-                "absolute top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-accent",
-                isArabic ? "right-4" : "left-4"
+                "absolute top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60 transition-colors group-focus-within:text-accent",
+                isArabic ? "right-3.5" : "left-3.5"
               )}
             />
             <Input
@@ -203,8 +203,8 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={cn(
-                "h-12 bg-secondary/30 border-border/50 focus:border-accent focus:ring-accent/20 transition-all",
-                isArabic ? "pr-12" : "pl-12"
+                "h-11 bg-secondary/20 border-border/40 focus:border-accent/60 focus:bg-secondary/30 transition-all",
+                isArabic ? "pr-11" : "pl-11"
               )}
               disabled={loading}
             />
@@ -212,12 +212,12 @@ export default function LoginPage() {
         </div>
 
         {/* Password Field */}
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <div className={cn("flex items-center justify-between", isArabic && "flex-row-reverse")}>
-            <label className="text-sm font-medium text-foreground">{copy.passwordLabel}</label>
+            <label className="text-xs font-medium text-foreground/80">{copy.passwordLabel}</label>
             <Link 
               href="/auth/forgot-password" 
-              className="text-xs text-accent hover:text-accent/80 hover:underline transition-colors"
+              className="text-[11px] text-muted-foreground hover:text-accent transition-colors"
             >
               {copy.forgotPassword}
             </Link>
@@ -225,8 +225,8 @@ export default function LoginPage() {
           <div className="relative group">
             <Lock
               className={cn(
-                "absolute top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-accent",
-                isArabic ? "right-4" : "left-4"
+                "absolute top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60 transition-colors group-focus-within:text-accent",
+                isArabic ? "right-3.5" : "left-3.5"
               )}
             />
             <Input
@@ -235,8 +235,8 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={cn(
-                "h-12 bg-secondary/30 border-border/50 focus:border-accent focus:ring-accent/20 transition-all",
-                isArabic ? "pr-12 pl-12" : "pl-12 pr-12"
+                "h-11 bg-secondary/20 border-border/40 focus:border-accent/60 focus:bg-secondary/30 transition-all",
+                isArabic ? "pr-11 pl-11" : "pl-11 pr-11"
               )}
               disabled={loading}
             />
@@ -244,8 +244,8 @@ export default function LoginPage() {
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className={cn(
-                "absolute top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors",
-                isArabic ? "left-4" : "right-4"
+                "absolute top-1/2 -translate-y-1/2 text-muted-foreground/60 hover:text-foreground transition-colors",
+                isArabic ? "left-3.5" : "right-3.5"
               )}
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -256,7 +256,7 @@ export default function LoginPage() {
         {/* Submit Button */}
         <Button
           type="submit"
-          className="w-full h-12 bg-accent hover:bg-accent/90 text-accent-foreground font-medium shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all"
+          className="w-full h-11 mt-2 bg-accent hover:bg-accent/90 text-accent-foreground font-medium shadow-md shadow-accent/15 hover:shadow-lg hover:shadow-accent/20 transition-all"
           disabled={loading}
         >
           {loading ? (
@@ -278,45 +278,39 @@ export default function LoginPage() {
 
       {/* Security Note */}
       <div className={cn(
-        "flex items-center gap-2 text-xs text-muted-foreground justify-center",
+        "flex items-center gap-1.5 text-[11px] text-muted-foreground/70 justify-center",
         isArabic && "flex-row-reverse"
       )}>
-        <Shield className="h-3.5 w-3.5 text-accent" />
+        <Shield className="h-3 w-3 text-accent/70" />
         <span>{copy.secureNote}</span>
       </div>
 
-      {/* Divider */}
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border/50" />
-        </div>
-      </div>
-
       {/* Footer Links */}
-      <div className="space-y-3">
+      <div className="pt-4 border-t border-border/30 space-y-2.5">
         <p className={cn(
-          "text-sm text-muted-foreground",
-          isArabic ? "text-right" : "text-left"
+          "text-sm text-muted-foreground text-center"
         )}>
           {copy.noAccount}{" "}
           <Link 
             href="/auth/signup" 
-            className="font-medium text-accent hover:text-accent/80 hover:underline transition-colors"
+            className="font-medium text-accent hover:text-accent/80 transition-colors"
           >
             {copy.createAccount}
           </Link>
         </p>
         
-        <Link 
-          href="/admin/login" 
-          className={cn(
-            "inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors",
-            isArabic && "flex-row-reverse"
-          )}
-        >
-          <span>{copy.adminPortal}</span>
-          <ArrowRight className={cn("h-3 w-3", isArabic && "rotate-180")} />
-        </Link>
+        <div className="flex justify-center">
+          <Link 
+            href="/admin/login" 
+            className={cn(
+              "inline-flex items-center gap-1 text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors",
+              isArabic && "flex-row-reverse"
+            )}
+          >
+            <span>{copy.adminPortal}</span>
+            <ArrowRight className={cn("h-2.5 w-2.5", isArabic && "rotate-180")} />
+          </Link>
+        </div>
       </div>
     </motion.div>
   );
