@@ -42,6 +42,12 @@ async function checkTablesExist(pool: ReturnType<typeof getMySQLPool>): Promise<
 async function initializeCoreSchema() {
   const pool = getMySQLPool();
   
+  if (!pool) {
+    console.warn("[Schema] MySQL pool not available, skipping schema initialization");
+    schemaInitialized = true;
+    return;
+  }
+  
   // Check if tables already exist (pre-created via migration script)
   const tablesExist = await checkTablesExist(pool);
   
@@ -51,7 +57,6 @@ async function initializeCoreSchema() {
     schemaInitialized = true;
     return;
   }
-  
   // Tables don't exist, try to create them (will fail on TiDB Cloud if no DDL permissions)
 
   await pool.query(`
