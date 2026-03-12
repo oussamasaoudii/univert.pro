@@ -155,29 +155,22 @@ export default function AuthLayout({
               </p>
             </div>
 
-            {/* Two Column Layout: Stats + Product Updates */}
-            <div className="grid grid-cols-5 gap-4 mb-8">
-              {/* Platform Stats - 3 cols */}
-              <div className="col-span-3 p-4 rounded-xl bg-card/30 border border-border/40">
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="text-center">
-                    <div className="text-xl xl:text-2xl font-bold text-accent">{copy.platformStats.deployments}</div>
-                    <div className="text-[10px] text-muted-foreground mt-0.5">{copy.platformStats.deploymentsLabel}</div>
-                  </div>
-                  <div className="text-center border-x border-border/40">
-                    <div className="text-xl xl:text-2xl font-bold text-accent">{copy.platformStats.uptime}</div>
-                    <div className="text-[10px] text-muted-foreground mt-0.5">{copy.platformStats.uptimeLabel}</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl xl:text-2xl font-bold text-accent">{copy.platformStats.countries}</div>
-                    <div className="text-[10px] text-muted-foreground mt-0.5">{copy.platformStats.countriesLabel}</div>
-                  </div>
+            {/* Unified Stats Row */}
+            <div className="p-4 rounded-xl bg-card/30 border border-border/40 mb-6">
+              <div className={cn("grid grid-cols-4 gap-3", isArabic && "direction-rtl")}>
+                <div className="text-center">
+                  <div className="text-lg xl:text-xl font-bold text-accent">{copy.platformStats.deployments}</div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">{copy.platformStats.deploymentsLabel}</div>
                 </div>
-              </div>
-
-              {/* Live Activity - 2 cols */}
-              <div className="col-span-2 p-3 rounded-xl bg-card/30 border border-border/40 flex items-center justify-center">
-                <div className={cn("flex items-center gap-2.5", isArabic && "flex-row-reverse")}>
+                <div className="text-center border-x border-border/30">
+                  <div className="text-lg xl:text-xl font-bold text-accent">{copy.platformStats.uptime}</div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">{copy.platformStats.uptimeLabel}</div>
+                </div>
+                <div className="text-center border-r border-border/30">
+                  <div className="text-lg xl:text-xl font-bold text-accent">{copy.platformStats.countries}</div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">{copy.platformStats.countriesLabel}</div>
+                </div>
+                <div className={cn("flex items-center justify-center gap-2", isArabic && "flex-row-reverse")}>
                   <div className="relative">
                     <div className="w-2 h-2 rounded-full bg-emerald-500" />
                     <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-500 animate-ping opacity-75" />
@@ -191,7 +184,7 @@ export default function AuthLayout({
             </div>
 
             {/* Features List */}
-            <div className="space-y-3 mb-8">
+            <div className="space-y-2.5 mb-6">
               {copy.features.map((feature, index) => {
                 const IconComponent = feature.icon;
                 return (
@@ -215,32 +208,54 @@ export default function AuthLayout({
             </div>
 
             {/* Mini Dashboard Preview */}
-            <div className="mb-6 p-3 rounded-xl bg-card/20 border border-border/30">
+            <div className="mb-5 p-3.5 rounded-xl bg-card/25 border border-border/30 overflow-hidden">
+              {/* Window chrome */}
               <div className={cn("flex items-center justify-between mb-3", isArabic && "flex-row-reverse")}>
-                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-                  {isArabic ? "معاينة اللوحة" : "Dashboard Preview"}
-                </span>
-                <div className="flex gap-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-accent/60" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/30" />
+                <div className="flex gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-red-400/50" />
+                  <div className="w-2 h-2 rounded-full bg-yellow-400/50" />
+                  <div className="w-2 h-2 rounded-full bg-emerald-400/50" />
                 </div>
+                <span className="text-[9px] font-medium text-muted-foreground/60 tracking-wide">
+                  app.ovmon.com/dashboard
+                </span>
               </div>
-              <div className="flex gap-2">
-                {[65, 45, 80, 55, 70, 40].map((h, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ height: 0 }}
-                    animate={{ height: h * 0.35 }}
-                    transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
-                    className="flex-1 bg-gradient-to-t from-accent/40 to-accent/10 rounded-sm"
-                  />
-                ))}
+              
+              {/* Dashboard content */}
+              <div className="space-y-2.5">
+                {/* Mini stats row */}
+                <div className="flex gap-2">
+                  <div className="flex-1 p-2 rounded-md bg-secondary/30">
+                    <div className="text-[9px] text-muted-foreground/60 mb-0.5">{isArabic ? "الطلبات" : "Requests"}</div>
+                    <div className="text-xs font-semibold text-foreground">1.2M</div>
+                  </div>
+                  <div className="flex-1 p-2 rounded-md bg-secondary/30">
+                    <div className="text-[9px] text-muted-foreground/60 mb-0.5">{isArabic ? "زمن الاستجابة" : "Response"}</div>
+                    <div className="text-xs font-semibold text-emerald-400">42ms</div>
+                  </div>
+                  <div className="flex-1 p-2 rounded-md bg-secondary/30">
+                    <div className="text-[9px] text-muted-foreground/60 mb-0.5">{isArabic ? "الأخطاء" : "Errors"}</div>
+                    <div className="text-xs font-semibold text-foreground">0.01%</div>
+                  </div>
+                </div>
+                
+                {/* Chart area */}
+                <div className="h-12 flex items-end gap-1 px-1">
+                  {[40, 65, 45, 80, 55, 70, 60, 85, 50, 75].map((h, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ height: 0 }}
+                      animate={{ height: `${h}%` }}
+                      transition={{ delay: i * 0.05 + 0.2, duration: 0.4, ease: "easeOut" }}
+                      className="flex-1 bg-gradient-to-t from-accent/50 to-accent/20 rounded-t-sm"
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Testimonial */}
-            <div className="relative">
+            <div className="relative mt-auto">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentTestimonial}
