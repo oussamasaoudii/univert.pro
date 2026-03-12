@@ -155,14 +155,15 @@ let billingSchemaInitialized = false;
 async function checkBillingTablesExist(): Promise<boolean> {
   try {
     const pool = getMySQLPool();
-    if (!pool) return false;
-    const [rows] = await pool.query<Array<{ cnt: number }>>(
-      `SELECT COUNT(*) as cnt FROM information_schema.tables 
-       WHERE table_schema = DATABASE() AND table_name = 'billing_plans'`
-    );
-    return (rows[0]?.cnt || 0) > 0;
-  } catch {
-    return false;
+    if (!pool) return true; // Skip DDL if no pool
+    await pool.query(`SELECT 1 FROM billing_plans LIMIT 1`);
+    return true;
+  } catch (error: unknown) {
+    const mysqlError = error as { code?: string };
+    if (mysqlError.code === 'ER_NO_SUCH_TABLE') {
+      return false;
+    }
+    return true; // Assume exists to avoid DDL on permission errors
   }
 }
 

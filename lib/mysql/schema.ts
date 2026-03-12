@@ -29,13 +29,17 @@ export async function ensureCoreSchema(): Promise<void> {
  */
 async function checkTablesExist(pool: ReturnType<typeof getMySQLPool>): Promise<boolean> {
   try {
-    const [rows] = await pool.query<Array<{ cnt: number }>>(
-      `SELECT COUNT(*) as cnt FROM information_schema.tables 
-       WHERE table_schema = DATABASE() AND table_name = 'users'`
-    );
-    return (rows[0]?.cnt || 0) > 0;
-  } catch {
-    return false;
+    // Try to select from users table directly - if it exists, we're good
+    await pool.query(`SELECT 1 FROM users LIMIT 1`);
+    return true;
+  } catch (error: unknown) {
+    // Table doesn't exist error code is 1146
+    const mysqlError = error as { code?: string };
+    if (mysqlError.code === 'ER_NO_SUCH_TABLE') {
+      return false;
+    }
+    // For other errors (like permission errors), assume tables exist to avoid DDL
+    return true;
   }
 }
 
