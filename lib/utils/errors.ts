@@ -72,8 +72,17 @@ function sanitizeLogValue(value: unknown): unknown {
 
 async function sendToSentry(error: Error, level: LogLevel, context?: LogContext) {
   try {
-    const config = getConfig();
-    if (!config.SENTRY_DSN) return;
+    // Try to get config, but don't fail if env vars are missing
+    let sentryDsn: string | undefined;
+    try {
+      const config = getConfig();
+      sentryDsn = config.SENTRY_DSN;
+    } catch {
+      // Config not available, check env directly
+      sentryDsn = process.env.SENTRY_DSN;
+    }
+    
+    if (!sentryDsn) return;
 
     // In production, send to Sentry
     if (typeof window === 'undefined') {
@@ -88,7 +97,7 @@ async function sendToSentry(error: Error, level: LogLevel, context?: LogContext)
       }
     }
   } catch (err) {
-    console.error('[Logger] Failed to send to Sentry:', err);
+    // Silently fail - don't log errors about logging errors
   }
 }
 
