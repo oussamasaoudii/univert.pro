@@ -309,16 +309,16 @@ export default function LoginPage() {
           <ArrowRight className={cn("h-3.5 w-3.5", isArabic && "rotate-180")} />
         </Link>
         
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-3">
           <Link 
             href="/admin/login" 
             className={cn(
-              "inline-flex items-center gap-1 text-[10px] text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors",
+              "inline-flex items-center gap-1.5 text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors",
               isArabic && "flex-row-reverse"
             )}
           >
             <span>{copy.adminPortal}</span>
-            <ArrowRight className={cn("h-2 w-2", isArabic && "rotate-180")} />
+            <ArrowRight className={cn("h-2.5 w-2.5", isArabic && "rotate-180")} />
           </Link>
         </div>
       </div>

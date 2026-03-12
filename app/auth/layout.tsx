@@ -144,7 +144,7 @@ export default function AuthLayout({
           </Link>
 
           {/* Main Content */}
-          <div className={cn("flex-1 flex flex-col justify-center max-w-xl py-6", isArabic ? "text-right" : "text-left")}>
+          <div className={cn("flex-1 flex flex-col justify-center max-w-xl py-4", isArabic ? "text-right" : "text-left")}>
             {/* Heading */}
             <div className="space-y-2.5 mb-6">
               <h1 className="text-3xl xl:text-4xl font-bold tracking-tight leading-[1.15]">
@@ -289,7 +289,7 @@ export default function AuthLayout({
 
           {/* Footer */}
           <div className={cn(
-            "mt-auto pt-4 flex items-center justify-between text-xs text-muted-foreground",
+            "mt-auto pt-3 flex items-center justify-between text-xs text-muted-foreground",
             isArabic && "flex-row-reverse"
           )}>
             <p>{copy.rights}</p>
