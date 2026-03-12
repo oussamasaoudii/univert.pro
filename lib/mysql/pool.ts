@@ -36,13 +36,17 @@ export function getMySQLPool(): mysql.Pool | null {
 
   const isTiDB = isTiDBCloud();
   const defaultPort = isTiDB ? "4000" : "3306";
+  // For TiDB Cloud, always use 'ovmon' database (ignore 'sys' from env var)
+  const database = isTiDB && process.env.MYSQL_DATABASE === 'sys' 
+    ? 'ovmon' 
+    : process.env.MYSQL_DATABASE!;
 
   pool = mysql.createPool({
     host: process.env.MYSQL_HOST || "127.0.0.1",
     port: parseInt(process.env.MYSQL_PORT || defaultPort, 10),
     user: process.env.MYSQL_USER!,
     password: process.env.MYSQL_PASSWORD!,
-    database: process.env.MYSQL_DATABASE!,
+    database,
     charset: "utf8mb4",
     waitForConnections: true,
     connectionLimit: 10,
