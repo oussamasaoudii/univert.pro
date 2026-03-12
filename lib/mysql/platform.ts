@@ -188,6 +188,21 @@ type AdminRecipientRow = {
 };
 
 let platformSchemaPromise: Promise<void> | null = null;
+let platformSchemaInitialized = false;
+
+async function checkPlatformTablesExist(): Promise<boolean> {
+  try {
+    const pool = getMySQLPool();
+    if (!pool) return false;
+    const [rows] = await pool.query<Array<{ cnt: number }>>(
+      `SELECT COUNT(*) as cnt FROM information_schema.tables 
+       WHERE table_schema = DATABASE() AND table_name = 'templates'`
+    );
+    return (rows[0]?.cnt || 0) > 0;
+  } catch {
+    return false;
+  }
+}
 
 function normalizeTemplate(row: TemplateRow): TemplateRecord {
   return {
@@ -293,6 +308,10 @@ function toSlug(value: string): string {
 }
 
 export async function ensurePlatformDataSchema(): Promise<void> {
+  if (platformSchemaInitialized) {
+    return;
+  }
+  
   if (!platformSchemaPromise) {
     platformSchemaPromise = initializePlatformDataSchema();
   }
@@ -303,6 +322,18 @@ export async function ensurePlatformDataSchema(): Promise<void> {
 async function initializePlatformDataSchema() {
   await ensureCoreSchema();
   const pool = getMySQLPool();
+  
+  // Check if tables already exist (pre-created via migration script)
+  const tablesExist = await checkPlatformTablesExist();
+  
+  if (tablesExist) {
+    // Tables exist, just seed default data if needed
+    await seedDefaultTemplates();
+    platformSchemaInitialized = true;
+    return;
+  }
+  
+  // Tables don't exist, try to create them
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS templates (
@@ -426,6 +457,7 @@ async function initializePlatformDataSchema() {
   `);
 
   await seedDefaultTemplates();
+  platformSchemaInitialized = true;
 }
 
 async function seedDefaultTemplates() {

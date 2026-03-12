@@ -150,6 +150,21 @@ type InvoiceCountersRow = {
 };
 
 let billingSchemaPromise: Promise<void> | null = null;
+let billingSchemaInitialized = false;
+
+async function checkBillingTablesExist(): Promise<boolean> {
+  try {
+    const pool = getMySQLPool();
+    if (!pool) return false;
+    const [rows] = await pool.query<Array<{ cnt: number }>>(
+      `SELECT COUNT(*) as cnt FROM information_schema.tables 
+       WHERE table_schema = DATABASE() AND table_name = 'billing_plans'`
+    );
+    return (rows[0]?.cnt || 0) > 0;
+  } catch {
+    return false;
+  }
+}
 
 function normalizePlan(row: BillingPlanRow, features: string[]): BillingPlanRecord {
   return {
@@ -238,6 +253,10 @@ function formatMonthLabel(key: string): string {
 }
 
 async function ensureBillingSchema() {
+  if (billingSchemaInitialized) {
+    return;
+  }
+  
   if (!billingSchemaPromise) {
     billingSchemaPromise = initializeBillingSchema();
   }
@@ -250,6 +269,18 @@ async function initializeBillingSchema() {
   await ensurePlatformDataSchema();
 
   const pool = getMySQLPool();
+  
+  // Check if tables already exist (pre-created via migration script)
+  const tablesExist = await checkBillingTablesExist();
+  
+  if (tablesExist) {
+    // Tables exist, just seed default data if needed
+    await seedBillingPlans();
+    billingSchemaInitialized = true;
+    return;
+  }
+  
+  // Tables don't exist, try to create them
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS billing_plans (
@@ -325,6 +356,7 @@ async function initializeBillingSchema() {
   `);
 
   await seedBillingPlans();
+  billingSchemaInitialized = true;
 }
 
 async function seedBillingPlans() {

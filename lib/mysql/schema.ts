@@ -4,8 +4,14 @@ import { hashPassword } from "@/lib/mysql/password";
 import { getLocalAdminCredentials } from "@/lib/local-admin-auth";
 
 let schemaReadyPromise: Promise<void> | null = null;
+let schemaInitialized = false;
 
 export async function ensureCoreSchema(): Promise<void> {
+  // If already verified, skip
+  if (schemaInitialized) {
+    return;
+  }
+  
   if (!schemaReadyPromise) {
     schemaReadyPromise = initializeCoreSchema().catch((error) => {
       // Allow retry on next request if initial bootstrap failed transiently.
@@ -17,8 +23,36 @@ export async function ensureCoreSchema(): Promise<void> {
   return schemaReadyPromise;
 }
 
+/**
+ * Check if the required tables already exist in the database.
+ * This is used to skip schema creation when tables are pre-created (e.g., TiDB Cloud).
+ */
+async function checkTablesExist(pool: ReturnType<typeof getMySQLPool>): Promise<boolean> {
+  try {
+    const [rows] = await pool.query<Array<{ cnt: number }>>(
+      `SELECT COUNT(*) as cnt FROM information_schema.tables 
+       WHERE table_schema = DATABASE() AND table_name = 'users'`
+    );
+    return (rows[0]?.cnt || 0) > 0;
+  } catch {
+    return false;
+  }
+}
+
 async function initializeCoreSchema() {
   const pool = getMySQLPool();
+  
+  // Check if tables already exist (pre-created via migration script)
+  const tablesExist = await checkTablesExist(pool);
+  
+  if (tablesExist) {
+    // Tables exist, just ensure default admin and mark as initialized
+    await ensureDefaultAdminUser();
+    schemaInitialized = true;
+    return;
+  }
+  
+  // Tables don't exist, try to create them (will fail on TiDB Cloud if no DDL permissions)
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
@@ -218,6 +252,7 @@ async function initializeCoreSchema() {
   `);
 
   await ensureDefaultAdminUser();
+  schemaInitialized = true;
 }
 
 async function ensureDefaultAdminUser() {
