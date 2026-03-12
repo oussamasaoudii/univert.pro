@@ -280,11 +280,32 @@ async function main() {
     connection = await mysql.createConnection(config);
     console.log('Connected successfully!');
 
-    // Split and execute each statement
-    const statements = TABLES_SQL
-      .split(';')
-      .map(s => s.trim())
-      .filter(s => s.length > 0 && !s.startsWith('--'));
+    // Split SQL statements properly (handle multi-line and comments)
+    const statements = [];
+    let currentStatement = '';
+    const lines = TABLES_SQL.split('\n');
+    
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      // Skip empty lines and comments
+      if (!trimmedLine || trimmedLine.startsWith('--')) continue;
+      
+      currentStatement += ' ' + line;
+      
+      // Check if line ends with semicolon (end of statement)
+      if (trimmedLine.endsWith(';')) {
+        const stmt = currentStatement.trim().slice(0, -1); // Remove trailing semicolon
+        if (stmt.length > 0) {
+          statements.push(stmt);
+        }
+        currentStatement = '';
+      }
+    }
+    
+    // Add any remaining statement
+    if (currentStatement.trim().length > 0) {
+      statements.push(currentStatement.trim());
+    }
 
     console.log(`Executing ${statements.length} SQL statements...`);
 
