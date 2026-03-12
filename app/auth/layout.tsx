@@ -208,7 +208,7 @@ export default function AuthLayout({
             </div>
 
             {/* Mini Dashboard Preview */}
-            <div className="mb-4 p-3 rounded-xl bg-card/25 border border-border/30 overflow-hidden">
+            <div className="p-3 rounded-xl bg-card/25 border border-border/30 overflow-hidden">
               {/* Window chrome */}
               <div className={cn("flex items-center justify-between mb-3", isArabic && "flex-row-reverse")}>
                 <div className="flex gap-1.5">
@@ -252,39 +252,37 @@ export default function AuthLayout({
                   ))}
                 </div>
               </div>
-            </div>
-
-            {/* Testimonial - Inline style */}
-            <div className={cn("flex items-center gap-3", isArabic && "flex-row-reverse")}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentTestimonial}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex items-center gap-3"
-                >
-                  <Image
-                    src={copy.testimonials[currentTestimonial].avatar}
-                    alt={copy.testimonials[currentTestimonial].author}
-                    width={32}
-                    height={32}
-                    className="rounded-full shrink-0"
-                  />
-                  <div className={cn("flex items-center gap-1.5 text-xs text-muted-foreground", isArabic && "flex-row-reverse")}>
-                    <span className="font-medium text-foreground">{copy.testimonials[currentTestimonial].author}</span>
-                    <span className="text-muted-foreground/50">·</span>
-                    <span>{copy.testimonials[currentTestimonial].role}</span>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
               
-              {/* Stars */}
-              <div className={cn("flex gap-0.5", isArabic ? "mr-auto" : "ml-auto")}>
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3 h-3 fill-accent text-accent" />
-                ))}
+              {/* Testimonial - Integrated at bottom */}
+              <div className={cn("mt-3 pt-3 border-t border-border/20 flex items-center gap-2.5", isArabic && "flex-row-reverse")}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentTestimonial}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className={cn("flex items-center gap-2.5 flex-1 min-w-0", isArabic && "flex-row-reverse")}
+                  >
+                    <Image
+                      src={copy.testimonials[currentTestimonial].avatar}
+                      alt={copy.testimonials[currentTestimonial].author}
+                      width={28}
+                      height={28}
+                      className="rounded-full shrink-0"
+                    />
+                    <div className={cn("flex items-center gap-1.5 text-[11px] text-muted-foreground min-w-0", isArabic && "flex-row-reverse")}>
+                      <span className="font-medium text-foreground truncate">{copy.testimonials[currentTestimonial].author}</span>
+                      <span className="text-muted-foreground/40 shrink-0">·</span>
+                      <span className="truncate">{copy.testimonials[currentTestimonial].role}</span>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+                <div className={cn("flex gap-0.5 shrink-0", isArabic && "flex-row-reverse")}>
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-2.5 h-2.5 fill-accent text-accent" />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
