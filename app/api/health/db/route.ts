@@ -1,6 +1,11 @@
 import { getMySQLPool, isMySQLConfigured } from '@/lib/mysql/pool';
 import { type NextRequest, NextResponse } from 'next/server';
 
+// Sanitize host to remove whitespace
+function sanitizeHost(host: string | undefined): string {
+  return (host || "").replace(/\s+/g, "");
+}
+
 export async function GET(request: NextRequest) {
   try {
     // Check if MySQL is configured
@@ -40,7 +45,7 @@ export async function GET(request: NextRequest) {
       message: 'Database connection successful',
       configured: true,
       database: {
-        host: process.env.DB_HOST,
+        host: sanitizeHost(process.env.DB_HOST),
         port: process.env.DB_PORT,
         database: process.env.DB_DATABASE,
         username: process.env.DB_USERNAME,
@@ -59,7 +64,7 @@ export async function GET(request: NextRequest) {
         error: errorMessage,
         configured: isMySQLConfigured(),
         database: {
-          host: process.env.DB_HOST,
+          host: sanitizeHost(process.env.DB_HOST),
           port: process.env.DB_PORT,
           database: process.env.DB_DATABASE,
           username: process.env.DB_USERNAME,
