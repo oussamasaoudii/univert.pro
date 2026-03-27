@@ -1,0 +1,44 @@
+CREATE TABLE notifications (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT UNSIGNED NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  message TEXT,
+  data JSON,
+  read_at TIMESTAMP NULL,
+  read BOOLEAN DEFAULT FALSE,
+  channel VARCHAR(50) DEFAULT 'in_app',
+  sent_at TIMESTAMP NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_user_id (user_id),
+  INDEX idx_created_at (created_at),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE notification_preferences (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT UNSIGNED NOT NULL UNIQUE,
+  email_enabled BOOLEAN DEFAULT TRUE,
+  push_enabled BOOLEAN DEFAULT TRUE,
+  in_app_enabled BOOLEAN DEFAULT TRUE,
+  subscription_notifications BOOLEAN DEFAULT TRUE,
+  security_notifications BOOLEAN DEFAULT TRUE,
+  billing_notifications BOOLEAN DEFAULT TRUE,
+  marketing_notifications BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE notification_logs (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  notification_id BIGINT UNSIGNED,
+  channel VARCHAR(50),
+  status VARCHAR(50),
+  response_code INT,
+  error_message TEXT,
+  sent_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (notification_id) REFERENCES notifications(id) ON DELETE CASCADE
+);
