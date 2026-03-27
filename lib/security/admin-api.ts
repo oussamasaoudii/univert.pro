@@ -62,14 +62,17 @@ export async function requireAdminRouteAccess(
   }
 
   const ipAddress = getRequestIp(request);
-  await enforceRouteRateLimit({
-    scope: options.scope,
-    key: `${adminUser.id}:${ipAddress}`,
-    limit: options.limit ?? DEFAULT_RATE_LIMIT.limit,
-    windowMs: options.windowMs ?? DEFAULT_RATE_LIMIT.windowMs,
-    blockDurationMs:
-      options.blockDurationMs ?? DEFAULT_RATE_LIMIT.blockDurationMs,
-  });
+  
+  // Temporarily skip rate limiting for admin routes due to MySQL deadlock issues
+  // TODO: Fix deadlock and re-enable rate limiting
+  // await enforceRouteRateLimit({
+  //   scope: options.scope,
+  //   key: `${adminUser.id}:${ipAddress}`,
+  //   limit: options.limit ?? DEFAULT_RATE_LIMIT.limit,
+  //   windowMs: options.windowMs ?? DEFAULT_RATE_LIMIT.windowMs,
+  //   blockDurationMs:
+  //     options.blockDurationMs ?? DEFAULT_RATE_LIMIT.blockDurationMs,
+  // });
 
   return {
     adminUser,
