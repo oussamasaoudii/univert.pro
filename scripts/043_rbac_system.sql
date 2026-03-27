@@ -1,0 +1,55 @@
+CREATE TABLE roles (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  description TEXT,
+  is_system BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE permissions (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  description TEXT,
+  resource VARCHAR(100),
+  action VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE role_permissions (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  role_id BIGINT UNSIGNED NOT NULL,
+  permission_id BIGINT UNSIGNED NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_role_permission (role_id, permission_id),
+  FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+  FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
+);
+
+CREATE TABLE user_roles (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT UNSIGNED NOT NULL,
+  role_id BIGINT UNSIGNED NOT NULL,
+  assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  assigned_by BIGINT UNSIGNED,
+  UNIQUE KEY unique_user_role (user_id, role_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+  FOREIGN KEY (assigned_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE audit_logs (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT UNSIGNED NOT NULL,
+  action VARCHAR(255),
+  resource_type VARCHAR(100),
+  resource_id VARCHAR(100),
+  old_values JSON,
+  new_values JSON,
+  ip_address VARCHAR(45),
+  user_agent VARCHAR(500),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_user_id (user_id),
+  INDEX idx_created_at (created_at),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
