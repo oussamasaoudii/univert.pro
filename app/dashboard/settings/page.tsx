@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, Copy, Check, AlertTriangle } from 'lucide-react';
+import { AvatarUpload } from '@/components/settings/avatar-upload';
 
 type SettingsState = {
   email: string;
@@ -19,6 +20,7 @@ type SettingsState = {
   lastName: string;
   company: string;
   apiKey: string;
+  avatarPath: string | null;
   emailNotifications: boolean;
   maintenanceAlerts: boolean;
   weeklyReports: boolean;
@@ -32,6 +34,7 @@ const INITIAL_SETTINGS: SettingsState = {
   lastName: '',
   company: '',
   apiKey: '',
+  avatarPath: null,
   emailNotifications: true,
   maintenanceAlerts: true,
   weeklyReports: false,
@@ -69,6 +72,7 @@ export default function SettingsPage() {
         lastName: next.lastName || '',
         company: next.company || '',
         apiKey: next.apiKey || '',
+        avatarPath: next.avatarPath || null,
         emailNotifications: Boolean(next.emailNotifications),
         maintenanceAlerts: Boolean(next.maintenanceAlerts),
         weeklyReports: Boolean(next.weeklyReports),
@@ -176,7 +180,22 @@ export default function SettingsPage() {
               <CardTitle>Profile Information</CardTitle>
               <CardDescription>Update your personal details</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
+              <div className="flex justify-center pb-2">
+                <AvatarUpload
+                  currentAvatarPath={settings.avatarPath}
+                  userInitials={
+                    settings.firstName && settings.lastName
+                      ? `${settings.firstName[0]}${settings.lastName[0]}`.toUpperCase()
+                      : settings.email
+                        ? settings.email.substring(0, 2).toUpperCase()
+                        : 'U'
+                  }
+                  onAvatarChange={(pathname) =>
+                    setSettings((previous) => ({ ...previous, avatarPath: pathname }))
+                  }
+                />
+              </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="email">Email</Label>

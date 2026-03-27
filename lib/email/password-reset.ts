@@ -1,3 +1,11 @@
+import { sendEmail, type EmailResult } from "./resend-client";
+import {
+  baseTemplate,
+  buttonStyle,
+  headingStyle,
+  paragraphStyle,
+  smallTextStyle,
+} from "./templates/base";
 import { logger } from "@/lib/utils/errors";
 
 type PasswordResetEmailInput = {
@@ -6,80 +14,62 @@ type PasswordResetEmailInput = {
   expiresInMinutes: number;
 };
 
-function buildHtml(input: PasswordResetEmailInput) {
-  return `
-    <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#111827">
-      <h1 style="font-size:24px;margin-bottom:16px">Reset your password</h1>
-      <p style="font-size:16px;line-height:1.6">
-        We received a request to reset the password for ${input.email}.
-      </p>
-      <p style="font-size:16px;line-height:1.6">
-        This link expires in ${input.expiresInMinutes} minutes and can only be used once.
-      </p>
-      <p style="margin:24px 0">
-        <a href="${input.resetUrl}" style="background:#111827;color:#fff;padding:12px 18px;border-radius:8px;text-decoration:none;display:inline-block">
-          Reset password
-        </a>
-      </p>
-      <p style="font-size:14px;line-height:1.6;color:#6b7280">
-        If you did not request this, you can ignore this email.
-      </p>
-    </div>
+function buildPasswordResetHtml(input: PasswordResetEmailInput): string {
+  const content = `
+    <h1 style="${headingStyle()}">Reset Your Password</h1>
+    
+    <p style="${paragraphStyle()}">
+      We received a request to reset the password for <strong>${input.email}</strong>.
+    </p>
+    
+    <p style="${paragraphStyle()}">
+      Click the button below to create a new password. This link will expire in ${input.expiresInMinutes} minutes.
+    </p>
+    
+    <p style="margin:32px 0;text-align:center;">
+      <a href="${input.resetUrl}" style="${buttonStyle()}">
+        Reset Password
+      </a>
+    </p>
+    
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:24px 0;background-color:#fef3c7;border-radius:8px;border:1px solid #fcd34d;">
+      <tr>
+        <td style="padding:16px;">
+          <p style="margin:0;${smallTextStyle()}color:#92400e;">
+            <strong>Didn&apos;t request this?</strong><br>
+            If you didn&apos;t request a password reset, you can safely ignore this email. Your password will remain unchanged.
+          </p>
+        </td>
+      </tr>
+    </table>
+    
+    <p style="${smallTextStyle()}">
+      If the button doesn&apos;t work, copy and paste this link into your browser:<br>
+      <a href="${input.resetUrl}" style="color:#71717a;word-break:break-all;">${input.resetUrl}</a>
+    </p>
   `;
+
+  return baseTemplate(
+    content,
+    "Reset your password - This link expires in " + input.expiresInMinutes + " minutes"
+  );
 }
 
-export async function sendPasswordResetEmail(input: PasswordResetEmailInput): Promise<boolean> {
-  const provider = process.env.EMAIL_PROVIDER;
+export async function sendPasswordResetEmail(
+  input: PasswordResetEmailInput
+): Promise<boolean> {
+  logger.info("Sending password reset email", {
+    action: "send_password_reset",
+    email: input.email,
+    expiresInMinutes: input.expiresInMinutes,
+  });
 
-  try {
-    if (provider === "resend" && process.env.RESEND_API_KEY) {
-      const response = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: process.env.SENDGRID_FROM_EMAIL || "security@univert.pro",
-          to: [input.email],
-          subject: "Reset your password",
-          html: buildHtml(input),
-        }),
-      });
+  const result: EmailResult = await sendEmail({
+    to: input.email,
+    subject: "Reset Your Password",
+    html: buildPasswordResetHtml(input),
+    tags: [{ name: "type", value: "password_reset" }],
+  });
 
-      return response.ok;
-    }
-
-    if (
-      provider === "sendgrid" &&
-      process.env.SENDGRID_API_KEY &&
-      process.env.SENDGRID_FROM_EMAIL
-    ) {
-      const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          personalizations: [{ to: [{ email: input.email }] }],
-          from: { email: process.env.SENDGRID_FROM_EMAIL },
-          subject: "Reset your password",
-          content: [{ type: "text/html", value: buildHtml(input) }],
-        }),
-      });
-
-      return response.ok;
-    }
-
-    logger.warn("Password reset email provider is not configured", {
-      action: "password_reset_email_skipped",
-    });
-    return false;
-  } catch (error) {
-    logger.error("Failed to send password reset email", error, {
-      action: "password_reset_email_failed",
-    });
-    return false;
-  }
+  return result.success;
 }

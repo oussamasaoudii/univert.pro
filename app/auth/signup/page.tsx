@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useSiteLanguage } from "@/hooks/use-site-language";
 import { cn } from "@/lib/utils";
+import { OAuthButtons, OAuthDivider } from "@/components/auth/oauth-buttons";
 
 const SIGNUP_COPY = {
   en: {
@@ -207,6 +208,11 @@ export default function SignupPage() {
         </h1>
         <p className="text-muted-foreground">{copy.subtitle}</p>
       </div>
+
+      {/* OAuth Buttons */}
+      <OAuthButtons language={language} returnUrl="/dashboard" />
+
+      <OAuthDivider language={language} />
 
       {/* Error Alert */}
       {error && (
