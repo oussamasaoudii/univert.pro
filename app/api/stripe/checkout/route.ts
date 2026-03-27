@@ -11,10 +11,15 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { planId, billingPeriod = "monthly" } = body;
+    const { planId, billingPeriod = "monthly", countrySlug } = body;
 
     if (!planId) {
       return NextResponse.json({ error: "Plan ID is required" }, { status: 400 });
+    }
+
+    // Validate billing period
+    if (!["monthly", "yearly"].includes(billingPeriod)) {
+      return NextResponse.json({ error: "Invalid billing period" }, { status: 400 });
     }
 
     const user = await findUserById(session.userId);
@@ -29,6 +34,7 @@ export async function POST(request: NextRequest) {
       email: user.email,
       planId,
       billingPeriod,
+      countrySlug: countrySlug || undefined, // Pass country slug for country-specific pricing
       successUrl: `${appUrl}/dashboard/billing?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${appUrl}/dashboard/billing?canceled=true`,
     });

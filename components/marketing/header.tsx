@@ -1,8 +1,12 @@
 import { getAuthenticatedRequestUser } from "@/lib/api-auth";
 import { HeaderClient } from "@/components/marketing/header-client";
+import { listCountries } from "@/lib/countries/db";
 
 export async function Header() {
-  const user = await getAuthenticatedRequestUser();
+  const [user, countries] = await Promise.all([
+    getAuthenticatedRequestUser(),
+    listCountries().catch(() => []),
+  ]);
 
   const currentUser = user
       ? {
@@ -13,5 +17,5 @@ export async function Header() {
       }
     : null;
 
-  return <HeaderClient currentUser={currentUser} />;
+  return <HeaderClient currentUser={currentUser} countries={countries} />;
 }

@@ -42,6 +42,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Country } from "@/lib/countries/types";
 
 type MarketingSessionUser = {
   id: string;
@@ -240,9 +241,12 @@ const simpleNavItems = [
   { name: "Pricing", href: "/pricing" },
 ];
 
-export function HeaderClient({ currentUser }: { currentUser: MarketingSessionUser }) {
+export function HeaderClient({ currentUser, countries = [] }: { currentUser: MarketingSessionUser; countries?: Country[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(
+    countries.find((c) => c.isDefault) || countries[0] || null
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/85 backdrop-blur-xl supports-[backdrop-filter]:bg-background/65">
