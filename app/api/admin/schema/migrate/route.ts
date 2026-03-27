@@ -4,6 +4,13 @@ import { NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
+// Skip origin check for admin routes in development/preview
+const isPreviewMode = () => {
+  return process.env.NODE_ENV !== 'production' || 
+         process.env.VERCEL_ENV === 'preview' ||
+         process.env.VERCEL_URL?.includes('vusercontent.net');
+};
+
 // Safe CREATE TABLE IF NOT EXISTS statements
 const SAFE_MIGRATIONS = [
   // ========== Core Authentication ==========

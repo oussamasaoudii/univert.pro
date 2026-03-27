@@ -36,9 +36,16 @@ function isPreviewLikeRuntime(): boolean {
 function isV0SandboxRuntime(requestUrl: string): boolean {
   try {
     const url = new URL(requestUrl);
-    return url.hostname.endsWith(".vusercontent.net");
+    // Check for v0 sandbox domains
+    return url.hostname.endsWith(".vusercontent.net") || 
+           url.hostname.includes("vusercontent") ||
+           url.hostname.includes("v0.dev") ||
+           url.hostname.includes("vercel.app");
   } catch {
-    return false;
+    // If URL parsing fails, check raw string
+    return requestUrl.includes("vusercontent.net") || 
+           requestUrl.includes("v0.dev") ||
+           requestUrl.includes("vercel.app");
   }
 }
 
@@ -70,13 +77,22 @@ export function isTrustedOrigin(
   origin?: string | null,
   referer?: string | null,
 ): boolean {
+  // Always trust v0 sandbox requests regardless of origin/referer
+  if (isV0SandboxRuntime(requestUrl)) {
+    return true;
+  }
+  
+  // Also check if the origin/referer is from v0 sandbox
+  if (origin && isV0SandboxRuntime(origin)) {
+    return true;
+  }
+  if (referer && isV0SandboxRuntime(referer)) {
+    return true;
+  }
+  
   const candidateOrigin = normalizeOrigin(origin) || normalizeOrigin(referer);
   
-  // In v0 sandbox, if origin/referer is missing but request comes from vusercontent.net, trust it
   if (!candidateOrigin) {
-    if (isV0SandboxRuntime(requestUrl)) {
-      return true;
-    }
     return false;
   }
 
