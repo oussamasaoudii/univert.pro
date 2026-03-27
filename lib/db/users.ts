@@ -3,6 +3,8 @@ import { getAuthenticatedRequestUser } from "@/lib/api-auth";
 import {
   findUserById,
   updateUserAdminFields,
+  updateUserAvatarPath,
+  getUserAvatarPath,
   type AppUser,
 } from "@/lib/mysql/users";
 import type { ProfileRow } from "./types";
@@ -66,16 +68,27 @@ export async function isUserAdmin(userId: string): Promise<boolean> {
   return user?.role === "admin" ?? false;
 }
 
-function appUserToProfile(user: AppUser): ProfileRow {
+function appUserToProfile(user: AppUser, avatarUrl?: string | null): ProfileRow {
   return {
     id: user.id,
     email: user.email,
     full_name: user.fullName,
-    avatar_url: null,
+    avatar_url: avatarUrl ?? null,
     company_name: user.companyName,
     role: user.role,
     onboarding_completed: user.status === "active",
     created_at: user.createdAt,
     updated_at: user.updatedAt,
   };
+}
+
+export async function updateUserAvatar(
+  userId: number | string,
+  avatarPathname: string | null,
+): Promise<void> {
+  await updateUserAvatarPath(String(userId), avatarPathname);
+}
+
+export async function getUserAvatar(userId: string): Promise<string | null> {
+  return getUserAvatarPath(userId);
 }

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useSiteLanguage } from "@/hooks/use-site-language";
 import { cn } from "@/lib/utils";
+import { OAuthButtons, OAuthDivider } from "@/components/auth/oauth-buttons";
 
 const LOGIN_COPY = {
   en: {
@@ -171,6 +172,11 @@ export default function LoginPage() {
         </h1>
         <p className="text-sm text-muted-foreground">{copy.welcomeDescription}</p>
       </div>
+
+      {/* OAuth Buttons */}
+      <OAuthButtons language={language} returnUrl="/dashboard" />
+
+      <OAuthDivider language={language} />
 
       {/* Error Alert */}
       {error && (

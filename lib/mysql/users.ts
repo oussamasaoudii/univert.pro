@@ -452,3 +452,25 @@ export async function countActiveAdmins(): Promise<number> {
 
   return Number(rows[0]?.total || 0);
 }
+
+export async function updateUserAvatarPath(
+  userId: string,
+  avatarUrl: string | null,
+): Promise<void> {
+  await ensureCoreSchema();
+  const pool = getMySQLPool();
+  await pool.query(
+    `UPDATE users SET avatar_url = ? WHERE id = ?`,
+    [avatarUrl, userId],
+  );
+}
+
+export async function getUserAvatarPath(userId: string): Promise<string | null> {
+  await ensureCoreSchema();
+  const pool = getMySQLPool();
+  const [rows] = await pool.query<Array<{ avatar_url: string | null }>>(
+    `SELECT avatar_url FROM users WHERE id = ? LIMIT 1`,
+    [userId],
+  );
+  return rows[0]?.avatar_url ?? null;
+}
