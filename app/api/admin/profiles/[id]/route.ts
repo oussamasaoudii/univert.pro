@@ -14,7 +14,7 @@ import { assertTrustedOrigin, parseJsonBody } from "@/lib/security/request";
 import { ValidationError } from "@/lib/utils/errors";
 
 const VALID_PROFILE_STATUSES: ProfileStatus[] = ["active", "disabled"];
-const routeParamsSchema = z.object({ id: z.string().uuid() });
+const routeParamsSchema = z.object({ id: z.string().trim().min(1).max(191) });
 
 const updateProfileSchema = z
   .object({

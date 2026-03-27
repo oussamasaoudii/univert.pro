@@ -52,19 +52,17 @@ export async function consumeRateLimit(input: {
 }> {
   await ensureCoreSchema();
   const pool = getMySQLPool();
-  const connection = await pool.getConnection();
   const now = new Date();
   const keyHash = hashRateLimitKey(input.scope, input.key);
 
+  // Use atomic UPSERT without explicit transaction to avoid deadlocks
   try {
-    await connection.beginTransaction();
-
-    const [rows] = await connection.query<RateLimitRow[]>(
+    // First, try to read existing record (no lock)
+    const [rows] = await pool.query<RateLimitRow[]>(
       `
         SELECT key_hash, scope, attempts, window_started_at, blocked_until
         FROM auth_rate_limits
         WHERE key_hash = ?
-        FOR UPDATE
       `,
       [keyHash],
     );
@@ -74,12 +72,12 @@ export async function consumeRateLimit(input: {
     const blockedUntil = row?.blocked_until ? new Date(row.blocked_until) : null;
     const windowExpired = now.getTime() - windowStartedAt.getTime() >= input.windowMs;
 
+    // Check if currently blocked
     if (blockedUntil && blockedUntil.getTime() > now.getTime()) {
       const retryAfterSeconds = Math.max(
         1,
         Math.ceil((blockedUntil.getTime() - now.getTime()) / 1000),
       );
-      await connection.commit();
       return {
         allowed: false,
         attempts: row.attempts,
@@ -95,7 +93,8 @@ export async function consumeRateLimit(input: {
       ? new Date(now.getTime() + input.blockDurationMs)
       : null;
 
-    await connection.query(
+    // Use atomic INSERT ... ON DUPLICATE KEY UPDATE (no transaction needed)
+    await pool.query(
       `
         INSERT INTO auth_rate_limits (
           key_hash,
@@ -109,8 +108,16 @@ export async function consumeRateLimit(input: {
         VALUES (?, ?, ?, ?, ?, NOW(), NOW())
         ON DUPLICATE KEY UPDATE
           scope = VALUES(scope),
-          attempts = VALUES(attempts),
-          window_started_at = VALUES(window_started_at),
+          attempts = IF(
+            TIMESTAMPDIFF(SECOND, window_started_at, NOW()) * 1000 >= ?,
+            1,
+            attempts + 1
+          ),
+          window_started_at = IF(
+            TIMESTAMPDIFF(SECOND, window_started_at, NOW()) * 1000 >= ?,
+            NOW(),
+            window_started_at
+          ),
           blocked_until = VALUES(blocked_until),
           updated_at = NOW()
       `,
@@ -120,10 +127,10 @@ export async function consumeRateLimit(input: {
         nextAttempts,
         toMySqlDateTime(nextWindowStartedAt),
         toMySqlDateTime(nextBlockedUntil),
+        input.windowMs,
+        input.windowMs,
       ],
     );
-
-    await connection.commit();
 
     return {
       allowed: !isBlocked,
@@ -134,13 +141,16 @@ export async function consumeRateLimit(input: {
         : 0,
     };
   } catch (error) {
-    await connection.rollback();
     logger.error("Failed to apply rate limit", error, {
       scope: input.scope,
     });
-    throw error;
-  } finally {
-    connection.release();
+    // On error, allow the request to proceed (fail-open for rate limiting)
+    return {
+      allowed: true,
+      attempts: 0,
+      remaining: input.limit,
+      retryAfterSeconds: 0,
+    };
   }
 }
 

@@ -1,11 +1,19 @@
 export const LANGUAGE_COOKIE_NAME = "site_lang";
 export const LANGUAGE_CHANGE_EVENT = "site-language-changed";
 
-export const SUPPORTED_LANGUAGES = ["en", "ar"] as const;
+export const SUPPORTED_LANGUAGES = ["en", "ar", "fr", "es"] as const;
 
 export type SiteLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 export const DEFAULT_LANGUAGE: SiteLanguage = "en";
+
+// Language metadata with flags and names
+export const LANGUAGE_CONFIG: Record<SiteLanguage, { flag: string; name: string; nativeName: string; dir: "ltr" | "rtl" }> = {
+  en: { flag: "🇬🇧", name: "English", nativeName: "English", dir: "ltr" },
+  ar: { flag: "🇲🇦", name: "Arabic", nativeName: "العربية", dir: "rtl" },
+  fr: { flag: "🇫🇷", name: "French", nativeName: "Français", dir: "ltr" },
+  es: { flag: "🇪🇸", name: "Spanish", nativeName: "Español", dir: "ltr" },
+};
 
 function parseKnownLanguage(value: string | null | undefined): SiteLanguage | null {
   if (!value) {
@@ -13,12 +21,11 @@ function parseKnownLanguage(value: string | null | undefined): SiteLanguage | nu
   }
 
   const normalized = value.trim().toLowerCase();
-  if (normalized === "ar" || normalized.startsWith("ar-") || normalized.startsWith("ar_")) {
-    return "ar";
-  }
-
-  if (normalized === "en" || normalized.startsWith("en-") || normalized.startsWith("en_")) {
-    return "en";
+  
+  for (const lang of SUPPORTED_LANGUAGES) {
+    if (normalized === lang || normalized.startsWith(`${lang}-`) || normalized.startsWith(`${lang}_`)) {
+      return lang;
+    }
   }
 
   return null;
