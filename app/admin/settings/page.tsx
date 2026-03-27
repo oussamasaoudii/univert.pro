@@ -30,6 +30,15 @@ type SettingsState = {
   turnstileEnabled: boolean;
   turnstileSiteKey: string;
   turnstileSecretKey: string;
+  // SMTP Settings
+  smtpEnabled: boolean;
+  smtpHost: string;
+  smtpPort: string;
+  smtpUsername: string;
+  smtpPassword: string;
+  smtpEncryption: string;
+  smtpFromAddress: string;
+  smtpFromName: string;
 };
 
 type S3ConfigSource = 'database' | 'env' | 'mixed' | 'none';
@@ -60,6 +69,15 @@ export default function AdminSettingsPage() {
     turnstileEnabled: false,
     turnstileSiteKey: '',
     turnstileSecretKey: '',
+    // SMTP defaults
+    smtpEnabled: false,
+    smtpHost: '',
+    smtpPort: '587',
+    smtpUsername: '',
+    smtpPassword: '',
+    smtpEncryption: 'tls',
+    smtpFromAddress: '',
+    smtpFromName: '',
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -140,6 +158,15 @@ export default function AdminSettingsPage() {
             turnstileEnabled: Boolean(next?.turnstileEnabled),
             turnstileSiteKey: next?.turnstileSiteKey || '',
             turnstileSecretKey: next?.turnstileSecretKey || '',
+            // SMTP
+            smtpEnabled: Boolean(next?.smtpEnabled),
+            smtpHost: next?.smtpHost || '',
+            smtpPort: next?.smtpPort || '587',
+            smtpUsername: next?.smtpUsername || '',
+            smtpPassword: next?.smtpPassword || '',
+            smtpEncryption: next?.smtpEncryption || 'tls',
+            smtpFromAddress: next?.smtpFromAddress || '',
+            smtpFromName: next?.smtpFromName || '',
           });
           setS3ConfigSource((next?.s3ConfigSource as S3ConfigSource) || 'none');
           setS3EnvFallbackActive(Boolean(next?.s3EnvFallbackActive));
@@ -210,6 +237,15 @@ export default function AdminSettingsPage() {
           turnstileEnabled: Boolean(next.turnstileEnabled),
           turnstileSiteKey: next.turnstileSiteKey || '',
           turnstileSecretKey: next.turnstileSecretKey || '',
+          // SMTP
+          smtpEnabled: Boolean(next.smtpEnabled),
+          smtpHost: next.smtpHost || '',
+          smtpPort: next.smtpPort || '587',
+          smtpUsername: next.smtpUsername || '',
+          smtpPassword: next.smtpPassword || '',
+          smtpEncryption: next.smtpEncryption || 'tls',
+          smtpFromAddress: next.smtpFromAddress || '',
+          smtpFromName: next.smtpFromName || '',
         });
         setS3ConfigSource((next.s3ConfigSource as S3ConfigSource) || 'none');
         setS3EnvFallbackActive(Boolean(next.s3EnvFallbackActive));
@@ -663,6 +699,135 @@ export default function AdminSettingsPage() {
                     />
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>SMTP / Email</CardTitle>
+                <CardDescription>إعدادات خادم البريد الإلكتروني لإرسال رسائل التحقق والإشعارات</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded">
+                  <div>
+                    <p className="font-medium">تفعيل SMTP</p>
+                    <p className="text-sm text-muted-foreground">
+                      فعّل لإرسال البريد عبر SMTP بدلاً من الخدمات الخارجية
+                    </p>
+                  </div>
+                  <Switch
+                    checked={settings.smtpEnabled}
+                    onCheckedChange={(v) =>
+                      setSettings({ ...settings, smtpEnabled: v })
+                    }
+                    disabled={loading || saving}
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>SMTP Host</Label>
+                    <Input
+                      value={settings.smtpHost}
+                      onChange={(e) =>
+                        setSettings({ ...settings, smtpHost: e.target.value })
+                      }
+                      className="mt-2"
+                      placeholder="smtp.gmail.com"
+                      disabled={loading || saving}
+                    />
+                  </div>
+                  <div>
+                    <Label>SMTP Port</Label>
+                    <Input
+                      value={settings.smtpPort}
+                      onChange={(e) =>
+                        setSettings({ ...settings, smtpPort: e.target.value })
+                      }
+                      className="mt-2"
+                      placeholder="587"
+                      disabled={loading || saving}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Username / Email</Label>
+                    <Input
+                      value={settings.smtpUsername}
+                      onChange={(e) =>
+                        setSettings({ ...settings, smtpUsername: e.target.value })
+                      }
+                      className="mt-2"
+                      placeholder="your-email@gmail.com"
+                      disabled={loading || saving}
+                    />
+                  </div>
+                  <div>
+                    <Label>Password / App Password</Label>
+                    <Input
+                      type="password"
+                      value={settings.smtpPassword}
+                      onChange={(e) =>
+                        setSettings({ ...settings, smtpPassword: e.target.value })
+                      }
+                      className="mt-2"
+                      placeholder="••••••••••••••••"
+                      disabled={loading || saving}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <Label>Encryption</Label>
+                    <select
+                      value={settings.smtpEncryption}
+                      onChange={(e) =>
+                        setSettings({ ...settings, smtpEncryption: e.target.value })
+                      }
+                      className="mt-2 w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      disabled={loading || saving}
+                    >
+                      <option value="tls">TLS (Port 587)</option>
+                      <option value="ssl">SSL (Port 465)</option>
+                      <option value="none">None (Port 25)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <Label>From Address</Label>
+                    <Input
+                      type="email"
+                      value={settings.smtpFromAddress}
+                      onChange={(e) =>
+                        setSettings({ ...settings, smtpFromAddress: e.target.value })
+                      }
+                      className="mt-2"
+                      placeholder="noreply@yourdomain.com"
+                      disabled={loading || saving}
+                    />
+                  </div>
+                  <div>
+                    <Label>From Name</Label>
+                    <Input
+                      value={settings.smtpFromName}
+                      onChange={(e) =>
+                        setSettings({ ...settings, smtpFromName: e.target.value })
+                      }
+                      className="mt-2"
+                      placeholder="Ovmon"
+                      disabled={loading || saving}
+                    />
+                  </div>
+                </div>
+
+                <Alert>
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    للحصول على App Password من Gmail: اذهب إلى Google Account {'->'} Security {'->'} 2-Step Verification {'->'} App passwords
+                  </AlertDescription>
+                </Alert>
               </CardContent>
             </Card>
 

@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@ai-sdk/react": "^3.0.142",
+    "@aws-sdk/client-s3": "^3.1018.0",
+    "@aws-sdk/s3-request-presigner": "^3.1018.0",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.12",
     "@radix-ui/react-alert-dialog": "1.1.15",
