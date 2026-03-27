@@ -1,17 +1,23 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Languages } from "lucide-react";
+import { ChevronDown, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { useSiteLanguage } from "@/hooks/use-site-language";
-import { persistLanguageClient, type SiteLanguage } from "@/lib/i18n/language";
+import {
+  persistLanguageClient,
+  SUPPORTED_LANGUAGES,
+  LANGUAGE_CONFIG,
+  type SiteLanguage,
+} from "@/lib/i18n/language";
 import { cn } from "@/lib/utils";
-
-const OPTIONS: Array<{ label: string; value: SiteLanguage; flag: string }> = [
-  { label: "EN", value: "en", flag: "🇬🇧" },
-  { label: "AR", value: "ar", flag: "🇲🇦" },
-];
 
 interface LanguageSwitcherProps {
   className?: string;
@@ -21,13 +27,18 @@ interface LanguageSwitcherProps {
 export function LanguageSwitcher({ className, withTheme = false }: LanguageSwitcherProps) {
   const router = useRouter();
   const language = useSiteLanguage();
+  const [open, setOpen] = useState(false);
+
+  const currentLang = LANGUAGE_CONFIG[language];
 
   const handleLanguageChange = (nextLanguage: SiteLanguage) => {
     if (nextLanguage === language) {
+      setOpen(false);
       return;
     }
 
     persistLanguageClient(nextLanguage);
+    setOpen(false);
     router.refresh();
   };
 
@@ -50,23 +61,51 @@ export function LanguageSwitcher({ className, withTheme = false }: LanguageSwitc
           <span className="mx-1 h-4 w-px bg-border/80" aria-hidden />
         </>
       ) : null}
-      <Languages className="mx-1 h-3.5 w-3.5 text-muted-foreground" />
-      {OPTIONS.map((option) => (
-        <Button
-          key={option.value}
-          type="button"
-          size="sm"
-          variant={language === option.value ? "default" : "ghost"}
-          className={cn(
-            "h-7 px-2 text-xs gap-1",
-            language === option.value ? "shadow-none" : "text-muted-foreground",
-          )}
-          onClick={() => handleLanguageChange(option.value)}
+
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            type="button"
+            size="sm"
+            variant="ghost"
+            className="h-7 px-2 text-xs gap-1.5 text-muted-foreground hover:text-foreground"
+          >
+            <Globe className="h-3.5 w-3.5" />
+            <span className="text-base leading-none" aria-hidden="true">{currentLang.flag}</span>
+            <span className="font-medium">{language.toUpperCase()}</span>
+            <ChevronDown className="h-3 w-3 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent 
+          className="w-auto p-2" 
+          align="end"
+          sideOffset={8}
         >
-          <span className="text-sm leading-none" aria-hidden="true">{option.flag}</span>
-          <span>{option.label}</span>
-        </Button>
-      ))}
+          <div className="grid grid-cols-2 gap-1">
+            {SUPPORTED_LANGUAGES.map((lang) => {
+              const config = LANGUAGE_CONFIG[lang];
+              const isActive = language === lang;
+              
+              return (
+                <Button
+                  key={lang}
+                  type="button"
+                  size="sm"
+                  variant={isActive ? "secondary" : "ghost"}
+                  className={cn(
+                    "h-9 justify-start gap-2 px-3 text-sm",
+                    isActive && "bg-primary/10 text-primary font-medium",
+                  )}
+                  onClick={() => handleLanguageChange(lang)}
+                >
+                  <span className="text-base leading-none" aria-hidden="true">{config.flag}</span>
+                  <span>{config.nativeName}</span>
+                </Button>
+              );
+            })}
+          </div>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }
