@@ -8,9 +8,9 @@ import { useSiteLanguage } from "@/hooks/use-site-language";
 import { persistLanguageClient, type SiteLanguage } from "@/lib/i18n/language";
 import { cn } from "@/lib/utils";
 
-const OPTIONS: Array<{ label: string; value: SiteLanguage }> = [
-  { label: "EN", value: "en" },
-  { label: "AR", value: "ar" },
+const OPTIONS: Array<{ label: string; value: SiteLanguage; flag: string }> = [
+  { label: "EN", value: "en", flag: "🇬🇧" },
+  { label: "AR", value: "ar", flag: "🇲🇦" },
 ];
 
 interface LanguageSwitcherProps {
@@ -58,12 +58,13 @@ export function LanguageSwitcher({ className, withTheme = false }: LanguageSwitc
           size="sm"
           variant={language === option.value ? "default" : "ghost"}
           className={cn(
-            "h-7 px-2 text-xs",
+            "h-7 px-2 text-xs gap-1",
             language === option.value ? "shadow-none" : "text-muted-foreground",
           )}
           onClick={() => handleLanguageChange(option.value)}
         >
-          {option.label}
+          <span className="text-sm leading-none" aria-hidden="true">{option.flag}</span>
+          <span>{option.label}</span>
         </Button>
       ))}
     </div>
