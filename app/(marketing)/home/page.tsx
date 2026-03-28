@@ -515,13 +515,13 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4 border-accent/50 text-accent">
-              Platform Features
+              What You Get
             </Badge>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4 text-balance">
-              Everything you need to ship faster
+              Everything included in your plan
             </h2>
             <p className="text-foreground/60 max-w-2xl mx-auto">
-              Built for modern development teams who demand performance, reliability, and simplicity.
+              Professional templates, managed hosting, 24/7 support, and complete ownership of your website.
             </p>
           </div>
 
@@ -542,28 +542,28 @@ export default function HomePage() {
                       <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center mb-5 group-hover:bg-accent/30 transition-colors">
                         <Globe className="w-7 h-7 text-accent" />
                       </div>
-                      <h3 className="text-2xl font-bold text-foreground mb-3">Global Edge Network</h3>
+                      <h3 className="text-2xl font-bold text-foreground mb-3">Professional Website Templates</h3>
                       <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                        Deploy to 100+ edge locations worldwide. Your users get sub-50ms latency guaranteed, no matter where they are.
+                        Choose from 50+ professionally designed, production-ready templates. Each template includes managed setup, hosting, SSL, backups, and 24/7 support.
                       </p>
                       <div className="flex flex-wrap gap-3">
-                        {['North America', 'Europe', 'Asia Pacific', 'South America'].map((region) => (
-                          <span key={region} className="text-xs px-3 py-1.5 bg-accent/10 text-accent rounded-full">
-                            {region}
+                        {['WordPress', 'Laravel', 'Next.js', 'Custom Stacks'].map((stack) => (
+                          <span key={stack} className="text-xs px-3 py-1.5 bg-accent/10 text-accent rounded-full">
+                            {stack}
                           </span>
                         ))}
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-4xl font-bold text-accent">100+</p>
-                      <p className="text-sm text-muted-foreground">Edge Locations</p>
+                      <p className="text-4xl font-bold text-accent">50+</p>
+                      <p className="text-sm text-muted-foreground">Templates Available</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
 
-            {/* Instant Deploy card */}
+            {/* Setup Speed card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -579,12 +579,12 @@ export default function HomePage() {
                       <Zap className="w-6 h-6 text-accent" />
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-accent">{'<3s'}</p>
-                      <p className="text-xs text-muted-foreground">Deploy Time</p>
+                      <p className="text-2xl font-bold text-accent">24h</p>
+                      <p className="text-xs text-muted-foreground">Avg Setup</p>
                     </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">Instant Deployments</h3>
-                  <p className="text-muted-foreground flex-1">Push to deploy in under 3 seconds. Zero-downtime updates every time with automatic rollbacks.</p>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Fast Launch</h3>
+                  <p className="text-muted-foreground flex-1">Your website is ready to go in 24 hours. Our team handles setup, configuration, and gets you live with zero downtime.</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -615,7 +615,7 @@ export default function HomePage() {
               </Card>
             </motion.div>
 
-            {/* Large auto-scaling card */}
+            {/* Large managed operations card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -629,16 +629,16 @@ export default function HomePage() {
                   <div className="flex flex-col lg:flex-row lg:items-center gap-6">
                     <div className="flex-1">
                       <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-5 group-hover:bg-accent/20 transition-colors">
-                        <RefreshCw className="w-7 h-7 text-accent" />
+                        <Headphones className="w-7 h-7 text-accent" />
                       </div>
-                      <h3 className="text-2xl font-bold text-foreground mb-3">Auto-Scaling Infrastructure</h3>
+                      <h3 className="text-2xl font-bold text-foreground mb-3">Managed Operations</h3>
                       <p className="text-muted-foreground text-lg leading-relaxed">
-                        Handle traffic spikes automatically. Scale from 0 to millions of requests instantly without any configuration. Pay only for what you use.
+                        Let our team handle the technical heavy lifting. We manage updates, security patches, backups, monitoring, and support. You focus on your business.
                       </p>
                     </div>
                     <div className="text-center lg:text-right shrink-0 lg:border-l lg:border-border/50 lg:pl-8">
-                      <p className="text-4xl font-bold text-accent mb-1">10M+</p>
-                      <p className="text-sm text-muted-foreground">Requests/sec capacity</p>
+                      <p className="text-4xl font-bold text-accent mb-1">24/7</p>
+                      <p className="text-sm text-muted-foreground">Support & Monitoring</p>
                     </div>
                   </div>
                 </CardContent>
@@ -648,28 +648,27 @@ export default function HomePage() {
         </div>
       </AnimatedSection>
 
-      {/* Product Showcase Section - Enhanced terminal */}
+      {/* Customer Success Section */}
       <AnimatedSection className="py-16 lg:py-24">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
               <Badge variant="outline" className="mb-4 border-accent/50 text-accent">
-                Developer Experience
+                Your Success is Our Mission
               </Badge>
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6 text-balance">
-                Deploy with a single command
+                Launch with confidence
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Push your code and let Ovmon handle the rest. Automatic builds, instant previews, and 
-                seamless collaboration built for the modern development workflow.
+                Choose your template, tell us about your business, and our team manages everything else. Your website is live and ready to serve customers in under 24 hours.
               </p>
               
               <ul className="space-y-4 mb-8">
                 {[
-                  'Git-based deployments with instant rollbacks',
-                  'Preview deployments for every pull request',
-                  'Automatic HTTPS and custom domains',
-                  'Real-time collaboration and comments',
+                  'Professional setup and configuration by our team',
+                  'Your domain connected and SSL certificate installed',
+                  'Email setup and integration support included',
+                  'Ongoing updates, security patches, and monitoring',
                 ].map((item, i) => (
                   <motion.li
                     key={i}
@@ -688,14 +687,14 @@ export default function HomePage() {
               </ul>
 
               <Button className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg shadow-accent/20" asChild>
-                <Link href="/docs/getting-started">
-                  Read the Docs
+                <Link href="/how-it-works">
+                  Learn How It Works
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
             </div>
 
-            {/* Terminal mockup - Enhanced */}
+            {/* Success showcase mockup */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -707,62 +706,28 @@ export default function HomePage() {
               <div className="absolute -inset-6 bg-accent/10 rounded-2xl blur-3xl opacity-50" />
               
               <div className="relative bg-card border border-border/80 rounded-xl overflow-hidden shadow-2xl shadow-black/30">
-                {/* Terminal header */}
-                <div className="flex items-center justify-between px-4 py-3 bg-[#1a1a1a] border-b border-border/50">
+                {/* Browser header */}
+                <div className="flex items-center justify-between px-4 py-3 bg-secondary border-b border-border/50">
                   <div className="flex items-center gap-3">
                     <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-500 transition-colors" />
-                      <div className="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-500 transition-colors" />
+                      <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                      <div className="w-3 h-3 rounded-full bg-green-500/80" />
                     </div>
-                    <span className="text-xs text-muted-foreground/80 font-mono">zsh</span>
+                    <span className="text-xs text-muted-foreground/80 font-mono">univert.pro</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-muted-foreground/60 font-mono px-2 py-0.5 bg-white/5 rounded">~/projects/my-app</span>
-                  </div>
+                  <div className="text-[11px] text-muted-foreground/60 font-mono px-2 py-0.5 bg-white/5 rounded">https://yoursite.univert.pro</div>
                 </div>
                 
-                {/* Terminal content */}
-                <div className="p-6 font-mono text-sm bg-[#0d0d0d] min-h-[320px]">
-                  <div className="text-green-400 mb-3">
-                    <span className="text-muted-foreground/70">$</span> ovmon deploy
+                {/* Content */}
+                <div className="p-6 bg-foreground/5">
+                  <div className="space-y-4">
+                    <div className="h-8 bg-accent/20 rounded-lg w-2/3" />
+                    <div className="h-4 bg-muted rounded-lg w-full" />
+                    <div className="h-4 bg-muted rounded-lg w-5/6" />
+                    <div className="h-32 bg-gradient-to-br from-accent/10 to-accent/5 rounded-lg mt-6" />
+                    <div className="h-4 bg-muted rounded-lg w-1/2 mt-4" />
                   </div>
-                  <div className="text-foreground/90 mb-3">
-                    <span className="text-accent font-semibold">Ovmon</span> <span className="text-muted-foreground">Deploying to production...</span>
-                  </div>
-                  <div className="space-y-2 mb-4 pl-2 border-l-2 border-accent/30">
-                    {[
-                      { text: 'Building application...', done: true },
-                      { text: 'Optimizing assets...', done: true },
-                      { text: 'Deploying to 100+ edge locations...', done: true },
-                      { text: 'SSL certificate issued', done: true },
-                    ].map((step, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.8 + i * 0.3 }}
-                        className="flex items-center gap-2 text-muted-foreground/80 text-xs"
-                      >
-                        <span className="text-green-500">✓</span> {step.text}
-                      </motion.div>
-                    ))}
-                  </div>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 2 }}
-                    className="mt-4"
-                  >
-                    <div className="text-foreground">
-                      <span className="text-green-500 font-semibold">Success!</span> Deployed to{' '}
-                      <span className="text-accent underline decoration-accent/50">https://app.ovmon.com</span>
-                    </div>
-                    <div className="text-muted-foreground/70 text-xs mt-2 flex items-center gap-4">
-                      <span>Deploy time: <span className="text-accent font-medium">2.3s</span></span>
-                      <span>Build: <span className="text-green-500">Passed</span></span>
-                    </div>
-                  </motion.div>
                 </div>
               </div>
             </motion.div>
@@ -777,13 +742,13 @@ export default function HomePage() {
             {/* Header */}
             <div className="text-center mb-14">
               <Badge variant="outline" className="mb-4 border-accent/50 text-accent">
-                Enterprise-Ready Infrastructure
+                Trusted Platform
               </Badge>
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4 text-balance">
-                Infrastructure you can trust
+                Built for business owners
               </h2>
               <p className="text-foreground/60 max-w-2xl mx-auto">
-                Built on battle-tested infrastructure with enterprise-grade security, reliability, and performance.
+                Secure hosting, reliable uptime, professional support, and the freedom to move whenever you want.
               </p>
             </div>
 
