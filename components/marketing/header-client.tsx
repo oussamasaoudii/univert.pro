@@ -277,7 +277,7 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                       {/* Featured item with video background */}
                       <div className="col-span-5 min-w-0">
                         <div className="relative rounded-xl overflow-hidden border border-accent/20 h-full min-h-[280px]">
-                          {/* Video Background */}
+                          {/* Video Background - Website Showcase */}
                           <video
                             autoPlay
                             loop
@@ -285,7 +285,7 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                             playsInline
                             className="absolute inset-0 w-full h-full object-cover"
                           >
-                            <source src="https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+                            <source src="https://videos.pexels.com/video-files/7974/7974-uhd_2560_1440_30fps.mp4" type="video/mp4" />
                           </video>
                           {/* Gradient Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
