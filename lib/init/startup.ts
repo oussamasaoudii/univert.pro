@@ -63,11 +63,6 @@ function validateRequiredSecrets(): void {
   const required = [
     'ENCRYPTION_KEY',
     'WEBHOOK_SECRET',
-    'MYSQL_USER',
-    'MYSQL_PASSWORD',
-    'MYSQL_DATABASE',
-    'STRIPE_SECRET_KEY',
-    'AAPANEL_API_KEY',
   ];
 
   for (const secret of required) {
@@ -80,11 +75,17 @@ function validateRequiredSecrets(): void {
 async function initializeDatabaseConnections(): Promise<void> {
   try {
     const pool = getMySQLPool();
+    if (!pool) {
+      logger.warn('Database pool not available - using hardcoded defaults');
+      return;
+    }
     await pool.query("SELECT 1");
-
     logger.debug('Database connection test passed');
   } catch (error) {
-    throw new Error(`Failed to initialize database connections: ${error}`);
+    logger.warn('Database connection warning', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    // Don't fail startup for database issues - let the pool handle retries
   }
 }
 

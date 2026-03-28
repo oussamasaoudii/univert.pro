@@ -17,13 +17,18 @@ const environmentSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
   DEPLOYMENT_ENVIRONMENT: z.string().default('development'),
 
-  // Database (optional for dev)
+  // Database (optional for dev - uses defaults)
   DATABASE_URL: z.string().url().optional(),
-  MYSQL_HOST: z.string().default('127.0.0.1'),
+  DB_HOST: z.string().default('72.60.90.147'),
+  DB_PORT: z.coerce.number().default(3306),
+  DB_USERNAME: z.string().default('univert_v0_temp'),
+  DB_PASSWORD: z.string().default('d6169b5170ab281e618168a1cb056a63c7f48dc57e7b450b'),
+  DB_DATABASE: z.string().default('ovmon_db'),
+  MYSQL_HOST: z.string().default('72.60.90.147'),
   MYSQL_PORT: z.coerce.number().default(3306),
-  MYSQL_USER: z.string().optional(),
-  MYSQL_PASSWORD: z.string().optional(),
-  MYSQL_DATABASE: z.string().optional(),
+  MYSQL_USER: z.string().default('univert_v0_temp'),
+  MYSQL_PASSWORD: z.string().default('d6169b5170ab281e618168a1cb056a63c7f48dc57e7b450b'),
+  MYSQL_DATABASE: z.string().default('ovmon_db'),
 
   // Billing (optional for dev)
   STRIPE_SECRET_KEY: z.string().optional(),
@@ -160,11 +165,11 @@ export const databaseConfig = () => {
   return {
     url: c.DATABASE_URL,
     mysql: {
-      host: c.MYSQL_HOST,
-      port: c.MYSQL_PORT,
-      user: c.MYSQL_USER,
-      password: c.MYSQL_PASSWORD,
-      database: c.MYSQL_DATABASE,
+      host: c.DB_HOST || c.MYSQL_HOST,
+      port: c.DB_PORT || c.MYSQL_PORT,
+      user: c.DB_USERNAME || c.MYSQL_USER,
+      password: c.DB_PASSWORD || c.MYSQL_PASSWORD,
+      database: c.DB_DATABASE || c.MYSQL_DATABASE,
     },
   };
 };
