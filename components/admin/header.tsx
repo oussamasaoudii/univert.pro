@@ -76,7 +76,7 @@ export function AdminHeader() {
           <div className="flex h-16 items-center gap-2 px-6 border-b border-sidebar-border">
             <Link href="/admin" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent">
-                <span className="text-sm font-bold text-accent-foreground">O</span>
+                <span className="text-sm font-bold text-accent-foreground">U</span>
               </div>
               <span className="text-xl font-semibold tracking-tight">Ovmon</span>
             </Link>

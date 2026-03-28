@@ -68,9 +68,9 @@ export function DashboardHeader() {
           <div className="flex h-[72px] items-center gap-2.5 px-6 border-b border-sidebar-border">
             <Link href="/" className="flex items-center gap-2.5" onClick={() => setIsMobileMenuOpen(false)}>
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent">
-                <span className="text-sm font-bold text-accent-foreground">O</span>
+                <span className="text-sm font-bold text-accent-foreground">U</span>
               </div>
-              <span className="text-xl font-semibold tracking-tight">Ovmon</span>
+              <span className="text-xl font-semibold tracking-tight">Univert</span>
             </Link>
           </div>
           <div className="px-5 py-5">

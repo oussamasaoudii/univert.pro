@@ -10,9 +10,9 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Ovmon - Premium Website Rental Platform",
-  description: "Launch premium websites fast. Rent, deploy, and scale your online presence with our enterprise-grade platform.",
-  generator: "Ovmon",
+  title: "Univert - Launch Professional Websites Fast",
+  description: "Choose from 50+ professional website templates, get managed setup in 24 hours, and own your site completely. No lock-in, export anytime.",
+  generator: "Univert",
   icons: {
     icon: [
       {

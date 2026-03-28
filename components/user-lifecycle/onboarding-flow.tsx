@@ -18,17 +18,17 @@ export function OnboardingFlow() {
     return (
       <div className="space-y-6">
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold">Welcome to Ovmon!</h2>
+          <h2 className="text-2xl font-bold">Welcome to Univert!</h2>
           <p className="text-muted-foreground">
-            Let's get your first website live in minutes. You're on a free 14-day trial with full access.
+            Let's get your first website live in 24 hours. You're on a free trial with full access to all features.
           </p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
           {[
-            { step: 1, title: "Choose Template", desc: "Pick from 12+ premium templates" },
-            { step: 2, title: "Launch Website", desc: "Deploy in seconds" },
-            { step: 3, title: "Manage & Scale", desc: "Everything in one dashboard" },
+            { step: 1, title: "Choose Template", desc: "Pick from 50+ professional templates" },
+            { step: 2, title: "Setup Website", desc: "Our team handles configuration" },
+            { step: 3, title: "Go Live", desc: "Your site launches in 24 hours" },
           ].map((item) => (
             <Card key={item.step} className="bg-secondary/30 border-border">
               <CardContent className="pt-6">

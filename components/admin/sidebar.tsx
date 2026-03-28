@@ -73,9 +73,9 @@ export function AdminSidebar() {
         <div className="flex h-16 items-center gap-2 px-6 border-b border-sidebar-border">
           <Link href="/admin" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent">
-              <span className="text-sm font-bold text-accent-foreground">O</span>
+              <span className="text-sm font-bold text-accent-foreground">U</span>
             </div>
-            <span className="text-xl font-semibold tracking-tight">Ovmon</span>
+            <span className="text-xl font-semibold tracking-tight">Univert</span>
           </Link>
           <Badge variant="outline" className="ml-2 border-accent text-accent text-xs">
             Admin

@@ -56,9 +56,9 @@ export function DashboardSidebar() {
         <div className="flex h-[72px] items-center gap-2.5 px-6 border-b border-sidebar-border">
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent transition-smooth group-hover:shadow-glow-sm">
-              <span className="text-sm font-bold text-accent-foreground">O</span>
+              <span className="text-sm font-bold text-accent-foreground">U</span>
             </div>
-            <span className="text-xl font-semibold tracking-tight">Ovmon</span>
+            <span className="text-xl font-semibold tracking-tight">Univert</span>
           </Link>
         </div>
 
