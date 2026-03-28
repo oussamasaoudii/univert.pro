@@ -115,34 +115,34 @@ function AnimatedSection({
 const features = [
   {
     icon: Globe,
-    title: 'Global Edge Network',
-    description: 'Deploy to 100+ edge locations worldwide. Sub-50ms latency guaranteed for users everywhere.',
-    stat: '100+',
-    statLabel: 'Edge Locations',
+    title: 'Curated Professional Templates',
+    description: 'Browse real live demos of WordPress, Laravel, and Next.js websites. Choose what fits your business.',
+    stat: '50+',
+    statLabel: 'Templates',
     highlight: true,
   },
   {
     icon: Zap,
-    title: 'Instant Deployments',
-    description: 'Push to deploy in under 3 seconds. Zero-downtime updates every time with automatic rollbacks.',
-    stat: '<3s',
-    statLabel: 'Deploy Time',
+    title: 'Launch in Days, Not Months',
+    description: 'Your website is ready with managed setup included. No technical expertise needed.',
+    stat: '1 Day',
+    statLabel: 'Average Setup',
     highlight: false,
   },
   {
     icon: Shield,
-    title: 'Enterprise Security',
-    description: 'SOC2 Type II certified with DDoS protection and WAF included by default. Sleep easy at night.',
-    stat: 'SOC2',
-    statLabel: 'Certified',
+    title: 'Managed Support Included',
+    description: 'Get technical help, updates, and maintenance handled by our team. Focus on your business.',
+    stat: '24/7',
+    statLabel: 'Support',
     highlight: true,
   },
   {
     icon: RefreshCw,
-    title: 'Auto-Scaling',
-    description: 'Handle traffic spikes automatically. Scale from 0 to millions of requests instantly without config.',
-    stat: '10M+',
-    statLabel: 'Requests/sec',
+    title: 'Freedom to Move Later',
+    description: 'Export your project and move to your own server anytime. You own your website, not locked in.',
+    stat: '100%',
+    statLabel: 'Yours',
     highlight: false,
   },
 ];
@@ -150,94 +150,94 @@ const features = [
 const plans = [
   {
     name: 'Starter',
-    price: '$0',
+    price: '$29',
     period: '/month',
-    description: 'For hobby projects and experiments',
-    features: ['3 Projects', '100GB Bandwidth', 'Free SSL', 'Community Support', 'Basic Analytics'],
+    description: 'Perfect for small businesses and creatives',
+    features: ['1 Website', 'Choose Your Stack', 'Managed Setup & Hosting', 'Email Support', 'Basic Analytics', 'Subdomain'],
     popular: false,
-    cta: 'Start Building',
+    cta: 'Get Started',
   },
   {
-    name: 'Pro',
-    price: '$20',
+    name: 'Growth',
+    price: '$79',
     period: '/month',
-    description: 'For professional developers and teams',
-    features: ['Unlimited Projects', '1TB Bandwidth', 'Priority Support', 'Advanced Analytics', 'Team Collaboration', 'Custom Domains'],
+    description: 'For growing businesses with multiple projects',
+    features: ['3 Websites', 'Custom Domains', 'Priority Support', 'Advanced Analytics', 'Backups & Recovery', 'Email + Chat Support'],
     popular: true,
-    cta: 'Upgrade to Pro',
+    cta: 'Choose Growth',
   },
   {
-    name: 'Enterprise',
+    name: 'Business',
     price: 'Custom',
     period: '',
-    description: 'For organizations with advanced needs',
-    features: ['Everything in Pro', 'Dedicated Support', 'SLA Guarantee', 'SSO & SAML', 'Audit Logs', 'Custom Contracts'],
+    description: 'Enterprise solutions with dedicated support',
+    features: ['Unlimited Websites', 'Dedicated Support', 'Custom Integrations', 'SLA Guarantee', 'Advanced Security', 'Strategic Consulting'],
     popular: false,
     cta: 'Contact Sales',
   },
 ];
 
 const platformCredentials = [
-  { icon: Shield, label: 'SOC2 Type II', sublabel: 'Compliant', description: 'Enterprise-grade security audited annually' },
-  { icon: Server, label: '99.99%', sublabel: 'Uptime SLA', description: 'Backed by financial guarantee' },
-  { icon: Globe, label: '150+', sublabel: 'Edge Locations', description: 'Global CDN coverage' },
-  { icon: Lock, label: 'DDoS', sublabel: 'Protection', description: 'Enterprise WAF included' },
+  { icon: Shield, label: 'Managed Setup', sublabel: 'Included', description: 'We handle the technical details' },
+  { icon: Globe, label: 'Custom Domain', sublabel: 'Support', description: 'Use your own domain' },
+  { icon: Headphones, label: 'Real Support', sublabel: 'Team', description: 'Human support when you need it' },
+  { icon: Lock, label: 'Export', sublabel: 'Freedom', description: 'Move your project anytime' },
 ];
 
 const developerSignals = [
-  { label: '50,000+', sublabel: 'Active developers', icon: Users },
-  { label: '2B+', sublabel: 'Monthly requests served', icon: BarChart3 },
-  { label: '<50ms', sublabel: 'Global P95 latency', icon: Zap },
-  { label: '3s', sublabel: 'Average deploy time', icon: Rocket },
+  { label: 'Hundreds', sublabel: 'Active customers', icon: Users },
+  { label: '10M+', sublabel: 'Monthly visitors served', icon: BarChart3 },
+  { label: '<100ms', sublabel: 'Global load time', icon: Zap },
+  { label: '24/7', sublabel: 'Support available', icon: Headphones },
 ];
 
 // FAQ data for homepage
 const homepageFAQs = [
   {
-    question: 'How do I get started with Ovmon?',
-    answer: 'Getting started is easy! Sign up for a free account, connect your Git repository, and deploy with a single click. Your site will be live in under 60 seconds.',
+    question: 'How do I get started with Univert?',
+    answer: 'Browse our template gallery, choose one that fits your business, select your subdomain, choose a plan, and we handle the rest. Your website is typically live within 24 hours with our managed setup.',
   },
   {
-    question: 'What frameworks does Ovmon support?',
-    answer: 'Ovmon supports all major frameworks including Next.js, React, Vue, Nuxt, Angular, Svelte, and more. We also support static sites, serverless functions, and full-stack applications.',
+    question: 'What stacks and templates do you support?',
+    answer: 'We offer launch-ready websites in WordPress, Laravel, and Next.js. Each template includes managed hosting, updates, backups, and technical support.',
   },
   {
-    question: 'Is there a free tier available?',
-    answer: 'Yes! Our Starter plan is completely free and includes 3 projects, 100GB bandwidth, free SSL, and community support. No credit card required.',
+    question: 'Can I use my own domain?',
+    answer: 'Absolutely. All plans include support for custom domains. We&apos;ll help you connect your domain and handle the technical setup.',
   },
   {
-    question: 'What kind of support do you offer?',
-    answer: 'We offer community support for free users, priority email support for Pro users, and dedicated support with SLA guarantees for Enterprise customers.',
+    question: 'What happens if I want to move my website later?',
+    answer: 'You can export your website anytime and move it to your own server. We&apos;ll provide migration support. Your website stays yours—you&apos;re never locked in.',
   },
 ];
 
 // Testimonials data
 const homepageTestimonials = [
   {
-    quote: 'Ovmon transformed our deployment workflow. What used to take hours now takes seconds. Our team productivity has increased dramatically.',
+    quote: 'We launched our shop in 2 weeks instead of 2 months. The managed support took so much stress off our team.',
     author: {
-      name: 'Sarah Chen',
-      title: 'CTO',
-      company: 'TechFlow',
+      name: 'Lisa Chen',
+      title: 'Owner',
+      company: 'Local Bakery Co.',
     },
     rating: 5,
     featured: true,
   },
   {
-    quote: 'The global edge network is incredible. Our users in Asia saw a 60% improvement in load times.',
+    quote: 'Knowing I can move my site to my own server later gives me peace of mind. We&apos;re not locked in.',
     author: {
-      name: 'Marcus Rivera',
-      title: 'Lead Engineer',
-      company: 'GlobalApp',
+      name: 'James Riley',
+      title: 'Founder',
+      company: 'Digital Agency',
     },
     rating: 5,
   },
   {
-    quote: 'Best developer experience I have ever used. The preview deployments for PRs changed how our team works.',
+    quote: 'The templates are professional and modern. Our customers think we hired an expensive developer. The support team is always there when we need them.',
     author: {
-      name: 'Emma Wilson',
-      title: 'Frontend Developer',
-      company: 'StartupXYZ',
+      name: 'Maria Santos',
+      title: 'Marketing Manager',
+      company: 'Consulting Firm',
     },
     rating: 5,
   },
@@ -278,32 +278,29 @@ export default function HomePage() {
               >
                 <Badge variant="outline" className="mb-6 border-accent/50 text-accent px-4 py-1.5 text-sm font-medium">
                   <Sparkles className="w-3.5 h-3.5 mr-2" />
-                  Now with AI-Powered Optimization
+                  Professional Templates with Managed Support
                 </Badge>
               </motion.div>
               
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-[1.1] tracking-tight text-balance">
-                Ship websites{' '}
-                <span className="text-accent">10x faster</span>{' '}
-                without the complexity
+                Your ready-made website{' '}
+                <span className="text-accent">in minutes</span>—and it stays yours
               </h1>
               
               <p className="text-lg text-foreground/70 mb-8 leading-relaxed">
-                The complete platform to build, deploy, and scale modern web applications. 
-                Trusted by 50,000+ developers worldwide.
+                Browse professional templates, launch fast on your own subdomain, get managed support, and move your project to your own server later if you choose. No technical skills required.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground h-12 px-6 text-base font-medium shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all" asChild>
-                  <Link href="/auth/signup">
-                    Start Building Free
+                  <Link href="/templates">
+                    Browse Templates
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" className="h-12 px-6 text-base group hover:border-accent/50 transition-colors" asChild>
-                  <Link href="/demos">
-                    <Play className="mr-2 h-4 w-4 group-hover:text-accent transition-colors" />
-                    Watch Demo
+                  <Link href="/how-it-works">
+                    How It Works
                   </Link>
                 </Button>
               </div>
@@ -311,42 +308,8 @@ export default function HomePage() {
               {/* Social proof mini */}
               <div className="flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
-                  <div className="flex -space-x-2">
-                    {[
-                      'https://randomuser.me/api/portraits/men/32.jpg',
-                      'https://randomuser.me/api/portraits/women/44.jpg',
-                      'https://randomuser.me/api/portraits/men/75.jpg',
-                      'https://randomuser.me/api/portraits/women/65.jpg',
-                    ].map((src, i) => (
-                      <Image 
-                        key={i} 
-                        src={src} 
-                        alt={`Developer ${i + 1}`}
-                        width={32}
-                        height={32}
-                        className="w-8 h-8 rounded-full border-2 border-background object-cover"
-                      />
-                    ))}
-                  </div>
-                  <span>Join <strong className="text-foreground">50,000+</strong> developers</span>
+                  <span>Join hundreds of business owners launching websites on Univert</span>
                 </div>
-
-                {/* Trustpilot badge */}
-                <a
-                  href="https://www.trustpilot.com/review/ovmon.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border/60 bg-secondary/40 hover:border-accent/50 hover:bg-secondary/70 transition-all group"
-                  aria-label="View our Trustpilot reviews"
-                >
-                  {/* Trustpilot star (green) */}
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M12 2L14.09 8.26L21 9.27L16.5 13.64L17.82 20.5L12 17.27L6.18 20.5L7.5 13.64L3 9.27L9.91 8.26L12 2Z" fill="#00b67a"/>
-                  </svg>
-                  <span className="text-xs font-semibold text-foreground">4.8</span>
-                  <span className="text-xs text-muted-foreground">on Trustpilot</span>
-                  <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-accent transition-colors" />
-                </a>
               </div>
             </motion.div>
 

@@ -1,5 +1,7 @@
 "use client";
 
+// Marketing header client component with responsive navigation
+
 import Link from "next/link";
 import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -40,6 +42,7 @@ import {
   Award,
   Heart,
   ChevronDown,
+  Headphones,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Country } from "@/lib/countries/types";
@@ -53,152 +56,152 @@ type MarketingSessionUser = {
 
 // Product menu items
 const productFeatured = {
-  title: "Platform Overview",
-  description: "Discover the complete Ovmon platform architecture",
-  href: "/product",
+  title: "Templates Gallery",
+  description: "Browse professional launch-ready website templates",
+  href: "/templates",
   icon: Layers,
 };
 
 const productFeatures = [
   {
-    title: "Global Edge Network",
-    description: "Deploy worldwide",
-    href: "/features/edge-network",
+    title: "WordPress Templates",
+    description: "Professional sites built on WordPress",
+    href: "/templates?stack=wordpress",
     icon: Globe,
   },
   {
-    title: "Instant Deploys",
-    description: "Push to deploy in seconds",
-    href: "/features/deploys",
+    title: "Laravel Templates",
+    description: "Custom web applications with Laravel",
+    href: "/templates?stack=laravel",
+    icon: Layers,
+  },
+  {
+    title: "Next.js Templates",
+    description: "Modern web experiences with Next.js",
+    href: "/templates?stack=nextjs",
     icon: Rocket,
   },
   {
-    title: "Auto-Scaling",
-    description: "Zero to millions",
-    href: "/features/scaling",
+    title: "How It Works",
+    description: "Our launch and support process",
+    href: "/how-it-works",
     icon: Zap,
   },
   {
-    title: "Enterprise Security",
-    description: "SOC2, DDoS, WAF",
-    href: "/features/security",
+    title: "Support Included",
+    description: "Managed setup and technical support",
+    href: "/about/support",
+    icon: Headphones,
+  },
+  {
+    title: "Own Your Site",
+    description: "Export and move anytime you want",
+    href: "/about/ownership",
     icon: Lock,
-  },
-  {
-    title: "Serverless Functions",
-    description: "Backend at the edge",
-    href: "/features/serverless",
-    icon: Server,
-  },
-  {
-    title: "Developer Tools",
-    description: "CLI, SDK, API access",
-    href: "/features/developer-tools",
-    icon: Code2,
   },
 ];
 
 const productHighlight = {
-  title: "See Ovmon in action",
-  description: "Watch a 2-minute demo of our platform capabilities.",
-  href: "/demo",
-  cta: "Watch demo",
+  title: "Browse Templates",
+  description: "See live demos of professional websites you can launch immediately.",
+  href: "/templates",
+  cta: "Browse templates",
 };
 
 // Solutions menu items
 const solutionsByIndustry = [
   {
+    title: "Small Business",
+    description: "Professional websites for local businesses",
+    href: "/solutions/small-business",
+    icon: Building2,
+  },
+  {
     title: "E-commerce",
-    description: "High-performance storefronts",
+    description: "Online stores and digital shops",
     href: "/solutions/ecommerce",
     icon: ShoppingCart,
   },
   {
-    title: "SaaS",
-    description: "Scale your application globally",
-    href: "/solutions/saas",
-    icon: Layers,
-  },
-  {
-    title: "Enterprise",
-    description: "Enterprise-grade infrastructure",
-    href: "/solutions/enterprise",
-    icon: Building2,
-  },
-  {
     title: "Agencies",
-    description: "Manage multiple client sites",
+    description: "Manage client sites with managed support",
     href: "/solutions/agencies",
     icon: Briefcase,
   },
   {
-    title: "Creators",
+    title: "Creators & Influencers",
     description: "Portfolio and content sites",
     href: "/solutions/creators",
     icon: Heart,
   },
   {
-    title: "Education",
-    description: "Learning platforms",
-    href: "/solutions/education",
-    icon: GraduationCap,
+    title: "Consulting & Services",
+    description: "Professional service websites",
+    href: "/solutions/consulting",
+    icon: Briefcase,
+  },
+  {
+    title: "Non-Profits",
+    description: "Mission-driven organization sites",
+    href: "/solutions/nonprofits",
+    icon: Heart,
   },
 ];
 
 const solutionsByUseCase = [
   {
-    title: "Marketing Sites",
-    description: "Fast, SEO-optimized websites",
-    href: "/use-cases/marketing",
+    title: "Quick Launch",
+    description: "Get a professional site live this week",
+    href: "/use-cases/quick-launch",
   },
   {
-    title: "Web Applications",
-    description: "Full-stack app deployment",
-    href: "/use-cases/web-apps",
+    title: "Managed Operations",
+    description: "Let us handle updates and maintenance",
+    href: "/use-cases/managed",
   },
   {
-    title: "API & Backends",
-    description: "Scalable serverless APIs",
-    href: "/use-cases/api",
+    title: "Export Anytime",
+    description: "Move to your own server with full support",
+    href: "/use-cases/export",
   },
 ];
 
 const solutionsHighlight = {
-  title: "Enterprise Security",
-  description: "SOC2 certified, 99.99% uptime SLA, and dedicated support for mission-critical apps.",
-  href: "/trust",
-  cta: "Learn about Trust",
+  title: "Ownership & Freedom",
+  description: "Your website stays yours. Export and migrate anytime you want. No vendor lock-in.",
+  href: "/about/ownership",
+  cta: "Learn about freedom",
 };
 
 // Resources menu items
 const resourcesLearn = [
   {
-  title: "Resource Hub",
-  description: "All resources in one place",
-  href: "/resources",
-  icon: BookOpen,
+    title: "Getting Started",
+    description: "First steps with Univert",
+    href: "/resources/getting-started",
+    icon: BookOpen,
   },
   {
-  title: "Documentation",
-  description: "Guides and API reference",
-    href: "/docs",
+    title: "Knowledge Base",
+    description: "Common questions and solutions",
+    href: "/knowledge-base",
     icon: BookOpen,
   },
   {
     title: "Blog",
-    description: "News, tutorials, and insights",
+    description: "Website tips and business insights",
     href: "/blog",
     icon: FileText,
   },
   {
     title: "Case Studies",
-    description: "Customer success stories",
+    description: "Real customer success stories",
     href: "/case-studies",
     icon: Award,
   },
   {
     title: "Webinars",
-    description: "Live and on-demand sessions",
+    description: "Live training and Q&A sessions",
     href: "/webinars",
     icon: Video,
   },
@@ -206,22 +209,22 @@ const resourcesLearn = [
 
 const resourcesConnect = [
   {
-    title: "Integrations",
-    description: "Connect your favorite tools",
-    href: "/integrations",
-    icon: Puzzle,
-  },
-  {
-    title: "Community",
-    description: "Join 50,000+ developers",
-    href: "/community",
-    icon: Users,
-  },
-  {
     title: "Support",
     description: "Get help from our team",
     href: "/support",
     icon: MessageSquare,
+  },
+  {
+    title: "Community",
+    description: "Connect with other customers",
+    href: "/community",
+    icon: Users,
+  },
+  {
+    title: "Ownership Guide",
+    description: "Export and migration resources",
+    href: "/about/ownership",
+    icon: Lock,
   },
 ];
 
@@ -237,8 +240,9 @@ const companyLinks = [
 
 // Simple nav items (no dropdown)
 const simpleNavItems = [
-  { name: "Templates", href: "/demos" },
+  { name: "Templates", href: "/templates" },
   { name: "Pricing", href: "/pricing" },
+  { name: "How It Works", href: "/how-it-works" },
 ];
 
 export function HeaderClient({ currentUser, countries = [] }: { currentUser: MarketingSessionUser; countries?: Country[] }) {

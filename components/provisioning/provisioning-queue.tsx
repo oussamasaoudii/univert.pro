@@ -1,5 +1,5 @@
-// User Provisioning Queue Dashboard
-// Shows all user deployments and their status
+// User Website Setup Queue Dashboard
+// Shows all user websites and their setup status
 
 'use client';
 
@@ -40,19 +40,19 @@ const statusConfig = {
     badgeVariant: 'outline' as const,
   },
   queued: {
-    label: 'Queued',
+    label: 'Waiting',
     icon: Clock,
     color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
     badgeVariant: 'outline' as const,
   },
   running: {
-    label: 'Deploying',
+    label: 'Setting Up',
     icon: Loader2,
     color: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
     badgeVariant: 'outline' as const,
   },
   completed: {
-    label: 'Complete',
+    label: 'Ready',
     icon: CheckCircle2,
     color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
     badgeVariant: 'outline' as const,

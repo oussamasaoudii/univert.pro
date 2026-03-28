@@ -29,91 +29,91 @@ const AUTH_TABS = {
 
 const AUTH_LAYOUT_COPY = {
   en: {
-    heading: "Launch premium websites in minutes",
+    heading: "Launch your website today",
     description:
-      "Join thousands of businesses using Ovmon to deploy and manage their online presence with enterprise-grade infrastructure.",
+      "Choose from professional templates, get managed setup and hosting, receive support when you need it, and keep the freedom to move your site later.",
     features: [
-      { text: "Instant provisioning in under 2 minutes", icon: Zap },
-      { text: "No lock-in - export your data anytime", icon: Shield },
-      { text: "Enterprise security by default", icon: Globe },
+      { text: "Launch-ready templates with managed setup", icon: Zap },
+      { text: "No lock-in - export and move anytime", icon: Shield },
+      { text: "24/7 support and technical management", icon: Globe },
     ],
-    rights: "2026 Ovmon. All rights reserved.",
-    trustedBy: "Trusted by 50,000+ developers",
+    rights: "2026 Univert Pro. All rights reserved.",
+    trustedBy: "Trusted by hundreds of business owners",
     liveActivity: {
-      label: "Live",
-      deploysNow: "247 deploys",
-      timeLabel: "right now",
+      label: "Active",
+      deploysNow: "147 websites live",
+      timeLabel: "this week",
     },
     platformStats: {
-      deployments: "2.8M+",
-      deploymentsLabel: "Deployments",
+      deployments: "700+",
+      deploymentsLabel: "Sites Launched",
       uptime: "99.99%",
-      uptimeLabel: "Uptime SLA",
-      countries: "150+",
-      countriesLabel: "Edge Locations",
+      uptimeLabel: "Uptime",
+      countries: "24/7",
+      countriesLabel: "Support",
     },
     testimonials: [
       {
-        quote: "Ovmon reduced our deployment time from hours to seconds. The developer experience is unmatched.",
-        author: "Sarah Chen",
-        role: "CTO at TechFlow",
+        quote: "We had our website live in just 2 days. The managed support handled everything technically so we could focus on our business.",
+        author: "Jennifer Smith",
+        role: "Shop Owner",
         avatar: "https://randomuser.me/api/portraits/women/44.jpg",
       },
       {
-        quote: "Finally, a platform that just works. Our team shipped 3x faster after switching to Ovmon.",
-        author: "Marcus Johnson",
-        role: "Engineering Lead at Scale",
+        quote: "Professional templates that look like we hired an expensive designer. Best decision for our startup.",
+        author: "David Kumar",
+        role: "Founder",
         avatar: "https://randomuser.me/api/portraits/men/32.jpg",
       },
       {
-        quote: "Enterprise-grade security without the enterprise complexity. Exactly what we needed.",
-        author: "Emily Rodriguez",
-        role: "Founder at StartupX",
+        quote: "Knowing I can move my site to my own server later gave me total peace of mind. No vendor lock-in.",
+        author: "Maria García",
+        role: "Consultant",
         avatar: "https://randomuser.me/api/portraits/women/65.jpg",
       },
     ],
   },
   ar: {
-    heading: "أطلق مواقع احترافية خلال دقائق",
+    heading: "أطلق موقعك اليوم",
     description:
-      "انضم إلى آلاف الشركات التي تستخدم Ovmon لنشر وإدارة حضورها الرقمي ببنية تحتية بمعايير المؤسسات.",
+      "اختر من قوالب احترافية، واحصل على إعداد وهوست مُدار، والحصول على الدعم عند الحاجة، مع الحفاظ على حرية نقل موقعك لاحقاً.",
     features: [
-      { text: "تجهيز الموقع خلال أقل من دقيقتين", icon: Zap },
-      { text: "بدون قيود - يمكنك تصدير بياناتك في أي وقت", icon: Shield },
-      { text: "أمان مؤسسي بشكل افتراضي", icon: Globe },
+      { text: "قوالب جاهزة للإطلاق مع إعداد مُدار", icon: Zap },
+      { text: "بدون قيود - يمكنك التصدير والانتقال في أي وقت", icon: Shield },
+      { text: "دعم تقني ومدارة 24/7", icon: Globe },
     ],
-    rights: "2026 Ovmon. جميع الحقوق محفوظة.",
-    trustedBy: "موثوق من قبل أكثر من 50,000 مطور",
+    rights: "2026 Univert Pro. جميع الحقوق محفوظة.",
+    trustedBy: "موثوق من قبل مئات أصحاب الأعمال",
     liveActivity: {
-      label: "مباشر",
-      deploysNow: "247 نشر",
-      timeLabel: "الآن",
+      label: "نشط",
+      deploysNow: "147 موقع مباشر",
+      timeLabel: "هذا الأسبوع",
     },
     platformStats: {
-      deployments: "+2.8M",
-      deploymentsLabel: "عملية نشر",
+      deployments: "+700",
+      deploymentsLabel: "مواقع مُطلقة",
       uptime: "99.99%",
       uptimeLabel: "وقت التشغيل",
-      countries: "+150",
-      countriesLabel: "موقع حافة",
+      countries: "24/7",
+      countriesLabel: "الدعم",
     },
     testimonials: [
       {
-        quote: "قلّلت Ovmon وقت النشر من ساعات إلى ثوانٍ. تجربة المطور لا مثيل لها.",
-        author: "سارة أحمد",
-        role: "مدير تقني في TechFlow",
+        quote: "كان لدينا موقع مباشر في يومين فقط. الدعم المُدار تعامل مع كل شيء تقني حتى نتمكن من التركيز على عملنا.",
+        author: "جنيفر سميث",
+        role: "صاحبة متجر",
         avatar: "https://randomuser.me/api/portraits/women/44.jpg",
       },
       {
-        quote: "أخيرًا، منصة تعمل بسلاسة. فريقنا أصبح أسرع 3 مرات بعد التحويل إلى Ovmon.",
-        author: "أحمد محمد",
-        role: "قائد الهندسة في Scale",
+        quote: "قوالب احترافية تبدو وكأننا استأجرنا مصمماً مكلفاً. أفضل قرار لشركتنا الناشئة.",
+        author: "ديفيد كومار",
+        role: "مؤسس",
         avatar: "https://randomuser.me/api/portraits/men/32.jpg",
       },
       {
-        quote: "أمان بمستوى المؤسسات بدون التعقيد. بالضبط ما كنا نحتاجه.",
-        author: "نور الدين",
-        role: "مؤسس StartupX",
+        quote: "معرفتي بأنني يمكنني نقل موقعي إلى خادمي الخاص لاحقاً أعطتني راحة بال كاملة. بدون قيود بائع.",
+        author: "ماريا جارسيا",
+        role: "مستشار",
         avatar: "https://randomuser.me/api/portraits/women/65.jpg",
       },
     ],
@@ -396,15 +396,15 @@ export default function AuthLayout({
             )}>
               <div className={cn("flex items-center gap-1.5", isArabic && "flex-row-reverse")}>
                 <Shield className="w-4 h-4 text-accent" />
-                <span>SOC2</span>
+                <span>{isArabic ? "مُدار" : "Managed"}</span>
               </div>
               <div className={cn("flex items-center gap-1.5", isArabic && "flex-row-reverse")}>
                 <Globe className="w-4 h-4 text-accent" />
-                <span>150+ Edges</span>
+                <span>{isArabic ? "عالمي" : "Global"}</span>
               </div>
               <div className={cn("flex items-center gap-1.5", isArabic && "flex-row-reverse")}>
                 <BarChart3 className="w-4 h-4 text-accent" />
-                <span>99.99% SLA</span>
+                <span>99.99%</span>
               </div>
             </div>
           </div>

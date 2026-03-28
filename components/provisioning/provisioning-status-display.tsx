@@ -1,5 +1,5 @@
-// User-Facing Provisioning Status Display
-// Real-time progress, logs, and deployment information
+// User-Facing Website Setup Status Display
+// Real-time progress, logs, and setup information
 
 'use client';
 
@@ -34,15 +34,15 @@ interface ProvisioningStatusDisplayProps {
 }
 
 const stepDescriptions: Record<string, string> = {
-  'validating_config': 'Validating your configuration',
-  'allocating_server': 'Allocating server resources',
-  'creating_database': 'Setting up database',
-  'setting_up_environment': 'Configuring environment',
-  'deploying_application': 'Deploying your application',
-  'configuring_domain': 'Configuring domain',
-  'setting_up_ssl': 'Setting up SSL certificate',
-  'finalizing': 'Finalizing deployment',
-  'completed': 'Deployment complete',
+  'validating_config': 'Validating your website configuration',
+  'allocating_server': 'Preparing hosting resources',
+  'creating_database': 'Setting up your database',
+  'setting_up_environment': 'Configuring your environment',
+  'deploying_application': 'Installing your website',
+  'configuring_domain': 'Connecting your domain',
+  'setting_up_ssl': 'Setting up security certificate',
+  'finalizing': 'Finalizing your website setup',
+  'completed': 'Your website is ready',
 };
 
 const statusColors: Record<string, string> = {
