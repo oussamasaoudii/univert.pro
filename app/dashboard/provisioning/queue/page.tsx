@@ -35,17 +35,17 @@ type WebsiteRecord = {
 
 const statusConfig = {
   ready: {
-    label: 'Deployed',
+    label: 'Ready',
     color: 'bg-green-500/10 text-green-400 border-green-500/20',
     icon: CheckCircle2,
   },
   provisioning: {
-    label: 'Provisioning',
+    label: 'Setting Up',
     color: 'bg-accent/10 text-accent border-accent/20',
     icon: Loader2,
   },
   pending: {
-    label: 'Pending',
+    label: 'Waiting',
     color: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
     icon: Clock,
   },
@@ -93,7 +93,7 @@ export default function ProvisioningQueuePage() {
       setWebsites(Array.isArray(result?.websites) ? result.websites : []);
     } catch (error) {
       console.error('[dashboard/provisioning/queue] load failed', error);
-      setErrorMessage('Failed to load provisioning queue.');
+      setErrorMessage('Failed to load website setup queue.');
     } finally {
       setLoading(false);
     }

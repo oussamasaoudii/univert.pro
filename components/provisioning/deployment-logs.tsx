@@ -81,7 +81,7 @@ export function DeploymentLogs({ logs, isLive = false, deploymentId }: Deploymen
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `deployment-${deploymentId || 'logs'}.txt`;
+    a.download = `setup-logs-${deploymentId || 'export'}.txt`;
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -102,7 +102,7 @@ export function DeploymentLogs({ logs, isLive = false, deploymentId }: Deploymen
             </div>
             <div className="flex items-center gap-2 text-xs text-zinc-400">
               <Terminal className="w-3.5 h-3.5" />
-              <span className="font-mono">deployment-logs</span>
+              <span className="font-mono">setup-logs</span>
               {deploymentId && (
                 <span className="text-zinc-600 font-mono">/{deploymentId.slice(0, 8)}</span>
               )}

@@ -52,43 +52,48 @@ const pricingComparison = {
   columns: [
     { name: "Feature", highlighted: false },
     { name: "Starter", highlighted: false },
-    { name: "Pro", highlighted: true },
-    { name: "Enterprise", highlighted: false },
+    { name: "Growth", highlighted: true },
+    { name: "Business", highlighted: false },
   ],
   rows: [
-    { feature: "Projects", values: ["3", "Unlimited", "Unlimited"] },
-    { feature: "Bandwidth", values: ["100GB", "1TB", "Custom"] },
-    { feature: "Team Members", values: ["1", "10", "Unlimited"] },
-    { feature: "Preview Deployments", values: [true, true, true] },
+    { feature: "Number of Websites", values: ["1", "3", "Unlimited"] },
+    { feature: "Template Stack", values: ["Any", "Any", "Any"] },
     { feature: "Custom Domains", values: [true, true, true] },
-    { feature: "SSL Certificates", values: [true, true, true] },
-    { feature: "Edge Functions", values: ["partial", true, true] },
+    { feature: "Managed Setup", values: [true, true, true] },
+    { feature: "Managed Hosting", values: [true, true, true] },
+    { feature: "Email Support", values: [true, true, true] },
+    { feature: "Chat/Phone Support", values: [false, true, true] },
+    { feature: "Backups & Recovery", values: [true, true, true] },
     { feature: "Analytics", values: ["Basic", "Advanced", "Custom"] },
-    { feature: "Support", values: ["Community", "Priority", "Dedicated"] },
-    { feature: "SLA Guarantee", values: [false, true, true] },
+    { feature: "Export Anytime", values: [true, true, true] },
   ],
 };
 
 const pricingFAQs = [
   {
-    question: "What happens when I exceed my bandwidth limit?",
+    question: "What is included in managed setup?",
     answer:
-      "We will notify you before you reach your limit. You can upgrade your plan at any time, and we offer affordable overage rates so your site stays online.",
+      "We configure your template, connect your domain, secure the site with SSL, and prepare the essentials so you can launch quickly without technical hassle.",
   },
   {
     question: "Can I change my plan later?",
     answer:
-      "Yes! You can upgrade or downgrade your plan at any time. When upgrading, you will be prorated for the remainder of your billing cycle.",
+      "Yes. You can upgrade or downgrade your plan as your business grows, and the change will apply on your next billing cycle.",
   },
   {
     question: "Do you offer refunds?",
     answer:
-      "Yes, we offer a 30-day money-back guarantee for all paid plans. If you are not satisfied, contact support for a full refund.",
+      "Yes, we offer a 30-day satisfaction guarantee on paid plans. If the service is not a fit, contact support and we will help you.",
   },
   {
     question: "What payment methods do you accept?",
     answer:
-      "We accept all major credit cards (Visa, Mastercard, American Express), PayPal, and bank transfers for Enterprise customers.",
+      "We accept major credit cards and regional payment methods where available. Business customers can also request manual invoicing.",
+  },
+  {
+    question: "Can I move my website later?",
+    answer:
+      "Yes. Univert is designed without lock-in. You can request export and migration support later if you decide to move the project to your own server.",
   },
 ];
 

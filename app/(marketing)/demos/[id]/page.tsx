@@ -216,9 +216,9 @@ export default function DemoDetailPage({
                 <CardContent className="p-4">
                   <div className="flex items-center gap-2 text-muted-foreground text-sm">
                     <Globe className="w-4 h-4" />
-                    Deployment
+                    Setup
                   </div>
-                  <p className="text-2xl font-bold mt-2">Ready</p>
+                  <p className="text-2xl font-bold mt-2">Managed</p>
                 </CardContent>
               </Card>
             </div>

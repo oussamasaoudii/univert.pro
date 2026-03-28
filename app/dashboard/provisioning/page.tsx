@@ -73,7 +73,7 @@ export default function ProvisioningPage() {
       setWebsites(Array.isArray(result?.websites) ? result.websites : []);
     } catch (error) {
       console.error('[dashboard/provisioning] load failed', error);
-      setErrorMessage('Failed to load provisioning data.');
+      setErrorMessage('Failed to load website setup data.');
     } finally {
       setLoading(false);
     }
@@ -98,6 +98,13 @@ export default function ProvisioningPage() {
   );
 
   const totalDeployments = websites.length;
+  const statusLabels: Record<WebsiteRecord['status'], string> = {
+    pending: 'Waiting',
+    provisioning: 'Setting Up',
+    ready: 'Ready',
+    suspended: 'Suspended',
+    failed: 'Failed',
+  };
 
   const renderProvisioningCard = (website: WebsiteRecord) => {
     const progressPercent = PROGRESS_BY_STATUS[website.status];
@@ -155,7 +162,7 @@ export default function ProvisioningPage() {
                         failed && 'bg-red-500/10 text-red-400',
                       )}
                     >
-                      {website.status}
+                      {statusLabels[website.status]}
                     </Badge>
                   </div>
 
