@@ -16,7 +16,7 @@ import { OAuthButtons, OAuthDivider } from "@/components/auth/oauth-buttons";
 const SIGNUP_COPY = {
   en: {
     title: "Create your account",
-    subtitle: "Start building with Ovmon in minutes",
+    subtitle: "Start launching your website with Univert today",
     email: "Email address",
     emailPlaceholder: "you@example.com",
     password: "Password",
@@ -41,7 +41,7 @@ const SIGNUP_COPY = {
   },
   ar: {
     title: "إنشاء حسابك",
-    subtitle: "ابدأ البناء مع Ovmon في دقائق",
+    subtitle: "ابدأ إطلاق موقعك مع Univert اليوم",
     email: "البريد الإلكتروني",
     emailPlaceholder: "you@example.com",
     password: "كلمة المرور",

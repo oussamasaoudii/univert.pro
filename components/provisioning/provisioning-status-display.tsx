@@ -89,7 +89,7 @@ export function ProvisioningStatusDisplay({
       <Card className="bg-background border-border">
         <CardContent className="pt-6">
           <div className="text-center py-8">
-            <p className="text-muted-foreground">No provisioning job found</p>
+            <p className="text-muted-foreground">No website setup found</p>
           </div>
         </CardContent>
       </Card>

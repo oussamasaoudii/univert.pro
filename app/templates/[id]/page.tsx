@@ -136,7 +136,7 @@ export default function TemplateDetailPage({
               <h2 className="text-2xl font-bold">Included</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
-                  'Managed deployment',
+                  'Managed setup & hosting',
                   'Free SSL certificate',
                   'Daily backups',
                   'Domain connection support',
@@ -152,8 +152,8 @@ export default function TemplateDetailPage({
             </div>
           </div>
 
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="sticky top-24 bg-gradient-to-br from-accent/10 via-background to-background border-accent/20">
+          <div className="lg:col-span-1 space-y-6 self-start sticky top-24">
+            <Card className="bg-gradient-to-br from-accent/10 via-background to-background border-accent/20">
               <CardHeader>
                 <CardTitle>Ready to Launch?</CardTitle>
                 <CardDescription>Create a project from this template</CardDescription>

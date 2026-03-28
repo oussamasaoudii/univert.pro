@@ -336,7 +336,7 @@ export default function HomePage() {
                     <div className="flex-1 flex justify-center">
                       <div className="bg-background/50 rounded-md px-4 py-1 text-xs text-muted-foreground flex items-center gap-2">
                         <Lock className="w-3 h-3 text-green-500" />
-                        app.ovmon.com/dashboard
+                        univert.pro/dashboard
                       </div>
                     </div>
                     <div className="flex gap-1">
