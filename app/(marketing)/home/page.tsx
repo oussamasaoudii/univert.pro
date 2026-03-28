@@ -798,7 +798,7 @@ export default function HomePage() {
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
                     {platformMetrics.map((metric, i) => (
                       <motion.div
-                        key={signal.label}
+                        key={metric.label}
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
@@ -806,10 +806,10 @@ export default function HomePage() {
                         className="text-center group"
                       >
                         <div className="w-14 h-14 mx-auto rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 group-hover:scale-105 transition-all">
-                          <signal.icon className="w-7 h-7 text-accent" />
+                          <metric.icon className="w-7 h-7 text-accent" />
                         </div>
-                        <p className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{signal.label}</p>
-                        <p className="text-sm text-muted-foreground">{signal.sublabel}</p>
+                        <p className="text-2xl lg:text-3xl font-bold text-foreground mb-1">{metric.label}</p>
+                        <p className="text-sm text-muted-foreground">{metric.sublabel}</p>
                       </motion.div>
                     ))}
                   </div>
