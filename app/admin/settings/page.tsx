@@ -385,7 +385,7 @@ export default function AdminSettingsPage() {
       ) : null}
 
       <Tabs defaultValue="general" className="space-y-6">
-        <TabsList>
+        <TabsList className="flex flex-wrap h-auto gap-1">
           <TabsTrigger value="general">عام</TabsTrigger>
           <TabsTrigger value="features">المميزات</TabsTrigger>
           <TabsTrigger value="security">الأمان</TabsTrigger>
