@@ -274,24 +274,41 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                 <NavigationMenuContent>
                   <div className="w-[820px] p-6 bg-popover text-popover-foreground overflow-visible">
                     <div className="grid grid-cols-12 gap-8">
-                      {/* Featured item */}
+                      {/* Featured item with video background */}
                       <div className="col-span-5 min-w-0">
-                        <div className="rounded-xl bg-gradient-to-br from-accent/15 via-accent/5 to-transparent border border-accent/20 p-5 h-full flex flex-col">
-                          <div className="flex items-center gap-2 mb-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/20 text-accent">
-                              {productFeatured.icon && <productFeatured.icon className="h-4 w-4" />}
-                            </div>
-                            <span className="text-xs font-semibold text-accent uppercase tracking-wider">Featured</span>
-                          </div>
-                          <p className="text-base font-semibold text-foreground mb-2">{productFeatured.title || 'Platform Overview'}</p>
-                          <p className="text-sm text-muted-foreground mb-4 flex-grow">{productFeatured.description || 'Discover professional website templates and solutions'}</p>
-                          <Link
-                            href={productFeatured.href || '/product'}
-                            className="inline-flex items-center text-sm font-medium text-accent hover:text-accent transition-colors"
+                        <div className="relative rounded-xl overflow-hidden border border-accent/20 h-full min-h-[280px]">
+                          {/* Video Background */}
+                          <video
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="absolute inset-0 w-full h-full object-cover"
                           >
-                            Explore platform
-                            <ArrowRight className="h-4 w-4 ml-2" />
-                          </Link>
+                            <source src="https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+                          </video>
+                          {/* Gradient Overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+                          {/* Content */}
+                          <div className="relative z-10 p-5 h-full flex flex-col justify-between">
+                            <div>
+                              <div className="flex items-center gap-2 mb-3">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm text-white">
+                                  {productFeatured.icon && <productFeatured.icon className="h-4 w-4" />}
+                                </div>
+                                <span className="text-xs font-semibold text-accent uppercase tracking-wider">Featured</span>
+                              </div>
+                              <p className="text-lg font-semibold text-white mb-2">{productFeatured.title || 'Templates Gallery'}</p>
+                              <p className="text-sm text-white/80">{productFeatured.description || 'Browse professional launch-ready website templates'}</p>
+                            </div>
+                            <Link
+                              href={productFeatured.href || '/templates'}
+                              className="inline-flex items-center text-sm font-medium text-white hover:text-accent transition-colors mt-4"
+                            >
+                              Explore platform
+                              <ArrowRight className="h-4 w-4 ml-2" />
+                            </Link>
+                          </div>
                         </div>
                       </div>
 
@@ -337,7 +354,7 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                     <div className="mt-6 pt-6 border-t border-border/30">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm font-medium text-foreground mb-1">See Ovmon in action</p>
+                          <p className="text-sm font-medium text-foreground mb-1">See Univert in action</p>
                           <p className="text-xs text-muted-foreground">Watch a 2-minute demo of our platform</p>
                         </div>
                         <Link
