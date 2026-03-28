@@ -274,33 +274,29 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                 <NavigationMenuContent>
                   <div className="w-[820px] p-6 bg-popover text-popover-foreground overflow-visible">
                     <div className="grid grid-cols-12 gap-8">
-                      {/* Featured item with background image */}
+                      {/* Featured item with gradient background */}
                       <div className="col-span-5 min-w-0">
-                        <div className="relative rounded-xl overflow-hidden border border-accent/20 h-full min-h-[280px]">
-                          {/* Background Image - Modern Website */}
-                          <div
-                            className="absolute inset-0 w-full h-full bg-cover bg-center"
-                            style={{
-                              backgroundImage: 'url("https://images.unsplash.com/photo-1460925895917-aae19e938282?w=500&h=500&fit=crop")',
-                            }}
-                          />
-                          {/* Gradient Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+                        <div className="relative rounded-xl overflow-hidden border border-accent/20 h-full min-h-[280px] bg-gradient-to-br from-accent/20 via-accent/10 to-background">
+                          {/* Animated gradient background */}
+                          <div className="absolute inset-0 opacity-50">
+                            <div className="absolute top-0 left-0 w-40 h-40 bg-accent/30 rounded-full blur-3xl animate-pulse" />
+                            <div className="absolute bottom-0 right-0 w-32 h-32 bg-accent/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+                          </div>
                           {/* Content */}
                           <div className="relative z-10 p-5 h-full flex flex-col justify-between">
                             <div>
                               <div className="flex items-center gap-2 mb-3">
-                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm text-white">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/30 backdrop-blur-sm text-accent">
                                   {productFeatured.icon && <productFeatured.icon className="h-4 w-4" />}
                                 </div>
                                 <span className="text-xs font-semibold text-accent uppercase tracking-wider">Featured</span>
                               </div>
-                              <p className="text-lg font-semibold text-white mb-2">{productFeatured.title || 'Templates Gallery'}</p>
-                              <p className="text-sm text-white/80">{productFeatured.description || 'Browse professional launch-ready website templates'}</p>
+                              <p className="text-lg font-semibold text-foreground mb-2">{productFeatured.title || 'Templates Gallery'}</p>
+                              <p className="text-sm text-foreground/70">{productFeatured.description || 'Browse professional launch-ready website templates'}</p>
                             </div>
                             <Link
                               href={productFeatured.href || '/templates'}
-                              className="inline-flex items-center text-sm font-medium text-white hover:text-accent transition-colors mt-4"
+                              className="inline-flex items-center text-sm font-medium text-accent hover:text-accent/80 transition-colors mt-4"
                             >
                               Explore platform
                               <ArrowRight className="h-4 w-4 ml-2" />
