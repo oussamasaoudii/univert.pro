@@ -11,42 +11,65 @@ export async function POST(request: Request) {
 
     const pool = getMySQLPool();
     
-    // Split SQL into individual statements
+    // Split SQL into individual statements by double newlines (how inspect-db joins them)
+    // Each statement from generateMigrationSQL is a complete statement
     let statements = sql
-      .split(';')
+      .split(/\n\n+/)
       .map(s => s.trim())
       .filter(s => s.length > 0 && !s.startsWith('--'));
     
+    console.log('[v0] Total statements parsed:', statements.length);
+    console.log('[v0] First few statements:', statements.slice(0, 3).map(s => s.substring(0, 80)));
+    
     // Filter statements based on type
     if (type === 'tables') {
-      statements = statements.filter(s => s.toUpperCase().includes('CREATE TABLE'));
+      statements = statements.filter(s => s.toUpperCase().startsWith('CREATE TABLE'));
+      console.log('[v0] Filtered to CREATE TABLE statements:', statements.length);
     } else if (type === 'columns') {
-      statements = statements.filter(s => s.toUpperCase().includes('ALTER TABLE') && s.toUpperCase().includes('ADD COLUMN'));
+      statements = statements.filter(s => {
+        const upper = s.toUpperCase();
+        return upper.startsWith('ALTER TABLE') && upper.includes('ADD COLUMN');
+      });
+      console.log('[v0] Filtered to ADD COLUMN statements:', statements.length);
     } else if (type === 'indexes') {
-      statements = statements.filter(s => s.toUpperCase().includes('CREATE INDEX') || s.toUpperCase().includes('ADD INDEX'));
+      statements = statements.filter(s => {
+        const upper = s.toUpperCase();
+        return upper.startsWith('CREATE INDEX') || (upper.startsWith('ALTER TABLE') && upper.includes('ADD INDEX'));
+      });
+      console.log('[v0] Filtered to INDEX statements:', statements.length);
     }
     
     const results: { statement: string; success: boolean; error?: string }[] = [];
     
     for (const statement of statements) {
+      // Clean up the statement - remove trailing semicolon if present for execute
+      const cleanStatement = statement.replace(/;[\s]*$/, '').trim();
+      
+      if (!cleanStatement) continue;
+      
       try {
-        await pool.execute(statement);
+        console.log('[v0] Executing:', cleanStatement.substring(0, 100) + '...');
+        await pool.execute(cleanStatement);
         results.push({ 
-          statement: statement.substring(0, 100) + (statement.length > 100 ? '...' : ''), 
+          statement: cleanStatement.substring(0, 100) + (cleanStatement.length > 100 ? '...' : ''), 
           success: true 
         });
+        console.log('[v0] Success');
       } catch (err: any) {
+        console.log('[v0] Error:', err.message);
         // Skip "already exists" errors for idempotent operations
         const errorMessage = err.message || '';
         const isIgnorableError = 
           errorMessage.includes('already exists') ||
           errorMessage.includes('Duplicate column name') ||
           errorMessage.includes('Duplicate key name') ||
-          errorMessage.includes('SQLSTATE[42S01]') || // Table already exists
-          errorMessage.includes('SQLSTATE[42S21]'); // Column already exists
+          errorMessage.includes('Table') && errorMessage.includes('already exists') ||
+          err.code === 'ER_TABLE_EXISTS_ERROR' ||
+          err.code === 'ER_DUP_FIELDNAME' ||
+          err.code === 'ER_DUP_KEYNAME';
         
         results.push({ 
-          statement: statement.substring(0, 100) + (statement.length > 100 ? '...' : ''), 
+          statement: cleanStatement.substring(0, 100) + (cleanStatement.length > 100 ? '...' : ''), 
           success: isIgnorableError,
           error: isIgnorableError ? 'Already exists (skipped)' : err.message
         });
@@ -58,16 +81,16 @@ export async function POST(request: Request) {
     
     return NextResponse.json({
       success: failCount === 0,
-      message: `Executed ${successCount}/${statements.length} statements successfully`,
+      message: `Executed ${successCount}/${results.length} statements successfully`,
       results,
       summary: {
-        total: statements.length,
+        total: results.length,
         success: successCount,
         failed: failCount
       }
     });
   } catch (error: any) {
-    console.error('Migration error:', error);
+    console.error('[v0] Migration error:', error);
     return NextResponse.json(
       { error: error.message || 'Failed to run migration' },
       { status: 500 }
