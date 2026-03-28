@@ -338,7 +338,7 @@ export default function ProvisioningPage() {
           {loading ? (
             <Card className="bg-card border-border">
               <CardContent className="py-10 text-center text-muted-foreground">
-                Loading deployments...
+                Loading setup progress...
               </CardContent>
             </Card>
           ) : provisioningWebsites.length > 0 ? (

@@ -119,7 +119,7 @@ export default function ProvisioningStatusPage({ params }: ProvisioningPageProps
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <p className="text-muted-foreground">Loading deployment...</p>
+        <p className="text-muted-foreground">Loading setup status...</p>
       </div>
     );
   }
@@ -131,13 +131,13 @@ export default function ProvisioningStatusPage({ params }: ProvisioningPageProps
           <CardContent className="pt-6 text-center space-y-4">
             <AlertTriangle className="w-10 h-10 text-red-500 mx-auto" />
             <div>
-              <h1 className="text-2xl font-bold">Deployment unavailable</h1>
+              <h1 className="text-2xl font-bold">Setup unavailable</h1>
               <p className="text-muted-foreground mt-2">{errorMessage || 'No provisioning record found.'}</p>
             </div>
             <Link href="/dashboard/provisioning">
               <Button variant="outline" className="gap-2">
                 <ArrowLeft className="w-4 h-4" />
-                Back to Deployments
+                Back to Website Setup
               </Button>
             </Link>
           </CardContent>
@@ -153,7 +153,7 @@ export default function ProvisioningStatusPage({ params }: ProvisioningPageProps
           <div className="flex items-center gap-2 mb-2 text-sm text-muted-foreground">
             <Link href="/dashboard">Dashboard</Link>
             <span>/</span>
-            <Link href="/dashboard/provisioning">Deployments</Link>
+            <Link href="/dashboard/provisioning">Website Setup</Link>
           </div>
           <h1 className="text-3xl font-bold tracking-tight">{data.website.projectName}</h1>
           <p className="text-muted-foreground mt-1">

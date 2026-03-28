@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Check, ArrowRight, Globe, CreditCard, Shield, RefreshCw, Rocket } from "lucide-react";
+import { Check, ArrowRight, Globe, Shield, RefreshCw, Rocket } from "lucide-react";
 import { FAQSection, CTABand, TrustMetrics, ComparisonTable } from "@/components/marketing/sections";
 import type { Country } from "@/lib/countries/types";
 import { formatCountryPrice } from "@/lib/countries/utils";
@@ -42,10 +42,10 @@ interface CountryPricingClientProps {
 }
 
 const pricingTrustItems = [
-  { icon: CreditCard, label: "No Credit Card", sublabel: "Required to start" },
-  { icon: Shield, label: "Secure Payments", sublabel: "PCI compliant" },
+  { icon: Globe, label: "Managed Setup", sublabel: "We handle everything" },
+  { icon: Shield, label: "Secure Hosting", sublabel: "SSL & daily backups" },
   { icon: RefreshCw, label: "Cancel Anytime", sublabel: "No lock-in" },
-  { icon: Rocket, label: "60 Second Setup", sublabel: "Start instantly" },
+  { icon: Rocket, label: "24 Hour Launch", sublabel: "Fast setup process" },
 ];
 
 const pricingComparison = {
@@ -161,7 +161,7 @@ export function CountryPricingClient({
               <span className="text-accent">your growth</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-              Prices shown in {country.currencyCode}. Start free and upgrade as you grow.
+              Prices shown in {country.currencyCode}. Simple, transparent pricing aligned with your needs.
             </p>
             <div className="flex items-center justify-center gap-4">
               <Label
@@ -338,9 +338,9 @@ export function CountryPricingClient({
       {/* Final CTA */}
       <CTABand
         title="Ready to get started?"
-        description="Start with our free plan and upgrade when you need more."
+        description="Choose a plan and launch your professional website in 24 hours."
         actions={[
-          { label: "Start Building Free", href: "/auth/signup", variant: "primary" },
+          { label: "View Plans", href: "/pricing", variant: "primary" },
           { label: "Contact Sales", href: "/contact", variant: "outline" },
         ]}
         variant="gradient"
