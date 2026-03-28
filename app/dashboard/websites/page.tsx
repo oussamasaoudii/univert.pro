@@ -107,7 +107,7 @@ const statusConfig: Record<
     borderColor: 'border-emerald-500/20',
   },
   provisioning: {
-    label: 'Provisioning',
+    label: 'Setting Up',
     icon: Loader2,
     bgColor: 'bg-blue-500/10',
     textColor: 'text-blue-500',
@@ -293,7 +293,7 @@ export default function WebsitesPage() {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">My Websites</h1>
-          <p className="text-muted-foreground">Manage your deployed websites and provisioning status.</p>
+          <p className="text-muted-foreground">Manage your websites and setup progress.</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link href="/templates">
@@ -342,7 +342,7 @@ export default function WebsitesPage() {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-blue-600 flex items-center gap-2">
               <Loader2 className="w-4 h-4" />
-              Provisioning
+              Setting Up
             </CardTitle>
           </CardHeader>
           <CardContent>
