@@ -286,9 +286,9 @@ export default function DemoDetailPage({
             <CardContent className="p-6 flex items-start gap-3">
               <Shield className="w-5 h-5 text-accent mt-0.5" />
               <div>
-                <p className="font-semibold">Production-ready deployment</p>
+                <p className="font-semibold">Fully managed hosting and setup</p>
                 <p className="text-sm text-muted-foreground">
-                  SSL, backup workflows, and infrastructure controls are managed from the platform.
+                  SSL, automatic backups, and infrastructure management included. We handle the technical details so you can focus on your business.
                 </p>
               </div>
             </CardContent>

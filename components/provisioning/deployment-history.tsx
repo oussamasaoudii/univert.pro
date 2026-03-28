@@ -71,7 +71,7 @@ export function DeploymentHistory({ entries, onRetry }: DeploymentHistoryProps) 
       <Card className="bg-card border-border">
         <CardContent className="flex flex-col items-center justify-center py-12">
           <GitCommit className="w-12 h-12 text-muted-foreground/30 mb-4" />
-          <p className="text-muted-foreground">No deployment history yet</p>
+          <p className="text-muted-foreground">No setup history yet</p>
         </CardContent>
       </Card>
     );
@@ -82,11 +82,11 @@ export function DeploymentHistory({ entries, onRetry }: DeploymentHistoryProps) 
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-base font-semibold">Deployment History</CardTitle>
-            <CardDescription>Previous deployments and changes</CardDescription>
+            <CardTitle className="text-base font-semibold">Setup History</CardTitle>
+            <CardDescription>Previous setup attempts and configuration changes</CardDescription>
           </div>
           <Badge variant="outline" className="font-mono text-xs">
-            {entries.length} deployments
+            {entries.length} setups
           </Badge>
         </div>
       </CardHeader>

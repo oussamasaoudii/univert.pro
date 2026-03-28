@@ -192,8 +192,8 @@ export default function ProvisioningQueuePage() {
     <div className="space-y-8">
       <div className="space-y-4">
         <div>
-          <h1 className="text-3xl font-bold">Provisioning Queue</h1>
-          <p className="text-muted-foreground">Manage and monitor all your website deployments</p>
+          <h1 className="text-3xl font-bold">Website Setup Queue</h1>
+          <p className="text-muted-foreground">Manage and monitor all your website setup requests</p>
         </div>
 
         {errorMessage && (
@@ -211,7 +211,7 @@ export default function ProvisioningQueuePage() {
           <Card className="bg-secondary/30 border-border">
             <CardContent className="p-4">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
-                Total Deployments
+                Total Setups
               </p>
               <p className="text-2xl font-bold">{websites.length}</p>
             </CardContent>
@@ -260,7 +260,7 @@ export default function ProvisioningQueuePage() {
           {loading ? (
             <div className="py-10 text-center text-muted-foreground">Loading queue...</div>
           ) : filteredWebsites.length === 0 ? (
-            <div className="py-10 text-center text-muted-foreground">No deployments found.</div>
+            <div className="py-10 text-center text-muted-foreground">No website setups found.</div>
           ) : (
             <div className="space-y-3">{filteredWebsites.map((website) => renderWebsiteRow(website))}</div>
           )}
@@ -270,7 +270,7 @@ export default function ProvisioningQueuePage() {
       {successfulWebsites.length > 0 && (
         <Card className="bg-card border-border">
           <CardHeader>
-            <CardTitle>Recently Deployed</CardTitle>
+            <CardTitle>Recently Launched</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {successfulWebsites.slice(0, 5).map((website) => (

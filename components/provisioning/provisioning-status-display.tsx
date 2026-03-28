@@ -279,7 +279,7 @@ export function ProvisioningStatusDisplay({
                     .join('\n');
                   const element = document.createElement('a');
                   element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(logsText));
-                  element.setAttribute('download', `deployment-logs-${job.id}.txt`);
+                  element.setAttribute('download', `setup-logs-${job.id}.txt`);
                   element.style.display = 'none';
                   document.body.appendChild(element);
                   element.click();
@@ -303,9 +303,9 @@ export function ProvisioningStatusDisplay({
               {isComplete ? (
                 <p>Your website is now live! You can access it at your configured domain.</p>
               ) : isFailed ? (
-                <p>Deployment failed. Check the logs above for details. Contact support if you need help.</p>
+                <p>Website setup failed. Check the logs above for details. Contact support if you need help.</p>
               ) : (
-                <p>Deployment in progress. This typically takes 2-5 minutes. Do not close this page.</p>
+                <p>Website setup in progress. This typically takes 2-5 minutes. Do not close this page.</p>
               )}
             </div>
           </div>
