@@ -1,5 +1,7 @@
 "use client";
 
+// Marketing header client component with responsive navigation
+
 import Link from "next/link";
 import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
