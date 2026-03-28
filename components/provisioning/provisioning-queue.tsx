@@ -135,8 +135,8 @@ export function ProvisioningQueue({ initialJobs }: ProvisioningQueueProps) {
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Deployments</h1>
-          <p className="text-muted-foreground mt-1">Track your website deployments and provisioning status</p>
+          <h1 className="text-3xl font-bold tracking-tight">Website Setup Progress</h1>
+          <p className="text-muted-foreground mt-1">Track your website setup status and history</p>
         </div>
         <Button onClick={handleRefresh} variant="outline" size="sm" disabled={isRefreshing}>
           <RotateCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
@@ -149,7 +149,7 @@ export function ProvisioningQueue({ initialJobs }: ProvisioningQueueProps) {
         <Card>
           <CardContent className="pt-6">
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground font-medium">Total Deployments</p>
+              <p className="text-sm text-muted-foreground font-medium">Total Websites</p>
               <p className="text-2xl font-bold">{jobs.length}</p>
             </div>
           </CardContent>

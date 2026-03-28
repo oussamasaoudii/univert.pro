@@ -166,7 +166,7 @@ export default function ProvisioningPage() {
 
                   <div className="mt-3 space-y-2">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground">Deployment progress</span>
+                      <span className="text-muted-foreground">Setup progress</span>
                       <span className="font-medium">{progressPercent}%</span>
                     </div>
                     <Progress value={progressPercent} className="h-1.5" />
@@ -191,8 +191,8 @@ export default function ProvisioningPage() {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Deployments</h1>
-        <p className="text-muted-foreground">Monitor and manage your website deployments</p>
+        <h1 className="text-3xl font-bold tracking-tight">Website Setup Progress</h1>
+        <p className="text-muted-foreground">Monitor and manage your website setup status</p>
       </div>
 
       {errorMessage && (
@@ -350,7 +350,7 @@ export default function ProvisioningPage() {
                   <CheckCircle2 className="w-7 h-7 text-emerald-400" />
                 </div>
                 <h3 className="font-semibold text-foreground mb-1">All caught up</h3>
-                <p className="text-sm text-muted-foreground">No deployments in progress</p>
+                <p className="text-sm text-muted-foreground">No websites being set up</p>
               </CardContent>
             </Card>
           )}
@@ -405,7 +405,7 @@ export default function ProvisioningPage() {
             <Card className="bg-card border-border border-dashed">
               <CardContent className="flex flex-col items-center justify-center py-16">
                 <Globe className="w-12 h-12 text-muted-foreground/30 mb-4" />
-                <p className="text-muted-foreground">No deployed websites yet</p>
+                <p className="text-muted-foreground">No websites ready yet</p>
               </CardContent>
             </Card>
           )}
@@ -420,7 +420,7 @@ export default function ProvisioningPage() {
                 <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
                   <CheckCircle2 className="w-7 h-7 text-emerald-400" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-1">No failed deployments</h3>
+                <h3 className="font-semibold text-foreground mb-1">No failed setups</h3>
                 <p className="text-sm text-muted-foreground">Everything looks healthy.</p>
               </CardContent>
             </Card>

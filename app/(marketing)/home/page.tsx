@@ -184,7 +184,7 @@ const platformCredentials = [
   { icon: Lock, label: 'Export', sublabel: 'Freedom', description: 'Move your project anytime' },
 ];
 
-const developerSignals = [
+const platformMetrics = [
   { label: 'Hundreds', sublabel: 'Active customers', icon: Users },
   { label: '10M+', sublabel: 'Monthly visitors served', icon: BarChart3 },
   { label: '<100ms', sublabel: 'Global load time', icon: Zap },
@@ -796,7 +796,7 @@ export default function HomePage() {
                   </div>
                   
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-                    {developerSignals.map((signal, i) => (
+                    {platformMetrics.map((metric, i) => (
                       <motion.div
                         key={signal.label}
                         initial={{ opacity: 0, scale: 0.95 }}
