@@ -119,10 +119,16 @@ export async function PATCH(
     }
 
     if (hasReply) {
+      // For system admins (fallback) or preview mode admins, use NULL sender
+      // since these users don't have real user records in the database
+      const senderUserId = (
+        adminUser.source === "local_admin_fallback" || 
+        adminUser.source === "preview_mock"
+      ) ? null : adminUser.id;
+      
       await addSupportTicketMessage({
         ticketId,
-        senderUserId:
-          adminUser.source === "local_admin_fallback" ? null : adminUser.id,
+        senderUserId: senderUserId || null,
         senderRole: "admin",
         message: body.reply!,
       });
