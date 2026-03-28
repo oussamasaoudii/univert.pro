@@ -141,7 +141,7 @@ export function ProvisioningStatusDisplay({
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm font-medium">{displayProgress}%</span>
               <span className="text-xs text-muted-foreground">
-                {stepDescriptions[job.current_step || 'pending'] || 'Provisioning...'}
+                {stepDescriptions[job.current_step || 'pending'] || 'Setting up...'}
               </span>
             </div>
             <Progress value={displayProgress} className="h-2" />

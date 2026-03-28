@@ -83,7 +83,7 @@ export default function ProvisioningStatusPage({ params }: ProvisioningPageProps
           return;
         }
         console.error('[dashboard/provisioning/:id] load failed', error);
-        setErrorMessage('Failed to load provisioning status.');
+        setErrorMessage('Failed to load website setup status.');
       } finally {
         if (isMounted) {
           setLoading(false);
@@ -113,7 +113,7 @@ export default function ProvisioningStatusPage({ params }: ProvisioningPageProps
     if (isFailed) {
       return <Badge variant="destructive">Failed</Badge>;
     }
-    return <Badge variant="outline">Provisioning</Badge>;
+    return <Badge variant="outline">Setting Up</Badge>;
   }, [data?.website, isComplete, isFailed]);
 
   if (loading) {
@@ -132,7 +132,7 @@ export default function ProvisioningStatusPage({ params }: ProvisioningPageProps
             <AlertTriangle className="w-10 h-10 text-red-500 mx-auto" />
             <div>
               <h1 className="text-2xl font-bold">Setup unavailable</h1>
-              <p className="text-muted-foreground mt-2">{errorMessage || 'No provisioning record found.'}</p>
+              <p className="text-muted-foreground mt-2">{errorMessage || 'No website setup record found.'}</p>
             </div>
             <Link href="/dashboard/provisioning">
               <Button variant="outline" className="gap-2">
