@@ -164,6 +164,17 @@ export function resolvePlatformSettings(settings: PlatformSettings): EffectivePl
 }
 
 function normalizeSettings(row: SettingsRow): PlatformSettings {
+  // Safe decrypt helper - returns empty string if decryption fails
+  const safeDecrypt = (encrypted: string | null): string => {
+    if (!encrypted) return "";
+    try {
+      return decryptSecret(encrypted);
+    } catch (error) {
+      console.warn("[Settings] Failed to decrypt field, returning empty string", error);
+      return "";
+    }
+  };
+
   return {
     platformName: row.platform_name,
     supportEmail: row.support_email,
@@ -176,14 +187,14 @@ function normalizeSettings(row: SettingsRow): PlatformSettings {
     s3Endpoint: row.s3_endpoint || "",
     s3Region: row.s3_region || "",
     s3Bucket: row.s3_bucket || "",
-    s3AccessKey: decryptSecret(row.s3_access_key || ""),
-    s3SecretKey: decryptSecret(row.s3_secret_key || ""),
+    s3AccessKey: safeDecrypt(row.s3_access_key),
+    s3SecretKey: safeDecrypt(row.s3_secret_key),
     s3PublicUrl: row.s3_public_url || "",
     s3UsePathStyle: row.s3_use_path_style === 1 || row.s3_use_path_style === true,
     turnstileEnabled:
       row.addon_turnstile_enabled === 1 || row.addon_turnstile_enabled === true,
     turnstileSiteKey: row.turnstile_site_key || "",
-    turnstileSecretKey: decryptSecret(row.turnstile_secret_key || ""),
+    turnstileSecretKey: safeDecrypt(row.turnstile_secret_key),
     updatedAt: row.updated_at,
   };
 }
