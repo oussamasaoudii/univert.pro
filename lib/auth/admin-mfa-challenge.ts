@@ -12,9 +12,31 @@ export type AdminMfaChallengePayload = {
 };
 
 function getAdminChallengeSecret() {
-  const secret = process.env.ADMIN_AUTH_SECRET || process.env.AUTH_SECRET;
-  if (!secret || secret.trim().length < 32) {
-    throw new Error("ADMIN_AUTH_SECRET or AUTH_SECRET must be configured with at least 32 characters");
+  const adminSecret = process.env.ADMIN_AUTH_SECRET?.trim();
+  const authSecret = process.env.AUTH_SECRET?.trim();
+  
+  const secret = adminSecret || authSecret;
+  
+  // Debug logging
+  console.log("[AdminMFA] Secret check:", {
+    hasAdminSecret: !!adminSecret,
+    adminSecretLength: adminSecret?.length || 0,
+    hasAuthSecret: !!authSecret,
+    authSecretLength: authSecret?.length || 0,
+    selectedSecretLength: secret?.length || 0,
+  });
+
+  if (!secret || secret.length < 32) {
+    const details = {
+      hasAdminSecret: !!process.env.ADMIN_AUTH_SECRET,
+      hasAuthSecret: !!process.env.AUTH_SECRET,
+      adminSecretLength: process.env.ADMIN_AUTH_SECRET?.length || 0,
+      authSecretLength: process.env.AUTH_SECRET?.length || 0,
+    };
+    console.error("[AdminMFA] Secret validation failed:", details);
+    throw new Error(
+      `ADMIN_AUTH_SECRET or AUTH_SECRET must be configured with at least 32 characters. Details: ${JSON.stringify(details)}`
+    );
   }
 
   return secret;
