@@ -1,0 +1,7 @@
+[project]
+name = "schema-compare"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "pymysql>=1.1.0",
+]

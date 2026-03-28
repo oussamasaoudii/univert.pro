@@ -10,7 +10,8 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { AlertCircle, CheckCircle2, ShieldCheck, Database, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 
 type SettingsState = {
   platformName: string;
@@ -384,11 +385,12 @@ export default function AdminSettingsPage() {
       ) : null}
 
       <Tabs defaultValue="general" className="space-y-6">
-        <TabsList>
+        <TabsList className="flex flex-wrap h-auto gap-1">
           <TabsTrigger value="general">عام</TabsTrigger>
           <TabsTrigger value="features">المميزات</TabsTrigger>
           <TabsTrigger value="security">الأمان</TabsTrigger>
           <TabsTrigger value="addons">Add-ons</TabsTrigger>
+          <TabsTrigger value="database">قاعدة البيانات</TabsTrigger>
         </TabsList>
 
         <TabsContent value="general">
@@ -885,6 +887,65 @@ export default function AdminSettingsPage() {
             >
               {saving ? 'جاري الحفظ...' : 'حفظ إعدادات Add-ons'}
             </Button>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="database">
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Database className="h-5 w-5" />
+                  أدوات قاعدة البيانات
+                </CardTitle>
+                <CardDescription>
+                  إدارة وفحص schema قاعدة البيانات والتحقق من التوافق مع الكود
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="rounded-lg border bg-muted/30 p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-medium">فحص Schema</h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        مقارنة schema قاعدة البيانات الحية مع المتطلبات في الكود، وتنفيذ migrations آمنة
+                      </p>
+                    </div>
+                    <Link
+                      href="/admin/schema-check"
+                      className="flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      فتح أداة الفحص
+                      <ExternalLink className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border bg-muted/30 p-4 opacity-60">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-medium">إحصائيات قاعدة البيانات</h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        عرض حجم الجداول وعدد السجلات والفهارس
+                      </p>
+                    </div>
+                    <span className="text-sm text-muted-foreground">قريباً</span>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border bg-muted/30 p-4 opacity-60">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-medium">تصدير البيانات</h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        تصدير بيانات الجداول المحددة بصيغة JSON أو CSV
+                      </p>
+                    </div>
+                    <span className="text-sm text-muted-foreground">قريباً</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
       </Tabs>
