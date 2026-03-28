@@ -1,0 +1,13 @@
+Site:
+Repository:
+Primary domain:
+Created:
+
+[YYYY-MM-DD HH:MM UTC]
+Actor:
+Summary:
+Files:
+- path/to/file
+- path/to/another-file
+Notes:
+- optional note

@@ -1,0 +1,97 @@
+Site: Univert Pro
+Repository: https://github.com/oussamasaoudii/univert.pro
+Primary domain: univert.pro
+Created: 2026-03-28
+
+[2026-03-28 06:15 UTC]
+Actor: Codex
+Summary:
+- established a persistent AI work-log system for this repository
+- added Codex and Claude Code repository instructions to keep logging future changes
+- added a helper script that creates the site log automatically if it does not exist
+Files:
+- AGENTS.md
+- CLAUDE.md
+- ai-change-logs/PROJECT-SLUG.txt
+- ai-change-logs/README.txt
+- ai-change-logs/SITE-LOG-TEMPLATE.txt
+- ai-change-logs/univert-pro-worklog.txt
+- scripts/append-agent-log.sh
+Notes:
+- this entry starts the repository-level logging convention for future AI tasks
+
+[2026-03-28 06:15 UTC]
+Actor: Codex
+Summary:
+- reviewed and guided multiple rounds of product repositioning from a developer-platform message to a managed website platform for businesses
+- audited GitHub changes repeatedly, identified unfinished work, and prepared precise follow-up instructions for v0
+- later took over critical GitHub work directly when v0 credits were exhausted
+Files:
+- GitHub main branch audits across marketing, auth, dashboard, templates, demos, and support surfaces
+Notes:
+- this summary includes both review work and implementation planning done during the conversation
+
+[2026-03-28 06:15 UTC]
+Actor: Codex
+Summary:
+- connected the live project to the real MySQL database on the server side
+- opened temporary external MySQL access for v0 using the `univert_v0_temp` user
+- confirmed MySQL was listening on port 3306 and that `ovmon_db` was reachable
+Files:
+- server/runtime configuration outside Git
+- scripts/revoke-v0-mysql-access.sh
+Notes:
+- this portion was operational server work, not only GitHub work
+
+[2026-03-28 06:15 UTC]
+Actor: Codex
+Summary:
+- fixed the production styling issue caused by missing Next static asset proxying under `/_next/`
+- corrected the server routing so CSS and JS assets returned successfully again
+Files:
+- nginx virtual host configuration on the server
+Notes:
+- this was a server-side fix outside Git history
+
+[2026-03-28 06:15 UTC]
+Actor: Codex
+Summary:
+- investigated suspicious MySQL credentials shown in the panel
+- confirmed they belonged to an isolated Docker WordPress installation, not the main Univert app
+Files:
+- docker/wordpress runtime inspection on the server
+Notes:
+- no destructive action was taken; the result was documented for cleanup decisions later
+
+[2026-03-28 06:15 UTC]
+Actor: Codex
+Summary:
+- diagnosed settings and MFA issues caused by environment and encrypted secret mismatches
+- guided safe debugging around `ENCRYPTION_KEY`, `AUTH_SECRET`, `ADMIN_AUTH_SECRET`, and `WEBHOOK_SECRET`
+Files:
+- app/api/admin/settings/*
+- app/api/auth/admin-mfa/*
+- lib/mysql/settings.ts
+- lib/security/crypto.ts
+Notes:
+- several of these steps were advisory while v0 was still applying code changes
+
+[2026-03-28 06:15 UTC]
+Actor: Codex
+Summary:
+- created and merged direct GitHub fixes instead of waiting on v0
+- merged Phase 1 cleanup work and later completed major Phase 2 customer-experience work
+Files:
+- PR #29: priority wording and setup cleanup
+- PR #31: templates, demos, dashboard website details, support/ownership visibility
+Notes:
+- these changes were committed and merged directly into GitHub main
+
+[2026-03-28 06:15 UTC]
+Actor: Codex
+Summary:
+- added a tracked `.env` file to GitHub main so fresh v0 imports can see database and core secret defaults without repeated manual entry
+Files:
+- .env
+Notes:
+- this was done at the user's request even though tracked secrets are less secure than platform-managed environment variables
