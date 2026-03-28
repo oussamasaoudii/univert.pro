@@ -12,12 +12,12 @@ export default async function AdminLayout({
   const adminUser = await requireAdmin();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
       <RealtimeSessionBridge role="admin" userId={adminUser.id} />
       <AdminSidebar />
-      <div className="lg:pl-64">
+      <div className="lg:pl-64 flex flex-col flex-1 overflow-hidden">
         <AdminHeader />
-        <main className="p-4 lg:p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto p-4 lg:p-6">{children}</main>
       </div>
     </div>
   );

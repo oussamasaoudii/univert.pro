@@ -53,7 +53,7 @@ export default function SchemaCheckPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background p-8 flex items-center justify-center">
+      <div className="flex items-center justify-center py-16">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground mx-auto mb-4"></div>
           <p className="text-muted-foreground">Analyzing database schema...</p>
@@ -64,7 +64,7 @@ export default function SchemaCheckPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background p-8">
+      <div className="py-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold mb-4 text-foreground">Schema Comparison Error</h1>
           <div className="bg-destructive/10 border border-destructive rounded-lg p-4">
@@ -78,7 +78,7 @@ export default function SchemaCheckPage() {
   if (!data) return null;
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="pb-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-2 text-foreground">Database Schema Comparison</h1>
         <p className="text-muted-foreground mb-8">
