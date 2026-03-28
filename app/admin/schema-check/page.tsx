@@ -18,11 +18,20 @@ interface SchemaComparison {
   error?: string;
 }
 
+interface MigrationResult {
+  success: boolean;
+  message: string;
+  results: { statement: string; success: boolean; error?: string }[];
+  summary: { total: number; success: number; failed: number };
+}
+
 export default function SchemaCheckPage() {
   const [data, setData] = useState<SchemaComparison | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [migrating, setMigrating] = useState(false);
+  const [migrationResult, setMigrationResult] = useState<MigrationResult | null>(null);
 
   useEffect(() => {
     async function fetchSchema() {
@@ -49,6 +58,63 @@ export default function SchemaCheckPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
+  };
+
+  const runMigration = async () => {
+    if (!data?.migrationSQL) return;
+    
+    setMigrating(true);
+    setMigrationResult(null);
+    
+    try {
+      const res = await fetch('/api/run-migration', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sql: data.migrationSQL })
+      });
+      
+      const result = await res.json();
+      setMigrationResult(result);
+      
+      // Refresh schema data after migration
+      if (result.success) {
+        setTimeout(() => {
+          setLoading(true);
+          fetch('/api/inspect-db')
+            .then(res => res.json())
+            .then(json => {
+              if (!json.error) setData(json);
+            })
+            .finally(() => setLoading(false));
+        }, 1000);
+      }
+    } catch (err: any) {
+      setMigrationResult({
+        success: false,
+        message: err.message,
+        results: [],
+        summary: { total: 0, success: 0, failed: 0 }
+      });
+    } finally {
+      setMigrating(false);
+    }
+  };
+
+  const refreshSchema = () => {
+    setLoading(true);
+    setMigrationResult(null);
+    fetch('/api/inspect-db')
+      .then(res => res.json())
+      .then(json => {
+        if (json.error) {
+          setError(json.error);
+        } else {
+          setData(json);
+          setError(null);
+        }
+      })
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false));
   };
 
   if (loading) {
@@ -80,7 +146,34 @@ export default function SchemaCheckPage() {
   return (
     <div className="pb-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2 text-foreground">Database Schema Comparison</h1>
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-3xl font-bold text-foreground">Database Schema Comparison</h1>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={refreshSchema}
+              disabled={loading}
+              className="bg-muted text-foreground px-4 py-2 rounded-lg text-sm font-medium hover:bg-muted/80 transition-colors disabled:opacity-50"
+            >
+              {loading ? 'Refreshing...' : 'Refresh'}
+            </button>
+            {data.comparison.hasChanges && data.migrationSQL && (
+              <button
+                onClick={runMigration}
+                disabled={migrating}
+                className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+              >
+                {migrating ? (
+                  <>
+                    <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                    Running Migration...
+                  </>
+                ) : (
+                  'Run Migration'
+                )}
+              </button>
+            )}
+          </div>
+        </div>
         <p className="text-muted-foreground mb-8">
           Comparing live <code className="bg-muted px-2 py-1 rounded">{data.database}</code> schema against codebase requirements
         </p>
@@ -104,6 +197,39 @@ export default function SchemaCheckPage() {
             <p className="text-2xl font-bold text-amber-500">{data.migrationStatementCount}</p>
           </div>
         </div>
+
+        {/* Migration Result */}
+        {migrationResult && (
+          <div className={`rounded-lg p-4 mb-8 border ${
+            migrationResult.success 
+              ? 'bg-green-500/10 border-green-500' 
+              : 'bg-destructive/10 border-destructive'
+          }`}>
+            <div className="flex items-center justify-between mb-2">
+              <p className={`font-medium ${migrationResult.success ? 'text-green-600' : 'text-destructive'}`}>
+                {migrationResult.message}
+              </p>
+              <span className="text-sm text-muted-foreground">
+                {migrationResult.summary.success}/{migrationResult.summary.total} statements
+              </span>
+            </div>
+            {migrationResult.results.length > 0 && (
+              <details className="mt-2">
+                <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground">
+                  View details
+                </summary>
+                <div className="mt-2 max-h-48 overflow-y-auto bg-background/50 rounded p-2">
+                  {migrationResult.results.map((r, i) => (
+                    <div key={i} className={`text-xs font-mono py-1 ${r.success ? 'text-green-600' : 'text-destructive'}`}>
+                      {r.success ? '✓' : '✗'} {r.statement}
+                      {r.error && <span className="text-muted-foreground ml-2">({r.error})</span>}
+                    </div>
+                  ))}
+                </div>
+              </details>
+            )}
+          </div>
+        )}
 
         {/* Status Banner */}
         {!data.comparison.hasChanges ? (
