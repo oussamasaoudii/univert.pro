@@ -13,7 +13,7 @@ import { FAQSection, CTABand, TrustMetrics, ComparisonTable } from "@/components
 type PricingPlan = {
   id: string;
   name: string;
-  tier: "starter" | "growth" | "pro" | "premium" | "enterprise";
+  tier: "starter" | "growth" | "business" | "enterprise";
   monthlyPrice: number;
   yearlyPrice: number;
   features: string[];
@@ -28,10 +28,10 @@ function hasPlans(
 
 // Trust items for pricing page
 const pricingTrustItems = [
-  { icon: CreditCard, label: 'No Credit Card', sublabel: 'Required to start' },
+  { icon: CreditCard, label: 'Transparent Pricing', sublabel: 'No hidden fees' },
   { icon: Shield, label: 'Secure Payments', sublabel: 'PCI compliant' },
-  { icon: RefreshCw, label: 'Cancel Anytime', sublabel: 'No lock-in' },
-  { icon: Rocket, label: '60 Second Setup', sublabel: 'Start instantly' },
+  { icon: RefreshCw, label: 'Cancel Anytime', sublabel: 'Month-to-month' },
+  { icon: Headphones, label: '24/7 Support', sublabel: 'Real people helping' },
 ];
 
 // Comparison table for pricing
@@ -39,48 +39,48 @@ const pricingComparison = {
   columns: [
     { name: 'Feature', highlighted: false },
     { name: 'Starter', highlighted: false },
-    { name: 'Pro', highlighted: true },
-    { name: 'Enterprise', highlighted: false },
+    { name: 'Growth', highlighted: true },
+    { name: 'Business', highlighted: false },
   ],
   rows: [
-    { feature: 'Projects', values: ['3', 'Unlimited', 'Unlimited'] },
-    { feature: 'Bandwidth', values: ['100GB', '1TB', 'Custom'] },
-    { feature: 'Team Members', values: ['1', '10', 'Unlimited'] },
-    { feature: 'Preview Deployments', values: [true, true, true] },
-    { feature: 'Custom Domains', values: [true, true, true] },
-    { feature: 'SSL Certificates', values: [true, true, true] },
-    { feature: 'Edge Functions', values: ['partial', true, true] },
+    { feature: 'Number of Websites', values: ['1', '3', 'Unlimited'] },
+    { feature: 'Template Stack', values: ['Any', 'Any', 'Any'] },
+    { feature: 'Custom Domain', values: [true, true, true] },
+    { feature: 'Managed Setup', values: [true, true, true] },
+    { feature: 'Managed Hosting', values: [true, true, true] },
+    { feature: 'Email Support', values: [true, true, true] },
+    { feature: 'Chat/Phone Support', values: [false, true, true] },
+    { feature: 'Backups & Recovery', values: [true, true, true] },
     { feature: 'Analytics', values: ['Basic', 'Advanced', 'Custom'] },
-    { feature: 'Support', values: ['Community', 'Priority', 'Dedicated'] },
-    { feature: 'SLA Guarantee', values: [false, true, true] },
+    { feature: 'Export Anytime', values: [true, true, true] },
   ],
 };
 
 // FAQ data
 const pricingFAQs = [
   {
-    question: 'What happens when I exceed my bandwidth limit?',
-    answer: 'We will notify you before you reach your limit. You can upgrade your plan at any time, and we offer affordable overage rates so your site stays online.',
+    question: 'What&apos;s included in managed setup?',
+    answer: 'We&apos;ll configure your template, connect your domain, set up email, and get everything running. You&apos;re typically live within 24 hours.',
   },
   {
     question: 'Can I change my plan later?',
-    answer: 'Yes! You can upgrade or downgrade your plan at any time. When upgrading, you will be prorated for the remainder of your billing cycle. When downgrading, changes take effect at the next billing period.',
+    answer: 'Yes! You can upgrade or downgrade your plan anytime. Changes take effect on your next billing date.',
   },
   {
     question: 'Do you offer refunds?',
-    answer: 'Yes, we offer a 30-day money-back guarantee for all paid plans. If you are not satisfied, contact support for a full refund.',
+    answer: 'We offer a 30-day satisfaction guarantee on all plans. If you&apos;re not happy, contact support for a full refund.',
   },
   {
     question: 'What payment methods do you accept?',
-    answer: 'We accept all major credit cards (Visa, Mastercard, American Express), PayPal, and bank transfers for Enterprise customers.',
+    answer: 'We accept all major credit cards, PayPal, and bank transfers for Business plans.',
   },
   {
-    question: 'Is there a free trial for paid plans?',
-    answer: 'The Starter plan is free forever! For Pro features, you can start a 14-day free trial without entering a credit card.',
+    question: 'Can I export my website later?',
+    answer: 'Absolutely. Export your website anytime at no extra cost. We&apos;ll provide migration support to help move to your own server.',
   },
   {
-    question: 'What is included in Enterprise support?',
-    answer: 'Enterprise customers get dedicated account management, 24/7 priority support with guaranteed response times, custom SLAs, and direct access to our engineering team.',
+    question: 'What support do I get on each plan?',
+    answer: 'Starter includes email support. Growth adds chat and phone support. Business includes dedicated account management and 24/7 priority support.',
   },
 ];
 
