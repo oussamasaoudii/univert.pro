@@ -154,9 +154,9 @@ export default function AuthLayout({
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 mb-auto">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent shadow-lg shadow-accent/20">
-              <span className="text-sm font-bold text-accent-foreground">O</span>
+              <span className="text-sm font-bold text-accent-foreground">U</span>
             </div>
-            <span className="text-xl font-semibold tracking-tight">Ovmon</span>
+            <span className="text-xl font-semibold tracking-tight">Univert</span>
           </Link>
 
           {/* Main Content */}
@@ -233,7 +233,7 @@ export default function AuthLayout({
                   <div className="w-2 h-2 rounded-full bg-emerald-400/50" />
                 </div>
                 <span className="text-[9px] font-medium text-muted-foreground/60 tracking-wide">
-                  app.ovmon.com/dashboard
+                  app.univert.pro/dashboard
                 </span>
               </div>
               
@@ -351,9 +351,9 @@ export default function AuthLayout({
           {/* Mobile Logo */}
           <Link href="/" className="lg:hidden flex items-center gap-2.5 mb-8">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent shadow-lg shadow-accent/20">
-              <span className="text-sm font-bold text-accent-foreground">O</span>
+              <span className="text-sm font-bold text-accent-foreground">U</span>
             </div>
-            <span className="text-xl font-semibold tracking-tight">Ovmon</span>
+            <span className="text-xl font-semibold tracking-tight">Univert</span>
           </Link>
           
           {/* Auth Tabs */}

@@ -882,7 +882,7 @@ export default function HomePage() {
               Simple, transparent pricing
             </h2>
             <p className="text-foreground/60 max-w-xl mx-auto">
-              Start free and scale as you grow. No hidden fees, no surprises.
+              Simple, transparent pricing for all business sizes. No hidden fees, no surprises.
             </p>
           </div>
 
@@ -939,8 +939,8 @@ export default function HomePage() {
             className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground"
           >
             <div className="flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-accent" />
-              <span>No credit card required</span>
+              <Zap className="w-4 h-4 text-accent" />
+              <span>Fast setup - 24 hours</span>
             </div>
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4 text-accent" />

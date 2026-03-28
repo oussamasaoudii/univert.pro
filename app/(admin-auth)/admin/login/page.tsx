@@ -108,7 +108,7 @@ export default function AdminLoginPage() {
             <Shield className="h-5 w-5 text-accent" />
             <h1 className="text-3xl font-bold text-foreground">Admin Login</h1>
           </div>
-          <p className="text-muted-foreground">Sign in to the Ovmon admin panel</p>
+          <p className="text-muted-foreground">Sign in to the Univert admin panel</p>
         </div>
 
         {error && (
