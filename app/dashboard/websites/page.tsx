@@ -472,6 +472,12 @@ export default function WebsitesPage() {
                                   <DropdownMenuContent align="end" className="w-48">
                                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
+                                    <DropdownMenuItem asChild>
+                                      <Link href={`/dashboard/websites/${website.id}`}>
+                                        <Globe className="w-4 h-4 mr-2" />
+                                        Website Details
+                                      </Link>
+                                    </DropdownMenuItem>
                                     {website.status === 'ready' && website.liveUrl && (
                                       <DropdownMenuItem asChild>
                                         <a href={website.liveUrl} target="_blank" rel="noopener noreferrer">
@@ -540,15 +546,18 @@ export default function WebsitesPage() {
                         </div>
                         <div className="flex items-center justify-between">
                           {renderStatusBadge(website.status)}
-                          {website.status === 'ready' && website.liveUrl && (
-                            <Button size="sm" variant="outline" asChild>
-                              <a href={website.liveUrl} target="_blank" rel="noopener noreferrer">
-                                <ExternalLink className="w-4 h-4 mr-1" />
-                                Visit
-                              </a>
-                            </Button>
-                          )}
+                          <Button size="sm" variant="outline" asChild>
+                            <Link href={`/dashboard/websites/${website.id}`}>Details</Link>
+                          </Button>
                         </div>
+                        {website.status === 'ready' && website.liveUrl && (
+                          <Button size="sm" variant="ghost" asChild>
+                            <a href={website.liveUrl} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="w-4 h-4 mr-1" />
+                              Visit Live Site
+                            </a>
+                          </Button>
+                        )}
                       </CardContent>
                     </Card>
                   );
@@ -625,14 +634,17 @@ export default function WebsitesPage() {
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">CDN Status</span>
+                  <span className="text-sm text-muted-foreground">Ownership &amp; Export</span>
                   <Badge
                     variant="outline"
                     className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
                   >
-                    Healthy
+                    Available
                   </Badge>
                 </div>
+                <Button variant="ghost" className="w-full justify-start px-0 text-accent" asChild>
+                  <Link href="/about/ownership">Read how handoff works</Link>
+                </Button>
               </CardContent>
             </Card>
           </div>

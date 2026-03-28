@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Star, ArrowRight, Search, AlertTriangle } from 'lucide-react';
+import { Star, ArrowRight, Search, AlertTriangle, Headphones, Globe, Shield, ExternalLink } from 'lucide-react';
 
 type TemplateRecord = {
   id: string;
@@ -29,11 +30,30 @@ const categories = [
   { id: 'marketplace', label: 'Marketplace' },
 ];
 
+const stacks = [
+  { id: 'all', label: 'All Stacks' },
+  { id: 'wordpress', label: 'WordPress' },
+  { id: 'laravel', label: 'Laravel' },
+  { id: 'nextjs', label: 'Next.js' },
+];
+
+const categoryHighlights: Record<TemplateRecord['category'], string> = {
+  corporate: 'Business website',
+  agency: 'Agency website',
+  portfolio: 'Portfolio website',
+  ecommerce: 'Online store',
+  restaurant: 'Restaurant website',
+  saas: 'SaaS website',
+  marketplace: 'Marketplace website',
+};
+
 export default function TemplatesPage() {
+  const searchParams = useSearchParams();
   const [templates, setTemplates] = useState<TemplateRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
+  const [selectedStack, setSelectedStack] = useState(searchParams.get('stack') || 'all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const loadTemplates = async () => {
@@ -61,18 +81,26 @@ export default function TemplatesPage() {
     loadTemplates();
   }, []);
 
+  useEffect(() => {
+    setSelectedCategory(searchParams.get('category') || 'all');
+    setSelectedStack(searchParams.get('stack') || 'all');
+  }, [searchParams]);
+
   const filteredTemplates = useMemo(() => {
     return templates.filter((template) => {
       const matchesCategory =
         selectedCategory === 'all' || template.category === selectedCategory;
+      const matchesStack =
+        selectedStack === 'all' || template.stack.toLowerCase() === selectedStack.toLowerCase();
       const query = searchQuery.trim().toLowerCase();
       const matchesSearch =
         !query ||
         template.name.toLowerCase().includes(query) ||
-        template.description.toLowerCase().includes(query);
-      return matchesCategory && matchesSearch;
+        template.description.toLowerCase().includes(query) ||
+        categoryHighlights[template.category].toLowerCase().includes(query);
+      return matchesCategory && matchesStack && matchesSearch;
     });
-  }, [searchQuery, selectedCategory, templates]);
+  }, [searchQuery, selectedCategory, selectedStack, templates]);
 
   const featuredTemplates = filteredTemplates.filter((template) => template.featured);
 
@@ -83,8 +111,13 @@ export default function TemplatesPage() {
           <div className="space-y-4">
             <h1 className="text-4xl font-bold tracking-tight">Website Templates</h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
-              Choose a professionally designed template and we will set up your website with managed hosting, SSL, and ongoing support included. Your website, ready to launch.
+              Choose a professionally designed template and launch with managed setup, hosting, SSL, backups, and support included. Start fast now, move later if your business needs its own server.
             </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Badge variant="outline" className="gap-2"><Headphones className="w-3.5 h-3.5" /> Support included</Badge>
+              <Badge variant="outline" className="gap-2"><Shield className="w-3.5 h-3.5" /> SSL and backups</Badge>
+              <Badge variant="outline" className="gap-2"><Globe className="w-3.5 h-3.5" /> Subdomain or custom domain</Badge>
+            </div>
           </div>
         </div>
       </div>
@@ -118,6 +151,22 @@ export default function TemplatesPage() {
                 </button>
               ))}
             </div>
+
+            <div className="flex flex-wrap gap-2">
+              {stacks.map((stack) => (
+                <button
+                  key={stack.id}
+                  onClick={() => setSelectedStack(stack.id)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-smooth ${
+                    selectedStack === stack.id
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-secondary text-foreground hover:bg-secondary/80'
+                  }`}
+                >
+                  {stack.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           {loading ? (
@@ -147,34 +196,56 @@ export default function TemplatesPage() {
                   <h2 className="text-2xl font-bold">Featured</h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {featuredTemplates.map((template) => (
-                      <Link key={template.id} href={`/templates/${template.id}`}>
-                        <Card className="h-full bg-card border-accent/30 hover:border-accent/60 transition-smooth cursor-pointer group overflow-hidden hover-lift">
-                          <div className="aspect-video bg-gradient-to-br from-accent/10 to-accent/5 relative overflow-hidden">
-                            <div className="absolute top-3 right-3">
-                              <Badge className="gap-1 bg-accent/20 text-accent border-0">
-                                <Star className="w-3 h-3 fill-current" />
-                                Featured
+                      <Card
+                        key={template.id}
+                        className="h-full bg-card border-accent/30 hover:border-accent/60 transition-smooth overflow-hidden hover-lift"
+                      >
+                        <div className="aspect-video bg-gradient-to-br from-accent/10 to-accent/5 relative overflow-hidden">
+                          <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
+                            <Badge className="gap-1 bg-accent/20 text-accent border-0">
+                              <Star className="w-3 h-3 fill-current" />
+                              Featured
+                            </Badge>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="secondary" className="text-xs">
+                                {template.stack}
+                              </Badge>
+                              <Badge variant="outline" className="text-xs">
+                                {categoryHighlights[template.category]}
                               </Badge>
                             </div>
                           </div>
-                          <CardHeader>
-                            <CardTitle className="text-lg">{template.name}</CardTitle>
-                            <CardDescription className="line-clamp-2 mt-1">
-                              {template.description}
-                            </CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-4">
-                            <div className="flex items-end justify-between">
-                              <span className="text-2xl font-bold">${template.startingPrice}</span>
-                              <span className="text-xs text-muted-foreground">/month</span>
-                            </div>
-                            <Button className="w-full gap-2 group">
-                              View & Launch
-                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                        <CardHeader>
+                          <CardTitle className="text-lg">{template.name}</CardTitle>
+                          <CardDescription className="line-clamp-2 mt-1">
+                            {template.description}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <p className="text-sm text-muted-foreground">
+                            Managed setup, hosting, SSL, backups, and support are included from day one.
+                          </p>
+                          <div className="flex items-end justify-between">
+                            <span className="text-2xl font-bold">${template.startingPrice}</span>
+                            <span className="text-xs text-muted-foreground">/month</span>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button className="flex-1 gap-2 group" asChild>
+                              <Link href={`/templates/${template.id}`}>
+                                View & Launch
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              </Link>
                             </Button>
-                          </CardContent>
-                        </Card>
-                      </Link>
+                            <Button variant="outline" className="gap-2" asChild>
+                              <Link href={`/demos/${template.id}`}>
+                                See Demo
+                                <ExternalLink className="w-4 h-4" />
+                              </Link>
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
                     ))}
                   </div>
                 </div>
@@ -188,33 +259,50 @@ export default function TemplatesPage() {
                 </h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredTemplates.map((template) => (
-                    <Link key={template.id} href={`/templates/${template.id}`}>
-                      <Card className="h-full bg-card border-border hover:border-accent/40 transition-smooth cursor-pointer group overflow-hidden hover-lift">
-                        <div className="aspect-video bg-gradient-to-br from-secondary to-secondary/50 relative overflow-hidden">
-                          <div className="absolute top-3 left-3">
-                            <Badge variant="secondary" className="text-xs">
-                              {template.stack}
-                            </Badge>
-                          </div>
+                    <Card
+                      key={template.id}
+                      className="h-full bg-card border-border hover:border-accent/40 transition-smooth overflow-hidden hover-lift"
+                    >
+                      <div className="aspect-video bg-gradient-to-br from-secondary to-secondary/50 relative overflow-hidden">
+                        <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
+                          <Badge variant="secondary" className="text-xs">
+                            {template.stack}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {categoryHighlights[template.category]}
+                          </Badge>
                         </div>
-                        <CardHeader>
-                          <CardTitle className="text-lg">{template.name}</CardTitle>
-                          <CardDescription className="line-clamp-2">
-                            {template.description}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <div className="flex items-end justify-between">
-                            <span className="text-2xl font-bold">${template.startingPrice}</span>
-                            <span className="text-xs text-muted-foreground">/month</span>
-                          </div>
-                          <Button variant="outline" className="w-full gap-2 group">
-                            View Details
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                      <CardHeader>
+                        <CardTitle className="text-lg">{template.name}</CardTitle>
+                        <CardDescription className="line-clamp-2">
+                          {template.description}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <p className="text-sm text-muted-foreground">
+                          Best for businesses that want a fast launch with ongoing support and future export freedom.
+                        </p>
+                        <div className="flex items-end justify-between">
+                          <span className="text-2xl font-bold">${template.startingPrice}</span>
+                          <span className="text-xs text-muted-foreground">/month</span>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button variant="outline" className="flex-1 gap-2 group" asChild>
+                            <Link href={`/templates/${template.id}`}>
+                              View Details
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </Link>
                           </Button>
-                        </CardContent>
-                      </Card>
-                    </Link>
+                          <Button variant="ghost" className="gap-2" asChild>
+                            <Link href={`/demos/${template.id}`}>
+                              Demo
+                              <ExternalLink className="w-4 h-4" />
+                            </Link>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               </div>

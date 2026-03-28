@@ -37,7 +37,7 @@ import {
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "My Websites", href: "/dashboard/websites", icon: Globe },
-  { name: "Provisioning", href: "/dashboard/provisioning", icon: Server },
+  { name: "Website Setup", href: "/dashboard/provisioning", icon: Server },
   { name: "Domains", href: "/dashboard/domains", icon: Link2 },
   { name: "Billing", href: "/dashboard/billing", icon: CreditCard },
   { name: "Support", href: "/dashboard/support", icon: HelpCircle },
@@ -102,7 +102,7 @@ export function DashboardHeader() {
       {/* Mobile Logo */}
       <Link href="/dashboard" className="lg:hidden flex items-center gap-2.5">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent">
-          <span className="text-sm font-bold text-accent-foreground">O</span>
+          <span className="text-sm font-bold text-accent-foreground">U</span>
         </div>
       </Link>
 

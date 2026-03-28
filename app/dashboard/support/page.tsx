@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Plus, MessageSquare, Clock, CheckCircle, AlertTriangle } from "lucide-react";
+import {
+  Plus,
+  MessageSquare,
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+  BookOpen,
+  Globe,
+  Shield,
+  ArrowRight,
+} from "lucide-react";
 
 type TicketStatus = "open" | "in_progress" | "resolved" | "closed";
 type TicketPriority = "low" | "medium" | "high" | "urgent";
@@ -247,6 +258,63 @@ export default function SupportPage() {
         </Dialog>
       </div>
 
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+              <BookOpen className="w-4 h-4 text-accent" />
+              Help Center
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Browse launch, domain, support, and ownership guidance before opening a ticket.
+            </p>
+            <Button variant="outline" size="sm" className="w-full" asChild>
+              <Link href="/help-center">
+                Open Help Center
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+              <Globe className="w-4 h-4 text-accent" />
+              Domain Help
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Need help connecting your domain or understanding DNS status? Start here.
+            </p>
+            <Button variant="outline" size="sm" className="w-full" asChild>
+              <Link href="/dashboard/domains">
+                Manage Domains
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card border-border" id="ownership">
+          <CardContent className="pt-6 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+              <Shield className="w-4 h-4 text-accent" />
+              Ownership &amp; Export
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Your project stays yours. When you are ready to move later, request migration or
+              handoff guidance from our team.
+            </p>
+            <Button variant="outline" size="sm" className="w-full" asChild>
+              <Link href="/about/ownership">
+                Read Ownership Guide
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
       {errorMessage && (
         <Alert variant="destructive">
           <AlertDescription>{errorMessage}</AlertDescription>
@@ -360,6 +428,17 @@ export default function SupportPage() {
           </CardContent>
         </Card>
       )}
+
+      <Card className="bg-secondary/30 border-border">
+        <CardContent className="pt-6 space-y-2">
+          <p className="font-semibold">Need launch or migration help?</p>
+          <p className="text-sm text-muted-foreground">
+            Open a support ticket for setup questions, domain routing, admin access, or future
+            export and migration requests. If a capability is still pending, our team will guide
+            you to the right next step rather than showing fake completion states.
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

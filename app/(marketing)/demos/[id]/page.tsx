@@ -71,6 +71,22 @@ const defaultFeatureByStack: Record<TemplateRecord["stack"], string[]> = {
   ],
 };
 
+const audienceByCategory: Record<TemplateRecord["category"], string[]> = {
+  corporate: ["Service businesses", "Consultants", "Established brands"],
+  agency: ["Creative agencies", "Studios", "Freelance teams"],
+  portfolio: ["Designers", "Photographers", "Personal brands"],
+  ecommerce: ["Online stores", "Product-first businesses", "Retail brands"],
+  restaurant: ["Restaurants", "Cafes", "Delivery-focused brands"],
+  saas: ["SaaS founders", "Software launches", "Subscription businesses"],
+  marketplace: ["Directory projects", "Multi-vendor ideas", "Booking or listing services"],
+};
+
+const launchPath = [
+  "Choose this template and submit your website name or preferred domain.",
+  "Our team configures the hosting, SSL, and initial setup for your stack.",
+  "You receive the live URL, support path, and access details once the website is ready.",
+];
+
 export default function DemoDetailPage({
   params,
 }: {
@@ -255,6 +271,35 @@ export default function DemoDetailPage({
           <Separator />
 
           <div>
+            <h2 className="text-2xl font-bold mb-4">Who This Template Is For</h2>
+            <div className="grid md:grid-cols-3 gap-3">
+              {audienceByCategory[template.category].map((item) => (
+                <Card key={item} className="bg-card border-border">
+                  <CardContent className="p-4 text-sm text-muted-foreground">{item}</CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
+            <h2 className="text-2xl font-bold mb-4">How Launch Works</h2>
+            <div className="space-y-3">
+              {launchPath.map((step, index) => (
+                <div key={step} className="flex items-start gap-4 rounded-xl border border-border bg-card p-4">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-sm font-semibold text-accent">
+                    {index + 1}
+                  </div>
+                  <p className="text-sm text-muted-foreground">{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
             <h2 className="text-2xl font-bold mb-4">Recommended Plans</h2>
             <div className="grid md:grid-cols-3 gap-4">
               {recommendedPlans.map((plan) => (
@@ -291,6 +336,20 @@ export default function DemoDetailPage({
                   SSL, automatic backups, and infrastructure management included. We handle the technical details so you can focus on your business.
                 </p>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-card border-border">
+            <CardContent className="p-6 space-y-2">
+              <p className="font-semibold">Ownership and migration later</p>
+              <p className="text-sm text-muted-foreground">
+                Univert helps you launch quickly now and keep flexibility later. When you are
+                ready for a private server, you can request export and migration guidance based on
+                your plan.
+              </p>
+              <Link href="/about/ownership" className="inline-flex items-center text-sm font-medium text-accent hover:underline">
+                Learn how ownership works
+              </Link>
             </CardContent>
           </Card>
         </div>

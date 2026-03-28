@@ -37,7 +37,7 @@ import {
 const navigation = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "My Websites", href: "/dashboard/websites", icon: Globe },
-  { name: "Provisioning", href: "/dashboard/provisioning", icon: Server },
+  { name: "Website Setup", href: "/dashboard/provisioning", icon: Server },
   { name: "Domains", href: "/dashboard/domains", icon: Link2 },
   { name: "Billing", href: "/dashboard/billing", icon: CreditCard },
   { name: "Support", href: "/dashboard/support", icon: HelpCircle },
@@ -111,6 +111,9 @@ export function DashboardSidebar() {
             <p className="font-semibold text-foreground">{currentSubscription.planName}</p>
             <Link href="/dashboard/billing" className="text-xs text-accent hover:underline mt-1 inline-block">
               Manage plan
+            </Link>
+            <Link href="/dashboard/support#ownership" className="text-xs text-accent hover:underline mt-1 ml-3 inline-block">
+              Ownership &amp; export
             </Link>
           </div>
         </div>

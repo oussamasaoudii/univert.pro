@@ -68,6 +68,16 @@ const stacks: { value: TemplateStack | "all"; label: string }[] = [
   { value: "WordPress", label: "WordPress" },
 ];
 
+const categoryLabels: Record<TemplateCategory, string> = {
+  corporate: "Business website",
+  agency: "Agency website",
+  portfolio: "Portfolio website",
+  ecommerce: "Online store",
+  restaurant: "Restaurant website",
+  saas: "SaaS website",
+  marketplace: "Marketplace website",
+};
+
 export default function DemosPage() {
   const [templates, setTemplates] = useState<TemplateRecord[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -133,7 +143,8 @@ export default function DemosPage() {
               Curated Template Gallery
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
-              Browse templates loaded from MySQL. Choose one and launch immediately.
+              Explore launch-ready website concepts with managed setup, hosting, and support
+              included. Compare styles, preview the experience, and choose what fits your business.
             </p>
             <div className="flex items-center gap-8 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
@@ -218,7 +229,10 @@ export default function DemosPage() {
                       <CardContent className="p-6 space-y-4">
                         <div className="flex items-center justify-between">
                           <Badge className="bg-accent/20 text-accent">Featured</Badge>
-                          <Badge variant="outline">{template.stack}</Badge>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline">{template.stack}</Badge>
+                            <Badge variant="secondary">{categoryLabels[template.category]}</Badge>
+                          </div>
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold">{template.name}</h3>
@@ -226,6 +240,10 @@ export default function DemosPage() {
                             {template.description}
                           </p>
                         </div>
+                        <p className="text-sm text-muted-foreground">
+                          Includes managed setup, launch support, and a clear path to move later if
+                          you outgrow the managed plan.
+                        </p>
                         <div className="flex items-center justify-between">
                           <span className="font-semibold">${template.startingPrice}/mo</span>
                           <span className="text-sm text-muted-foreground">
@@ -268,10 +286,8 @@ export default function DemosPage() {
                     <Card key={template.id} className="bg-card border-border hover:border-accent/50 transition-colors">
                       <CardContent className="p-6 space-y-4">
                         <div className="flex items-center justify-between">
-                          <Badge variant="outline" className="capitalize">
-                            {template.category}
-                          </Badge>
                           <Badge variant="secondary">{template.stack}</Badge>
+                          <Badge variant="outline">{categoryLabels[template.category]}</Badge>
                         </div>
                         <div>
                           <h3 className="text-lg font-semibold">{template.name}</h3>
@@ -279,6 +295,10 @@ export default function DemosPage() {
                             {template.description}
                           </p>
                         </div>
+                        <p className="text-sm text-muted-foreground">
+                          Managed hosting, domain help, and support are included so you can focus
+                          on content and growth.
+                        </p>
                         <div className="flex items-center justify-between text-sm">
                           <span className="font-semibold">${template.startingPrice}/mo</span>
                           <span className="text-muted-foreground">

@@ -25,21 +25,14 @@ import {
   Globe,
   Zap,
   Lock,
-  Server,
-  Code2,
   Layers,
   ChevronRight,
-  Building2,
   ShoppingCart,
   Briefcase,
-  GraduationCap,
   BookOpen,
   FileText,
-  Puzzle,
-  Users,
   MessageSquare,
   Video,
-  Award,
   Heart,
   ChevronDown,
   Headphones,
@@ -90,7 +83,7 @@ const productFeatures = [
   {
     title: "Support Included",
     description: "Managed setup and technical support",
-    href: "/about/support",
+    href: "/support",
     icon: Headphones,
   },
   {
@@ -111,52 +104,46 @@ const productHighlight = {
 // Solutions menu items
 const solutionsByIndustry = [
   {
-    title: "E-commerce",
-    description: "Online stores and digital shops",
-    href: "/solutions/ecommerce",
+    title: "Online Stores",
+    description: "Launch a ready-made shop with managed setup",
+    href: "/templates?category=ecommerce",
     icon: ShoppingCart,
   },
   {
-    title: "Agencies",
-    description: "Manage client sites with managed support",
-    href: "/solutions/agencies",
+    title: "Business Websites",
+    description: "Professional websites for companies and service brands",
+    href: "/templates?category=corporate",
     icon: Briefcase,
   },
   {
-    title: "Creators & Influencers",
-    description: "Portfolio and content sites",
-    href: "/solutions/creators",
+    title: "Portfolios",
+    description: "Showcase your work with a polished online presence",
+    href: "/templates?category=portfolio",
     icon: Heart,
   },
   {
-    title: "Consulting & Services",
-    description: "Professional service websites",
-    href: "/solutions/consulting",
-    icon: Briefcase,
-  },
-  {
-    title: "Non-Profits",
-    description: "Mission-driven organization sites",
-    href: "/solutions/nonprofits",
-    icon: Heart,
+    title: "Launch Process",
+    description: "See how Univert takes a site live for you",
+    href: "/how-it-works",
+    icon: Zap,
   },
 ];
 
 const solutionsByUseCase = [
   {
-    title: "Quick Launch",
-    description: "Get a professional site live this week",
-    href: "/use-cases/quick-launch",
+    title: "Choose a Template",
+    description: "Browse managed website options by stack and category",
+    href: "/templates",
   },
   {
-    title: "Managed Operations",
-    description: "Let us handle updates and maintenance",
-    href: "/use-cases/managed",
+    title: "Live Demos",
+    description: "Preview real examples before you launch",
+    href: "/demos",
   },
   {
     title: "Export Anytime",
     description: "Move to your own server with full support",
-    href: "/use-cases/export",
+    href: "/about/ownership",
   },
 ];
 
@@ -170,9 +157,9 @@ const solutionsHighlight = {
 // Resources menu items
 const resourcesLearn = [
   {
-    title: "Getting Started",
-    description: "First steps with Univert",
-    href: "/resources/getting-started",
+    title: "Help Center",
+    description: "Guides for setup, domains, support, and launch",
+    href: "/help-center",
     icon: BookOpen,
   },
   {
@@ -208,7 +195,7 @@ const resourcesConnect = [
 const companyLinks = [
   { title: "About", description: "Our story and mission", href: "/about" },
   { title: "Contact", description: "Get in touch", href: "/contact" },
-  { title: "Careers", description: "Join our team", href: "/careers" },
+  { title: "Ownership & Freedom", description: "How export and migration work", href: "/about/ownership" },
 ];
 
 // Simple nav items (no dropdown)
@@ -324,8 +311,8 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                     <div className="mt-6 pt-6 border-t border-border/30">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm font-medium text-foreground mb-1">See Univert in action</p>
-                          <p className="text-xs text-muted-foreground">Watch a 2-minute demo of our platform</p>
+                          <p className="text-sm font-medium text-foreground mb-1">See launch-ready websites in action</p>
+                          <p className="text-xs text-muted-foreground">Browse demos and choose the setup that fits your business</p>
                         </div>
                         <Link
                           href={productHighlight.href}
@@ -399,11 +386,11 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
 
                       {/* Trust highlight card */}
                       <div className="col-span-4 min-w-0">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Trust & Security</p>
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Ownership & Support</p>
                         <div className="rounded-xl bg-gradient-to-br from-accent/15 via-accent/5 to-transparent border border-accent/20 p-5 h-full flex flex-col">
                           <div className="flex items-center gap-2 mb-3">
                             <Shield className="h-4 w-4 text-accent" />
-                            <span className="text-xs font-medium text-accent uppercase tracking-wider">Enterprise</span>
+                            <span className="text-xs font-medium text-accent uppercase tracking-wider">Freedom</span>
                           </div>
                           <p className="text-sm font-semibold text-foreground mb-2">{solutionsHighlight.title}</p>
                           <p className="text-xs text-muted-foreground mb-4 flex-grow leading-relaxed">{solutionsHighlight.description}</p>
@@ -421,10 +408,10 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                     {/* Footer CTA */}
                     <div className="mt-5 pt-5 border-t border-border/30">
                       <Link
-                        href="/solutions"
+                        href="/templates"
                         className="flex items-center justify-between text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                       >
-                        View all solutions
+                        Explore template categories
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                     </div>
@@ -507,7 +494,7 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                           </div>
                           <div>
                             <p className="text-sm font-medium text-foreground">Get Support</p>
-                            <p className="text-xs text-muted-foreground">24/7 help and resources</p>
+                            <p className="text-xs text-muted-foreground">Help articles and support options</p>
                           </div>
                         </div>
                         <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
@@ -726,11 +713,13 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                     <div className="mx-2 mt-3 p-3 rounded-lg bg-accent/10 border border-accent/20">
                       <div className="flex items-center gap-2 mb-1">
                         <Shield className="h-4 w-4 text-accent" />
-                        <span className="text-sm font-medium text-foreground">Enterprise Security</span>
+                        <span className="text-sm font-medium text-foreground">Ownership &amp; Freedom</span>
                       </div>
-                      <p className="text-xs text-muted-foreground mb-2">SOC2 certified with 99.99% uptime SLA</p>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Launch with managed support today and keep the option to export later.
+                      </p>
                       <Link
-                        href="/trust"
+                        href="/about/ownership"
                         onClick={() => setIsOpen(false)}
                         className="inline-flex items-center text-xs font-medium text-accent"
                       >
