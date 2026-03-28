@@ -136,7 +136,7 @@ export default function TemplateDetailPage({
               <h2 className="text-2xl font-bold">Included</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 {[
-                  'Managed deployment',
+                  'Managed setup & hosting',
                   'Free SSL certificate',
                   'Daily backups',
                   'Domain connection support',
