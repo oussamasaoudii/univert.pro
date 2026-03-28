@@ -23,6 +23,7 @@ import {
 export const metadata: Metadata = {
   title: 'API & Backends - Ovmon',
   description: 'Build and deploy scalable APIs and backend services with Ovmon.',
+  robots: { index: false, follow: false },
 };
 
 const apiFeatures = [

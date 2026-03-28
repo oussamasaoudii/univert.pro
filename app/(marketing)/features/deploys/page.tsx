@@ -23,6 +23,7 @@ import {
 export const metadata: Metadata = {
   title: 'Deployments - Ovmon',
   description: 'Zero-config deployments with preview URLs for every push. Ship with confidence.',
+  robots: { index: false, follow: false },
 };
 
 const deployFeatures = [

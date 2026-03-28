@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'CLI Tools - Ovmon Documentation',
-  description: 'Command-line interface documentation for Ovmon.'
+  description: 'Command-line interface documentation for Ovmon.',
+  robots: { index: false, follow: false },
 };
 
 export default function CliToolsPage() {

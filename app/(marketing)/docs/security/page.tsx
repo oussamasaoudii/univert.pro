@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Security - Ovmon Documentation',
-  description: 'Security best practices and guidelines for the Ovmon platform.'
+  description: 'Security best practices and guidelines for the Ovmon platform.',
+  robots: { index: false, follow: false },
 };
 
 export default function SecurityPage() {

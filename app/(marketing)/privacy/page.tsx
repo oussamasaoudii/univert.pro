@@ -6,68 +6,69 @@ import { Separator } from '@/components/ui/separator';
 const sections = [
   {
     title: 'Introduction',
-    content: `At Ovmon, we are committed to protecting your privacy and ensuring you have a positive experience on our platform. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.`
+    content: `At Univert, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our managed website platform.`
   },
   {
     title: 'Information We Collect',
     subsections: [
       {
-        subtitle: 'Personal Information',
-        content: 'We collect information that you voluntarily provide when registering for an account, including your name, email address, phone number, billing information, and company details.'
+        subtitle: 'Account Information',
+        content: 'When you create an account, we collect information you provide, including your name, email address, and billing information necessary to process your subscription.'
       },
       {
-        subtitle: 'Usage Data',
-        content: 'We automatically collect information about your interaction with our platform, including IP address, browser type, pages visited, time spent, and referring/exit pages.'
+        subtitle: 'Website Content',
+        content: 'We store the content, files, and data associated with your Univert-hosted website. This content remains your property and can be exported upon request.'
       },
       {
-        subtitle: 'Cookies and Tracking',
-        content: 'We use cookies, web beacons, and similar tracking technologies to enhance your experience and gather analytics about how our platform is used.'
+        subtitle: 'Usage Information',
+        content: 'We collect information about how you interact with our platform, including pages visited, features used, and technical information like browser type and IP address.'
       }
     ]
   },
   {
     title: 'How We Use Your Information',
-    content: `We use the information we collect for various purposes:
-    • To provide, maintain, and improve our services
-    • To process transactions and send related information
-    • To send promotional communications (with your consent)
-    • To monitor and analyze trends and usage
-    • To detect and prevent fraud or security issues
-    • To comply with legal obligations`
+    content: `We use the information we collect to:
+    • Provide, maintain, and improve our platform and services
+    • Process your subscription payments
+    • Send important service-related communications
+    • Respond to your support requests
+    • Protect against fraud and unauthorized access
+    • Comply with legal obligations`
   },
   {
     title: 'Data Security',
-    content: 'We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. All data is encrypted in transit using SSL/TLS protocols and at rest using industry-standard encryption.'
+    content: 'We implement security measures to protect your information. All data transmitted to our platform is encrypted using SSL/TLS. We use secure hosting infrastructure and regularly review our security practices.'
   },
   {
     title: 'Data Retention',
-    content: 'We retain your personal information for as long as necessary to provide our services and fulfill the purposes outlined in this policy. You may request deletion of your data at any time, subject to certain legal obligations.'
+    content: 'We retain your information for as long as your account is active or as needed to provide our services. You may request deletion of your account and associated data at any time. Some information may be retained as required by law or for legitimate business purposes.'
   },
   {
-    title: 'Third-Party Sharing',
-    content: 'We do not sell or rent your personal information to third parties. We may share information with service providers who assist us in operating our website and conducting our business, all of whom are bound by confidentiality agreements.'
+    title: 'Third-Party Services',
+    content: 'We may use third-party services for payment processing, hosting infrastructure, and analytics. These service providers have access to your information only as necessary to perform their functions and are bound by contractual obligations to protect your data.'
   },
   {
-    title: 'Your Rights and Choices',
+    title: 'Your Rights',
     content: `You have the right to:
-    • Access your personal information
+    • Access the information we hold about you
     • Correct inaccurate information
     • Request deletion of your data
-    • Opt-out of marketing communications
-    • Request a copy of your data (data portability)
-    • Lodge complaints with relevant authorities`
+    • Export your website content
+    • Opt out of promotional communications
+    
+Contact us to exercise these rights.`
   },
   {
-    title: 'International Data Transfer',
-    content: 'Your information may be transferred to, stored in, and processed in countries other than your country of residence. These countries may have data protection laws that differ from your country of residence. By using our platform, you consent to such transfers.'
+    title: 'Cookies',
+    content: 'We use cookies and similar technologies to maintain your session, remember your preferences, and understand how you use our platform. You can control cookies through your browser settings, though this may affect functionality.'
   },
   {
     title: 'Changes to This Policy',
-    content: 'We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date above.'
+    content: 'We may update this Privacy Policy from time to time. We will notify you of significant changes by posting a notice on our platform or sending you an email. Your continued use of our services after changes take effect constitutes acceptance of the updated policy.'
   },
   {
     title: 'Contact Us',
-    content: 'If you have any questions about this Privacy Policy or our privacy practices, please contact us at privacy@ovmon.com or through our contact form.'
+    content: 'If you have questions about this Privacy Policy or our privacy practices, please contact us through our contact page or support channels.'
   }
 ];
 
@@ -75,7 +76,7 @@ export default function PrivacyPage() {
   return (
     <LegalLayout
       title="Privacy Policy"
-      description="Learn how we collect, use, and protect your personal information at Ovmon"
+      description="How we collect, use, and protect your information at Univert"
       lastUpdated="March 2024"
     >
       {sections.map((section, idx) => (

@@ -16,6 +16,7 @@ import {
 export const metadata: Metadata = {
   title: "Use Cases - Ovmon",
   description: "Explore how teams use Ovmon to build marketing sites, web applications, APIs, and more.",
+  robots: { index: false, follow: false },
 };
 
 const useCases = [

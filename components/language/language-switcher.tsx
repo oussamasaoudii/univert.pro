@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronDown, Globe } from "lucide-react";
+import { ChevronDown, Globe, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -28,6 +28,7 @@ export function LanguageSwitcher({ className, withTheme = false }: LanguageSwitc
   const router = useRouter();
   const language = useSiteLanguage();
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const currentLang = LANGUAGE_CONFIG[language];
 
@@ -39,7 +40,9 @@ export function LanguageSwitcher({ className, withTheme = false }: LanguageSwitc
 
     persistLanguageClient(nextLanguage);
     setOpen(false);
-    router.refresh();
+    startTransition(() => {
+      router.refresh();
+    });
   };
 
   return (

@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Deployment - Ovmon Documentation',
-  description: 'Learn how to deploy and manage your applications with Ovmon.'
+  description: 'Learn how to deploy and manage your applications with Ovmon.',
+  robots: { index: false, follow: false },
 };
 
 export default function DeploymentPage() {

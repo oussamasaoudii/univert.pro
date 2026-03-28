@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Getting Started - Ovmon Documentation',
-  description: 'Learn the basics of Ovmon and deploy your first website in minutes.'
+  description: 'Learn the basics of Ovmon and deploy your first website in minutes.',
+  robots: { index: false, follow: false },
 };
 
 export default function GettingStartedPage() {

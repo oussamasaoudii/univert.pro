@@ -185,16 +185,16 @@ const resourcesLearn = [
 
 const resourcesConnect = [
   {
+    title: "Help Center",
+    description: "Answers to common questions",
+    href: "/help-center",
+    icon: BookOpen,
+  },
+  {
     title: "Support",
     description: "Get help from our team",
     href: "/support",
     icon: MessageSquare,
-  },
-  {
-    title: "Community",
-    description: "Connect with other customers",
-    href: "/community",
-    icon: Users,
   },
   {
     title: "Ownership Guide",
@@ -207,11 +207,8 @@ const resourcesConnect = [
 // Company menu items
 const companyLinks = [
   { title: "About", description: "Our story and mission", href: "/about" },
-  { title: "Customers", description: "Customer success stories", href: "/customers" },
-  { title: "Careers", description: "Join our team", href: "/careers", badge: "Hiring" },
-  { title: "Partners", description: "Partner program", href: "/partners" },
-  { title: "Press", description: "News and media", href: "/press" },
   { title: "Contact", description: "Get in touch", href: "/contact" },
+  { title: "Careers", description: "Join our team", href: "/careers" },
 ];
 
 // Simple nav items (no dropdown)

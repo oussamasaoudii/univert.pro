@@ -23,6 +23,7 @@ import {
 export const metadata: Metadata = {
   title: 'Security - Ovmon',
   description: 'Enterprise-grade security with SSL, DDoS protection, SOC2 compliance, and more.',
+  robots: { index: false, follow: false },
 };
 
 const securityFeatures = [

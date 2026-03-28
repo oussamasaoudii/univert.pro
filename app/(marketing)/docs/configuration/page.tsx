@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Configuration - Ovmon Documentation',
-  description: 'Configure your websites, domains, and deployment settings in Ovmon.'
+  description: 'Configure your websites, domains, and deployment settings in Ovmon.',
+  robots: { index: false, follow: false },
 };
 
 export default function ConfigurationPage() {

@@ -25,6 +25,7 @@ import {
 export const metadata: Metadata = {
   title: 'Developer Tools - Ovmon',
   description: 'Powerful developer tools for building, testing, and deploying modern web applications.',
+  robots: { index: false, follow: false },
 };
 
 const tools = [

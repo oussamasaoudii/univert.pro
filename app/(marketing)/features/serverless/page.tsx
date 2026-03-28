@@ -23,6 +23,7 @@ import {
 export const metadata: Metadata = {
   title: 'Serverless Functions - Ovmon',
   description: 'Deploy serverless functions that scale automatically. Pay only for what you use.',
+  robots: { index: false, follow: false },
 };
 
 const serverlessFeatures = [

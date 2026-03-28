@@ -1,194 +1,191 @@
 import { MarketingLayout } from '@/components/marketing/marketing-layout';
-import { Book, MessageSquare, AlertCircle, Lightbulb, Search } from 'lucide-react';
+import { 
+  HelpCircle, 
+  FileText, 
+  Globe, 
+  Key, 
+  Mail,
+  ArrowRight,
+  CheckCircle
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const metadata = {
-  title: 'Support - Ovmon',
-  description: 'Get help with Ovmon. Access documentation, knowledge base, and support resources.'
+  title: 'Support - Univert',
+  description: 'Get help with your Univert website. Access support resources, submit requests, and find answers to common questions.'
 };
 
 export default function SupportPage() {
-  const supportCategories = [
+  const supportResources = [
     {
-      icon: Book,
-      title: 'Documentation',
-      description: 'Comprehensive guides and API reference',
-      link: '/docs'
+      icon: HelpCircle,
+      title: 'Help Center',
+      description: 'Answers to common questions about templates, domains, setup, and more',
+      href: '/help-center'
     },
     {
-      icon: MessageSquare,
-      title: 'Community',
-      description: 'Connect with other Ovmon users',
-      link: '/community'
+      icon: Mail,
+      title: 'Contact Us',
+      description: 'Send a message to our team for general inquiries',
+      href: '/contact'
+    }
+  ];
+
+  const supportTopics = [
+    {
+      icon: Globe,
+      title: 'Domain Help',
+      description: 'Assistance with connecting your custom domain, DNS configuration, and SSL certificates',
+      items: [
+        'How to point your domain to Univert',
+        'Understanding DNS records',
+        'SSL certificate setup (automatic)',
+        'Troubleshooting domain verification'
+      ]
     },
     {
-      icon: AlertCircle,
-      title: 'Status Page',
-      description: 'Real-time system status and incidents',
-      link: '/status'
+      icon: Key,
+      title: 'Ownership and Export',
+      description: 'Information about data ownership and how to export your website',
+      items: [
+        'Requesting a full website export',
+        'Understanding what data you own',
+        'Migration assistance if you decide to leave',
+        'Cancellation process'
+      ]
     },
     {
-      icon: Lightbulb,
-      title: 'Tutorials',
-      description: 'Step-by-step guides and walkthroughs',
-      link: '/tutorials'
+      icon: FileText,
+      title: 'Account and Billing',
+      description: 'Help with your account, subscription, and billing questions',
+      items: [
+        'Updating payment information',
+        'Changing your subscription plan',
+        'Understanding your invoice',
+        'Accessing your account settings'
+      ]
     }
   ];
 
   return (
     <MarketingLayout
       title="Support"
-      description="We're here to help you succeed with Ovmon"
+      description="Resources and help for your Univert website"
     >
-      {/* Quick Links */}
+      {/* Support Resources */}
       <section className="space-y-6">
-        <h2 className="text-3xl font-bold">Quick Links</h2>
+        <h2 className="text-2xl font-bold">Get Help</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {supportCategories.map((category, idx) => {
-            const Icon = category.icon;
+          {supportResources.map((resource, idx) => {
+            const Icon = resource.icon;
             return (
-              <a
+              <Link
                 key={idx}
-                href={category.link}
+                href={resource.href}
                 className="p-6 rounded-lg border border-border bg-secondary/50 hover:bg-secondary hover:border-accent transition-colors group"
               >
                 <Icon className="w-8 h-8 text-accent mb-3 group-hover:scale-110 transition-transform" />
-                <h3 className="text-lg font-semibold mb-1">{category.title}</h3>
-                <p className="text-sm text-muted-foreground">{category.description}</p>
-              </a>
+                <h3 className="text-lg font-semibold mb-1">{resource.title}</h3>
+                <p className="text-sm text-muted-foreground mb-3">{resource.description}</p>
+                <span className="inline-flex items-center text-accent font-medium text-sm">
+                  Visit
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </Link>
             );
           })}
         </div>
       </section>
 
-      {/* Search Help */}
-      <section className="space-y-4 p-6 rounded-lg border border-border bg-secondary/50">
-        <h2 className="text-2xl font-bold flex items-center gap-2">
-          <Search className="w-6 h-6" />
-          Search for Help
-        </h2>
-        <p className="text-muted-foreground">Can't find what you're looking for? Search our knowledge base:</p>
-        <div className="flex gap-2 pt-2">
-          <input
-            type="text"
-            placeholder="Search documentation..."
-            className="flex-1 px-4 py-2 bg-background border border-border rounded-md focus:outline-none focus:border-accent"
-          />
-          <Button>Search</Button>
-        </div>
+      {/* For Existing Customers */}
+      <section className="p-6 rounded-lg border border-accent/30 bg-accent/5">
+        <h2 className="text-xl font-bold mb-4">Existing Customers</h2>
+        <p className="text-muted-foreground mb-4">
+          If you already have a Univert website, you can submit support requests directly from your dashboard. 
+          This helps us route your request faster and gives our team context about your website.
+        </p>
+        <Button asChild>
+          <Link href="/dashboard/support">
+            Go to Dashboard Support
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        </Button>
       </section>
 
-      {/* Popular Topics */}
-      <section className="space-y-6">
-        <h2 className="text-3xl font-bold">Popular Topics</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[
-            { title: 'Getting Started with Ovmon', link: '/docs/getting-started', description: 'Learn the basics and deploy your first site' },
-            { title: 'Deploying Your First Website', link: '/docs/deployment', description: 'Step-by-step deployment guide' },
-            { title: 'Domain Configuration', link: '/docs/configuration', description: 'Set up custom domains and DNS' },
-            { title: 'SSL Certificates', link: '/docs/configuration', description: 'Automatic SSL and HTTPS setup' },
-            { title: 'Environment Variables', link: '/docs/configuration', description: 'Manage secrets and configuration' },
-            { title: 'API Authentication', link: '/docs/api', description: 'Secure your API with tokens' },
-            { title: 'Webhooks Setup', link: '/docs/api', description: 'Real-time event notifications' },
-            { title: 'CI/CD Integration', link: '/docs/deployment', description: 'Automate your deployments' },
-            { title: 'Rollbacks & Recovery', link: '/docs/deployment', description: 'Instant rollback to previous versions' },
-            { title: 'Security Best Practices', link: '/docs/security', description: 'Protect your applications' },
-            { title: 'CLI Commands', link: '/docs/cli', description: 'Command-line interface reference' },
-            { title: 'Rate Limiting', link: '/docs/api', description: 'API usage limits and quotas' }
-          ].map((topic, idx) => (
-            <a
-              key={idx}
-              href={topic.link}
-              className="p-4 rounded-lg border border-border bg-background hover:border-accent transition-colors group flex items-start gap-3"
-            >
-              <div className="w-2 h-2 rounded-full bg-accent mt-2 group-hover:scale-150 transition-transform flex-shrink-0" />
-              <div>
-                <span className="text-foreground group-hover:text-accent transition-colors font-medium">{topic.title}</span>
-                <p className="text-xs text-muted-foreground mt-1">{topic.description}</p>
+      {/* Support Topics */}
+      <section className="space-y-8">
+        <h2 className="text-2xl font-bold">Support Topics</h2>
+        {supportTopics.map((topic, idx) => {
+          const Icon = topic.icon;
+          return (
+            <div key={idx} className="p-6 rounded-lg border border-border bg-secondary/50">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                  <Icon className="w-6 h-6 text-accent" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">{topic.title}</h3>
+                  <p className="text-sm text-muted-foreground">{topic.description}</p>
+                </div>
               </div>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* Support Plan Comparison */}
-      <section className="space-y-6">
-        <h2 className="text-3xl font-bold">Support Plans</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              name: 'Community',
-              price: 'Free',
-              features: [
-                'Community forums',
-                'Knowledge base access',
-                'Email support',
-                'Response time: 48 hours'
-              ]
-            },
-            {
-              name: 'Professional',
-              price: '$99/month',
-              features: [
-                'Everything in Community',
-                'Priority email support',
-                'Phone support',
-                'Response time: 4 hours',
-                'Dedicated support contact'
-              ],
-              highlighted: true
-            },
-            {
-              name: 'Enterprise',
-              price: 'Custom',
-              features: [
-                'Everything in Professional',
-                '24/7 phone support',
-                'Slack integration',
-                'Custom SLA',
-                'Dedicated account manager'
-              ]
-            }
-          ].map((plan, idx) => (
-            <div
-              key={idx}
-              className={`p-6 rounded-lg border transition-colors ${
-                plan.highlighted
-                  ? 'border-accent bg-accent/10'
-                  : 'border-border bg-secondary/50 hover:bg-secondary'
-              }`}
-            >
-              <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
-              <p className="text-2xl font-bold text-accent mb-4">{plan.price}</p>
-              <ul className="space-y-2">
-                {plan.features.map((feature, fidx) => (
-                  <li key={fidx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" />
-                    {feature}
+              <ul className="space-y-2 ml-16">
+                {topic.items.map((item, itemIdx) => (
+                  <li key={itemIdx} className="flex items-center gap-3 text-foreground/80 text-sm">
+                    <CheckCircle className="w-4 h-4 text-accent flex-shrink-0" />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
-              <Button className="w-full mt-6" variant={plan.highlighted ? 'default' : 'outline'}>
-                Choose Plan
-              </Button>
             </div>
-          ))}
+          );
+        })}
+      </section>
+
+      {/* Response Times */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold">What to Expect</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 rounded-lg border border-border bg-background">
+            <h3 className="font-semibold mb-2">Response Time</h3>
+            <p className="text-sm text-muted-foreground">
+              Our team responds to support requests during business hours. Most requests receive 
+              a response within 1-2 business days.
+            </p>
+          </div>
+          <div className="p-4 rounded-lg border border-border bg-background">
+            <h3 className="font-semibold mb-2">How We Help</h3>
+            <p className="text-sm text-muted-foreground">
+              We assist with technical issues, domain configuration, account questions, and 
+              general guidance. For complex customizations, we may provide recommendations.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Contact Support */}
-      <section className="space-y-4 p-6 rounded-lg border border-border bg-secondary/30">
-        <h2 className="text-2xl font-bold">Can't Find What You Need?</h2>
-        <p className="text-muted-foreground">
-          Our support team is ready to help. Reach out to us at{' '}
-          <a href="mailto:support@ovmon.com" className="text-accent hover:underline">
-            support@ovmon.com
-          </a>{' '}
-          or visit our <a href="/contact" className="text-accent hover:underline">
-            contact page
-          </a>
-          .
-        </p>
+      {/* Contact CTA */}
+      <section className="p-8 rounded-lg border border-border bg-gradient-to-br from-secondary/50 to-transparent">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <h2 className="text-xl font-semibold text-foreground mb-2">Still need help?</h2>
+            <p className="text-muted-foreground">
+              If you cannot find the answer you are looking for, reach out to our team directly.
+            </p>
+          </div>
+          <div className="flex gap-3 flex-shrink-0">
+            <Button asChild>
+              <Link href="/contact">
+                Contact Us
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/help-center">
+                Help Center
+              </Link>
+            </Button>
+          </div>
+        </div>
       </section>
     </MarketingLayout>
   );
