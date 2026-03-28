@@ -3,60 +3,74 @@ import mysql from "mysql2/promise";
 let pool: mysql.Pool | null = null;
 
 /**
- * Check if MySQL environment variables are configured
+ * Default database configuration (fallback when environment variables are not set)
+ */
+const DEFAULT_DB_CONFIG = {
+  host: "72.60.90.147",
+  port: 3306,
+  database: "ovmon_db",
+  username: "univert_v0_temp",
+  password: "d6169b5170ab281e618168a1cb056a63c7f48dc57e7b450b",
+};
+
+/**
+ * Get database configuration with fallback to defaults
+ */
+function getDBConfig() {
+  return {
+    host: process.env.DB_HOST || DEFAULT_DB_CONFIG.host,
+    port: parseInt(process.env.DB_PORT || String(DEFAULT_DB_CONFIG.port), 10),
+    database: process.env.DB_DATABASE || DEFAULT_DB_CONFIG.database,
+    username: process.env.DB_USERNAME || DEFAULT_DB_CONFIG.username,
+    password: process.env.DB_PASSWORD || DEFAULT_DB_CONFIG.password,
+  };
+}
+
+/**
+ * Check if MySQL environment variables are configured (always true with defaults)
  */
 export function isMySQLConfigured(): boolean {
-  return Boolean(
-    process.env.DB_HOST &&
-    process.env.DB_PORT &&
-    process.env.DB_DATABASE &&
-    process.env.DB_USERNAME &&
-    process.env.DB_PASSWORD
-  );
+  // Always return true since we have default configuration
+  return true;
 }
 
 /**
  * Sanitize the database host by removing any whitespace
  */
-function sanitizeHost(host: string | undefined): string {
-  return (host || "127.0.0.1").replace(/\s+/g, "");
+function sanitizeHost(host: string): string {
+  return host.replace(/\s+/g, "");
 }
 
 /**
  * Detect if this is a TiDB Cloud connection (requires SSL)
  */
 function isTiDBCloud(): boolean {
-  const host = sanitizeHost(process.env.DB_HOST);
+  const config = getDBConfig();
+  const host = sanitizeHost(config.host);
   return host.includes("tidbcloud.com") || host.includes("tidb.cloud");
 }
 
 /**
- * Get the MySQL pool. Returns null if environment variables are not configured.
+ * Get the MySQL pool. Uses default configuration if environment variables are not set.
  * Supports TiDB Cloud with automatic SSL configuration.
  */
 export function getMySQLPool(): mysql.Pool | null {
   if (pool) return pool;
 
-  // Return null if MySQL is not configured
-  if (!isMySQLConfigured()) {
-    console.warn("[MySQL] Database not configured. Missing DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, or DB_PASSWORD environment variables.");
-    return null;
-  }
-
+  const config = getDBConfig();
   const isTiDB = isTiDBCloud();
-  const defaultPort = isTiDB ? "4000" : "3306";
   // Sanitize host to remove any whitespace that might have been accidentally added
-  const host = sanitizeHost(process.env.DB_HOST);
+  const host = sanitizeHost(config.host);
   // For TiDB Cloud, always use 'ovmon_db' database (ignore 'sys' from env var)
-  const database = isTiDB && process.env.DB_DATABASE === 'sys' 
+  const database = isTiDB && config.database === 'sys' 
     ? 'ovmon_db' 
-    : process.env.DB_DATABASE!;
+    : config.database;
 
   pool = mysql.createPool({
     host,
-    port: parseInt(process.env.DB_PORT || defaultPort, 10),
-    user: process.env.DB_USERNAME!,
-    password: process.env.DB_PASSWORD!,
+    port: config.port,
+    user: config.username,
+    password: config.password,
     database,
     charset: "utf8mb4",
     waitForConnections: true,
@@ -75,7 +89,7 @@ export function getMySQLPool(): mysql.Pool | null {
   if (isTiDB) {
     console.log("[MySQL] Connected to TiDB Cloud with SSL enabled");
   } else {
-    console.log(`[MySQL] Connected to ${host}:${process.env.DB_PORT}/${database}`);
+    console.log(`[MySQL] Connected to ${host}:${config.port}/${database}`);
   }
 
   return pool;
