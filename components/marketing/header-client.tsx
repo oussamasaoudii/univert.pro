@@ -274,21 +274,18 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                 <NavigationMenuContent>
                   <div className="w-[820px] p-6 bg-popover text-popover-foreground overflow-visible">
                     <div className="grid grid-cols-12 gap-8">
-                      {/* Featured item with video background */}
+                      {/* Featured item with background image */}
                       <div className="col-span-5 min-w-0">
                         <div className="relative rounded-xl overflow-hidden border border-accent/20 h-full min-h-[280px]">
-                          {/* Video Background - Website Showcase */}
-                          <video
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="absolute inset-0 w-full h-full object-cover"
-                          >
-                            <source src="https://videos.pexels.com/video-files/7974/7974-uhd_2560_1440_30fps.mp4" type="video/mp4" />
-                          </video>
+                          {/* Background Image - Modern Website */}
+                          <div
+                            className="absolute inset-0 w-full h-full bg-cover bg-center"
+                            style={{
+                              backgroundImage: 'url("https://images.unsplash.com/photo-1460925895917-aae19e938282?w=500&h=500&fit=crop")',
+                            }}
+                          />
                           {/* Gradient Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
                           {/* Content */}
                           <div className="relative z-10 p-5 h-full flex flex-col justify-between">
                             <div>
