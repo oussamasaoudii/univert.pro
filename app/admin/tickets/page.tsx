@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Search,
   MoreHorizontal,
@@ -39,6 +40,9 @@ import {
   XCircle,
   Loader2,
   ShieldAlert,
+  Send,
+  User,
+  Shield,
 } from "lucide-react";
 
 type TicketStatus = "open" | "in_progress" | "resolved" | "closed";
@@ -68,6 +72,15 @@ type TicketStats = {
   resolved: number;
   closed: number;
   highPriorityOpen: number;
+};
+
+type TicketMessage = {
+  id: string;
+  ticketId: string;
+  senderUserId: string | null;
+  senderRole: "user" | "admin" | "system";
+  message: string;
+  createdAt: string;
 };
 
 type TicketsResponse = {
@@ -120,6 +133,10 @@ export default function AdminTicketsPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [updatingTicketId, setUpdatingTicketId] = useState<string | null>(null);
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
+  const [ticketMessages, setTicketMessages] = useState<TicketMessage[]>([]);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [sendingReply, setSendingReply] = useState(false);
 
   const loadTickets = async (filters?: {
     search?: string;
@@ -184,6 +201,69 @@ export default function AdminTicketsPage() {
     () => tickets.find((ticket) => ticket.id === selectedTicketId) || null,
     [tickets, selectedTicketId],
   );
+
+  const loadTicketDetails = async (ticketId: string) => {
+    setLoadingMessages(true);
+    try {
+      const response = await fetch(`/api/admin/tickets/${ticketId}`, {
+        credentials: "include",
+      });
+      const result = await response.json();
+      if (response.ok && result.messages) {
+        setTicketMessages(result.messages);
+      }
+    } catch (error) {
+      console.error("[admin/tickets] failed to load ticket details", error);
+    } finally {
+      setLoadingMessages(false);
+    }
+  };
+
+  const handleSelectTicket = (ticketId: string) => {
+    setSelectedTicketId(ticketId);
+    setTicketMessages([]);
+    setReplyText("");
+    loadTicketDetails(ticketId);
+  };
+
+  const handleSendReply = async () => {
+    if (!selectedTicketId || !replyText.trim()) return;
+    
+    setSendingReply(true);
+    setErrorMessage("");
+    
+    try {
+      const response = await fetch(`/api/admin/tickets/${selectedTicketId}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ reply: replyText.trim() }),
+        credentials: "include",
+      });
+      
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || "failed_to_send_reply");
+      }
+      
+      setReplyText("");
+      setSuccessMessage("Reply sent successfully");
+      
+      if (result.messages) {
+        setTicketMessages(result.messages);
+      }
+      
+      loadTickets({
+        search: searchQuery,
+        status: statusFilter,
+        priority: priorityFilter,
+      });
+    } catch (error) {
+      console.error("[admin/tickets] failed to send reply", error);
+      setErrorMessage("Failed to send reply");
+    } finally {
+      setSendingReply(false);
+    }
+  };
 
   const updateTicket = async (
     ticketId: string,
@@ -437,7 +517,7 @@ export default function AdminTicketsPage() {
                             <DropdownMenuContent align="end">
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem onClick={() => setSelectedTicketId(ticket.id)}>
+                              <DropdownMenuItem onClick={() => handleSelectTicket(ticket.id)}>
                                 View Details
                               </DropdownMenuItem>
                               <DropdownMenuItem
@@ -533,15 +613,88 @@ export default function AdminTicketsPage() {
               <p className="text-muted-foreground text-sm mb-1">Subject</p>
               <p className="font-medium">{selectedTicket.subject}</p>
             </div>
-            <div>
-              <p className="text-muted-foreground text-sm mb-1">Description</p>
-              <p className="text-sm">{selectedTicket.description}</p>
+            {/* Messages Section */}
+            <div className="border-t pt-4 mt-4">
+              <h4 className="font-medium mb-3 flex items-center gap-2">
+                <MessageSquare className="w-4 h-4" />
+                Conversation
+              </h4>
+              
+              {loadingMessages ? (
+                <div className="flex items-center justify-center py-8 text-muted-foreground">
+                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                  Loading messages...
+                </div>
+              ) : ticketMessages.length === 0 ? (
+                <p className="text-sm text-muted-foreground py-4">No messages yet</p>
+              ) : (
+                <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
+                  {ticketMessages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={`p-3 rounded-lg ${
+                        msg.senderRole === "admin"
+                          ? "bg-primary/10 border border-primary/20 ml-8"
+                          : msg.senderRole === "system"
+                          ? "bg-muted/50 border border-border mx-4 text-center"
+                          : "bg-secondary border border-border mr-8"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        {msg.senderRole === "admin" ? (
+                          <Shield className="w-3 h-3 text-primary" />
+                        ) : msg.senderRole === "user" ? (
+                          <User className="w-3 h-3 text-muted-foreground" />
+                        ) : null}
+                        <span className="text-xs font-medium capitalize">
+                          {msg.senderRole === "admin" ? "Support Team" : msg.senderRole}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(msg.createdAt).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                      <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            <div className="pt-2">
-              <Button variant="outline" onClick={() => setSelectedTicketId(null)}>
-                Close Details
-              </Button>
+            {/* Reply Form */}
+            <div className="border-t pt-4 mt-4">
+              <h4 className="font-medium mb-3">Send Reply</h4>
+              <div className="space-y-3">
+                <Textarea
+                  placeholder="Type your reply here..."
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  rows={4}
+                  className="bg-secondary border-border resize-none"
+                  disabled={sendingReply}
+                />
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={handleSendReply}
+                    disabled={!replyText.trim() || sendingReply}
+                    className="gap-2"
+                  >
+                    {sendingReply ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Send className="w-4 h-4" />
+                    )}
+                    {sendingReply ? "Sending..." : "Send Reply"}
+                  </Button>
+                  <Button variant="outline" onClick={() => setSelectedTicketId(null)}>
+                    Close
+                  </Button>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
