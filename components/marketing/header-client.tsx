@@ -274,23 +274,18 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                 <NavigationMenuContent>
                   <div className="w-[820px] p-6 bg-popover text-popover-foreground overflow-visible">
                     <div className="grid grid-cols-12 gap-8">
-                      {/* Featured item with video background */}
+                      {/* Featured item with image background */}
                       <div className="col-span-5 min-w-0">
-                        <div className="relative rounded-xl overflow-hidden border border-accent/20 h-full min-h-[280px] bg-gradient-to-br from-accent via-accent/80 to-emerald-600">
-                          {/* Video Background */}
-                          <video
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            preload="auto"
-                            className="absolute inset-0 w-full h-full object-cover"
-                            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect fill='%2310b981' width='400' height='300'/%3E%3C/svg%3E"
-                          >
-                            <source src="https://player.vimeo.com/external/434045526.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
-                          </video>
+                        <div className="relative rounded-xl overflow-hidden border border-accent/20 h-full min-h-[280px]">
+                          {/* Background Image */}
+                          <div
+                            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+                            style={{
+                              backgroundImage: 'url("/featured-bg.jpg")',
+                            }}
+                          />
                           {/* Gradient Overlay for readability */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
                           {/* Content */}
                           <div className="relative z-10 p-5 h-full flex flex-col justify-between">
                             <div>
