@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
-    const { sql } = await request.json();
+    const { sql, type = 'all' } = await request.json();
     
     if (!sql || typeof sql !== 'string') {
       return NextResponse.json({ error: 'No SQL provided' }, { status: 400 });
@@ -12,10 +12,19 @@ export async function POST(request: Request) {
     const pool = getMySQLPool();
     
     // Split SQL into individual statements
-    const statements = sql
+    let statements = sql
       .split(';')
       .map(s => s.trim())
       .filter(s => s.length > 0 && !s.startsWith('--'));
+    
+    // Filter statements based on type
+    if (type === 'tables') {
+      statements = statements.filter(s => s.toUpperCase().includes('CREATE TABLE'));
+    } else if (type === 'columns') {
+      statements = statements.filter(s => s.toUpperCase().includes('ALTER TABLE') && s.toUpperCase().includes('ADD COLUMN'));
+    } else if (type === 'indexes') {
+      statements = statements.filter(s => s.toUpperCase().includes('CREATE INDEX') || s.toUpperCase().includes('ADD INDEX'));
+    }
     
     const results: { statement: string; success: boolean; error?: string }[] = [];
     

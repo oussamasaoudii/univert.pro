@@ -60,7 +60,7 @@ export default function SchemaCheckPage() {
     }
   };
 
-  const runMigration = async () => {
+  const runMigration = async (type: 'all' | 'tables' | 'columns' | 'indexes' = 'all') => {
     if (!data?.migrationSQL) return;
     
     setMigrating(true);
@@ -70,7 +70,7 @@ export default function SchemaCheckPage() {
       const res = await fetch('/api/run-migration', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sql: data.migrationSQL })
+        body: JSON.stringify({ sql: data.migrationSQL, type })
       });
       
       const result = await res.json();
@@ -157,20 +157,58 @@ export default function SchemaCheckPage() {
               {loading ? 'Refreshing...' : 'Refresh'}
             </button>
             {data.comparison.hasChanges && data.migrationSQL && (
-              <button
-                onClick={runMigration}
-                disabled={migrating}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center gap-2"
-              >
-                {migrating ? (
-                  <>
-                    <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
-                    Running Migration...
-                  </>
-                ) : (
-                  'Run Migration'
+              <>
+                {data.comparison.missingTables.length > 0 && (
+                  <button
+                    onClick={() => runMigration('tables')}
+                    disabled={migrating}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {migrating ? (
+                      <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                    ) : null}
+                    Create Tables ({data.comparison.missingTables.length})
+                  </button>
                 )}
-              </button>
+                {Object.keys(data.comparison.missingColumns).length > 0 && (
+                  <button
+                    onClick={() => runMigration('columns')}
+                    disabled={migrating}
+                    className="bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {migrating ? (
+                      <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                    ) : null}
+                    Add Columns
+                  </button>
+                )}
+                {Object.keys(data.comparison.missingIndexes).length > 0 && (
+                  <button
+                    onClick={() => runMigration('indexes')}
+                    disabled={migrating}
+                    className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                  >
+                    {migrating ? (
+                      <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                    ) : null}
+                    Create Indexes
+                  </button>
+                )}
+                <button
+                  onClick={() => runMigration('all')}
+                  disabled={migrating}
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                >
+                  {migrating ? (
+                    <>
+                      <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                      Running...
+                    </>
+                  ) : (
+                    'Run All'
+                  )}
+                </button>
+              </>
             )}
           </div>
         </div>
