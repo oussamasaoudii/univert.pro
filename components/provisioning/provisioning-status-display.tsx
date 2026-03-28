@@ -114,13 +114,13 @@ export function ProvisioningStatusDisplay({
           <div className="flex items-start justify-between">
             <div className="space-y-2 flex-1">
               <div className="flex items-center gap-2">
-                <CardTitle>Deployment Status</CardTitle>
+                <CardTitle>Website Setup Status</CardTitle>
                 <Badge className={statusColors[job.status] || statusColors['pending']}>
                   {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                 </Badge>
               </div>
               <CardDescription>
-                {isLoading ? 'Updating...' : isComplete ? 'Deployment complete!' : isFailed ? 'Deployment failed' : 'Provisioning in progress'}
+                {isLoading ? 'Updating...' : isComplete ? 'Website setup complete!' : isFailed ? 'Website setup failed' : 'Setting up your website'}
               </CardDescription>
             </div>
 
@@ -176,7 +176,7 @@ export function ProvisioningStatusDisplay({
             <div className="flex gap-2">
               <AlertCircle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
               <div className="space-y-1 flex-1">
-                <CardTitle className="text-base text-destructive">Deployment Failed</CardTitle>
+                <CardTitle className="text-base text-destructive">Website Setup Failed</CardTitle>
                 <CardDescription className="text-destructive/80">{job.error_message}</CardDescription>
               </div>
             </div>
@@ -192,7 +192,7 @@ export function ProvisioningStatusDisplay({
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 flex-1">
-              <CardTitle className="text-base">Deployment Logs</CardTitle>
+              <CardTitle className="text-base">Setup Logs</CardTitle>
               <Badge variant="outline">{stats.total} entries</Badge>
             </div>
             {logsExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}

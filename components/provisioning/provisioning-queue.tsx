@@ -227,15 +227,15 @@ export function ProvisioningQueue({ initialJobs }: ProvisioningQueueProps) {
       {/* Jobs Table */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Deployment History</CardTitle>
+          <CardTitle className="text-base">Website Setup History</CardTitle>
           <CardDescription>
-            {filteredJobs.length} deployment{filteredJobs.length !== 1 ? 's' : ''}
+            {filteredJobs.length} setup{filteredJobs.length !== 1 ? 's' : ''}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {filteredJobs.length === 0 ? (
             <div className="py-12 text-center">
-              <p className="text-muted-foreground">No deployments found</p>
+              <p className="text-muted-foreground">No website setups found</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
