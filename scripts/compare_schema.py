@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["mysql-connector-python"]
+# ///
 """
 Compare live MySQL database schema against expected codebase schema.
 This script is read-only and will NOT modify any data.
 """
 
-import pymysql
+import mysql.connector as pymysql
 import json
 
 # Database connection config (hardcoded for this inspection only)
