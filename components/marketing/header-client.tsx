@@ -258,9 +258,9 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent transition-smooth group-hover:shadow-glow-sm">
-              <span className="text-sm font-bold text-accent-foreground">O</span>
+              <span className="text-sm font-bold text-accent-foreground">U</span>
             </div>
-            <span className="text-xl font-semibold tracking-tight">Ovmon</span>
+            <span className="text-xl font-semibold tracking-tight">Univert</span>
           </Link>
 
           {/* Desktop Navigation with Mega Menus */}
@@ -284,7 +284,7 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                             <span className="text-xs font-semibold text-accent uppercase tracking-wider">Featured</span>
                           </div>
                           <p className="text-base font-semibold text-foreground mb-2">{productFeatured.title || 'Platform Overview'}</p>
-                          <p className="text-sm text-muted-foreground mb-4 flex-grow">{productFeatured.description || 'Discover the complete Ovmon platform'}</p>
+                          <p className="text-sm text-muted-foreground mb-4 flex-grow">{productFeatured.description || 'Discover professional website templates and solutions'}</p>
                           <Link
                             href={productFeatured.href || '/product'}
                             className="inline-flex items-center text-sm font-medium text-accent hover:text-accent transition-colors"

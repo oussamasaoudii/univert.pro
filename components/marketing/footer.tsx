@@ -160,12 +160,12 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border/40 pt-8 md:flex-row">
           <p className="text-sm text-foreground/40">
-            {new Date().getFullYear()} Ovmon. All rights reserved.
+            {new Date().getFullYear()} Univert. All rights reserved.
           </p>
           
           {/* Trustpilot badge in footer */}
           <a
-            href="https://www.trustpilot.com/review/ovmon.com"
+            href="https://www.trustpilot.com/review/univert.pro"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-foreground/50 hover:text-foreground transition-colors"
