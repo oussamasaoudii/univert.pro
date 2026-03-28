@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Documentation - Ovmon',
-  description: 'Complete API documentation, guides, and examples for Ovmon platform.'
+  description: 'Complete API documentation, guides, and examples for Ovmon platform.',
+  robots: { index: false, follow: false },
 };
 
 export default function DocumentationPage() {

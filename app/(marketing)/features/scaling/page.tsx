@@ -23,6 +23,7 @@ import {
 export const metadata: Metadata = {
   title: 'Auto-Scaling - Ovmon',
   description: 'Automatic scaling that grows with your traffic. Handle millions of requests without breaking a sweat.',
+  robots: { index: false, follow: false },
 };
 
 const scalingFeatures = [

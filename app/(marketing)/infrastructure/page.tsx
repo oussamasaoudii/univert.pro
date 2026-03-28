@@ -25,6 +25,7 @@ import {
 export const metadata: Metadata = {
   title: "Infrastructure & Trust - Ovmon",
   description: "Enterprise-grade infrastructure with global edge network, 99.99% uptime SLA, and comprehensive security. Learn how we keep your sites fast and secure.",
+  robots: { index: false, follow: false },
 };
 
 const infrastructureFeatures = [

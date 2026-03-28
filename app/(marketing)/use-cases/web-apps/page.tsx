@@ -23,6 +23,7 @@ import {
 export const metadata: Metadata = {
   title: 'Web Applications - Ovmon',
   description: 'Build and deploy full-stack web applications with automatic scaling and global distribution.',
+  robots: { index: false, follow: false },
 };
 
 const webAppFeatures = [

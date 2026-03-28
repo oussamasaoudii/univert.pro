@@ -20,6 +20,7 @@ import {
 export const metadata: Metadata = {
   title: "Integrations - Ovmon",
   description: "Connect Ovmon with your favorite tools. Seamless integrations for databases, analytics, CMS, and more.",
+  robots: { index: false, follow: false },
 };
 
 const categories = [

@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 
 export const metadata = {
   title: 'API - Ovmon Developer Platform',
-  description: 'Powerful REST API for programmatic access to Ovmon services.'
+  description: 'Powerful REST API for programmatic access to Ovmon services.',
+  robots: { index: false, follow: false },
 };
 
 export default function ApiPage() {

@@ -3,31 +3,28 @@ import Link from "next/link";
 const footerLinks = {
   product: [
     { name: "Templates", href: "/templates" },
+    { name: "Demos", href: "/demos" },
     { name: "How It Works", href: "/how-it-works" },
     { name: "Pricing", href: "/pricing" },
-    { name: "Support", href: "/support" },
   ],
-  solutions: [
-    { name: "E-commerce", href: "/solutions/ecommerce" },
-    { name: "Agencies", href: "/solutions/agencies" },
-    { name: "Creators", href: "/solutions/creators" },
+  support: [
+    { name: "Help Center", href: "/help-center" },
+    { name: "Support", href: "/support" },
+    { name: "Contact", href: "/contact" },
   ],
   company: [
     { name: "About", href: "/about" },
     { name: "Ownership & Freedom", href: "/about/ownership" },
     { name: "Careers", href: "/careers" },
-    { name: "Contact", href: "/contact" },
   ],
   resources: [
     { name: "Blog", href: "/blog" },
-    { name: "Support", href: "/support" },
-    { name: "Ownership & Freedom", href: "/about/ownership" },
+    { name: "Features", href: "/features" },
   ],
   legal: [
     { name: "Privacy", href: "/privacy" },
     { name: "Terms", href: "/terms" },
     { name: "Security", href: "/security" },
-    { name: "Status", href: "/status" },
   ],
 };
 
@@ -91,9 +88,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Solutions</h3>
+            <h3 className="text-sm font-semibold text-foreground">Support</h3>
             <ul className="mt-5 space-y-3.5">
-              {footerLinks.solutions.map((link) => (
+              {footerLinks.support.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
@@ -155,24 +152,11 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {{/* Bottom bar */}
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border/40 pt-8 md:flex-row">
           <p className="text-sm text-foreground/40">
             {new Date().getFullYear()} Univert. All rights reserved.
           </p>
-          
-          {/* Trustpilot badge in footer */}
-          <a
-            href="https://www.trustpilot.com/review/univert.pro"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-foreground/50 hover:text-foreground transition-colors"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M12 2L14.09 8.26L21 9.27L16.5 13.64L17.82 20.5L12 17.27L6.18 20.5L7.5 13.64L3 9.27L9.91 8.26L12 2Z" fill="#00b67a"/>
-            </svg>
-            <span className="text-sm">Rated 4.8 on Trustpilot</span>
-          </a>
         </div>
       </div>
     </footer>

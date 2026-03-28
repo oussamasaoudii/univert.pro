@@ -3,23 +3,19 @@ import { Separator } from '@/components/ui/separator';
 
 const sections = [
   {
-    title: 'Security Commitment',
-    content: 'At Ovmon, security is our highest priority. We have implemented comprehensive security measures to protect your data, infrastructure, and websites from unauthorized access, theft, and malicious activity. This Security Policy outlines our commitment and practices.'
+    title: 'Our Approach to Security',
+    content: 'At Univert, we take the security of your website and data seriously. This page outlines the security practices we follow to help protect your information and the websites we host.'
   },
   {
-    title: 'Infrastructure Security',
+    title: 'Infrastructure',
     subsections: [
       {
-        subtitle: 'Data Centers',
-        content: 'Our infrastructure is hosted in highly secure, SOC 2 Type II certified data centers with 24/7 physical security, surveillance, and access controls. All facilities meet strict security and compliance standards.'
+        subtitle: 'Hosting',
+        content: 'Your Univert website is hosted on modern cloud infrastructure with built-in redundancy. We use established hosting providers with strong security practices.'
       },
       {
-        subtitle: 'Network Security',
-        content: 'We employ advanced firewalls, intrusion detection systems (IDS), and DDoS protection to prevent unauthorized access and network attacks. All traffic is monitored and logged for security analysis.'
-      },
-      {
-        subtitle: 'Redundancy and Backup',
-        content: 'Your data is automatically replicated across multiple geographic locations with real-time backups. In case of disaster, we can restore service within minutes with zero data loss.'
+        subtitle: 'Backups',
+        content: 'We perform regular backups of hosted websites. Backup frequency and retention periods depend on your subscription plan.'
       }
     ]
   },
@@ -27,105 +23,55 @@ const sections = [
     title: 'Encryption',
     subsections: [
       {
-        subtitle: 'In Transit',
-        content: 'All data transmitted to and from our platform is encrypted using TLS 1.3 with 256-bit encryption. This includes all API communications and user uploads.'
+        subtitle: 'SSL/TLS Certificates',
+        content: 'All Univert websites include SSL certificates at no additional cost. This encrypts data transmitted between your website and visitors, showing the secure padlock in browsers.'
       },
       {
-        subtitle: 'At Rest',
-        content: 'All stored data is encrypted using AES-256 encryption. Encryption keys are securely managed and rotated regularly according to industry best practices.'
-      },
-      {
-        subtitle: 'End-to-End Encryption',
-        content: 'Sensitive data such as API keys and authentication tokens are encrypted end-to-end, ensuring only authorized parties can access them.'
+        subtitle: 'Data in Transit',
+        content: 'Communications between your browser and our platform are encrypted using industry-standard TLS encryption.'
       }
     ]
   },
   {
     title: 'Access Control',
-    content: 'We implement role-based access control (RBAC) with principle of least privilege. All access to systems is logged and monitored. Multi-factor authentication (MFA) is required for all administrative accounts.'
+    content: 'We implement access controls to protect your account and data. Only authorized team members have access to the systems necessary to provide our services. We encourage you to use strong, unique passwords for your Univert account.'
   },
   {
-    title: 'Authentication & Authorization',
-    subsections: [
-      {
-        subtitle: 'User Authentication',
-        content: 'We support industry-standard authentication methods including password-based authentication with bcrypt hashing, OAuth 2.0, and SAML for enterprise customers.'
-      },
-      {
-        subtitle: 'Multi-Factor Authentication',
-        content: 'MFA is available for all user accounts and mandatory for administrative access. We support authenticator apps, hardware keys, and SMS-based verification.'
-      },
-      {
-        subtitle: 'Session Management',
-        content: 'Sessions are securely managed with HTTP-only cookies, short expiration times, and automatic logout after periods of inactivity.'
-      }
-    ]
+    title: 'Account Security',
+    content: 'You are responsible for keeping your login credentials secure. We recommend using a strong password and not sharing your account access with unauthorized individuals. If you suspect unauthorized access to your account, please contact us immediately.'
   },
   {
     title: 'Vulnerability Management',
-    content: 'We conduct regular security audits, penetration testing, and vulnerability assessments. We maintain a responsible disclosure program and respond to security issues within 24 hours.'
+    content: 'We keep our systems and software up to date with security patches. We monitor for known vulnerabilities and address them as part of our regular maintenance.'
   },
   {
-    title: 'Security Compliance',
-    subsections: [
-      {
-        subtitle: 'Standards & Certifications',
-        content: 'We comply with industry standards including OWASP Top 10, CWE/SANS Top 25, and maintain SOC 2 Type II certification. Enterprise customers can access our Security Assessment Report (SAR).'
-      },
-      {
-        subtitle: 'Regulatory Compliance',
-        content: 'We comply with GDPR, CCPA, HIPAA (upon request), and other regulatory frameworks relevant to our business and customer base.'
-      },
-      {
-        subtitle: 'Industry Standards',
-        content: 'We follow industry best practices from organizations including NIST, ISO 27001, and the Cloud Security Alliance (CSA).'
-      }
-    ]
+    title: 'What We Do Not Guarantee',
+    content: 'While we implement reasonable security measures, no system is completely secure. We cannot guarantee that unauthorized access, hacking, data loss, or other breaches will never occur. We are not responsible for security issues caused by factors outside our control, such as weak passwords chosen by users or compromised devices.'
   },
   {
-    title: 'Incident Response',
-    content: 'We maintain a 24/7 security operations center (SOC) to detect, respond to, and remediate security incidents. In case of a breach, we will notify affected customers within 48 hours with detailed information and remediation steps.'
+    title: 'Your Responsibilities',
+    content: `As a Univert customer, you can help maintain security by:
+    • Using a strong, unique password for your account
+    • Not sharing your login credentials
+    • Keeping your contact information up to date
+    • Reporting any suspicious activity to us promptly
+    • Ensuring any third-party integrations you add to your website follow good security practices`
   },
   {
-    title: 'Employee Security',
-    content: 'All employees undergo background checks and security training. We enforce strict confidentiality agreements and implement the principle of least privilege for system access. Employees with access to sensitive data are required to sign NDAs.'
+    title: 'Reporting Security Issues',
+    content: 'If you discover a security vulnerability or have concerns about the security of our platform, please contact us through our support channels. We appreciate responsible disclosure and will investigate reported issues.'
   },
   {
-    title: 'Dependency & Supply Chain Security',
-    content: 'We regularly audit our third-party vendors and dependencies for security vulnerabilities. We maintain a Software Bill of Materials (SBOM) and track all library updates and patches.'
-  },
-  {
-    title: 'Security Reporting',
-    content: 'If you discover a security vulnerability, please report it responsibly to security@ovmon.com. Do not publicly disclose the vulnerability until we have had time to investigate and issue fixes.'
-  },
-  {
-    title: 'Security Resources',
-    subsections: [
-      {
-        subtitle: 'Security Documentation',
-        content: 'Enterprise customers have access to detailed security documentation, architecture diagrams, and compliance reports.'
-      },
-      {
-        subtitle: 'Security Advisories',
-        content: 'We publish security advisories and patches regularly. Subscribe to our security mailing list to stay informed of important updates.'
-      },
-      {
-        subtitle: 'Penetration Testing',
-        content: 'Enterprise customers can request penetration testing on their hosted environments with prior approval and coordination with our security team.'
-      }
-    ]
-  },
-  {
-    title: 'Contact Security Team',
-    content: 'For security inquiries, responsible disclosure, or to request security documentation, please contact security@ovmon.com. For urgent security matters, call our security hotline (available to enterprise customers).'
+    title: 'Questions',
+    content: 'If you have questions about our security practices, please contact us through our contact page. We are happy to provide additional information about how we protect your data.'
   }
 ];
 
 export default function SecurityPage() {
   return (
     <LegalLayout
-      title="Security Policy"
-      description="Learn about our comprehensive security practices and commitment to protecting your data"
+      title="Security"
+      description="How we protect your website and data at Univert"
       lastUpdated="March 2024"
     >
       {sections.map((section, idx) => (

@@ -23,6 +23,7 @@ import {
 export const metadata: Metadata = {
   title: 'Marketing Sites - Ovmon',
   description: 'Build fast, SEO-optimized marketing websites that convert visitors into customers.',
+  robots: { index: false, follow: false },
 };
 
 const marketingFeatures = [

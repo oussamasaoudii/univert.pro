@@ -82,8 +82,8 @@ export default function TemplatesPage() {
         <div className="max-w-7xl mx-auto px-6 py-12 lg:py-16">
           <div className="space-y-4">
             <h1 className="text-4xl font-bold tracking-tight">Website Templates</h1>
-            <p className="text-lg text-muted-foreground">
-              Launch your website in minutes from our managed template catalog.
+            <p className="text-lg text-muted-foreground max-w-2xl">
+              Choose a professionally designed template and we will set up your website with managed hosting, SSL, and ongoing support included. Your website, ready to launch.
             </p>
           </div>
         </div>
