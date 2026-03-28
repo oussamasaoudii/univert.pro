@@ -10,6 +10,23 @@ import { enforceRouteRateLimit, getRequestIp, toApiErrorResponse } from "@/lib/s
 
 export async function GET(request: Request) {
   try {
+    // [DEBUG] Check environment variables
+    const hasEncryptionKey = !!process.env.ENCRYPTION_KEY;
+    const encryptionKeyLength = process.env.ENCRYPTION_KEY?.length || 0;
+    const hasAdminAuthSecret = !!process.env.ADMIN_AUTH_SECRET;
+    const adminAuthSecretLength = process.env.ADMIN_AUTH_SECRET?.length || 0;
+    const hasAuthSecret = !!process.env.AUTH_SECRET;
+    const authSecretLength = process.env.AUTH_SECRET?.length || 0;
+
+    console.log("[MFA Status] Environment check:", {
+      hasEncryptionKey,
+      encryptionKeyLength,
+      hasAdminAuthSecret,
+      adminAuthSecretLength,
+      hasAuthSecret,
+      authSecretLength,
+    });
+
     await enforceRouteRateLimit({
       scope: "auth-admin-mfa-status",
       key: getRequestIp(request),
@@ -19,9 +36,21 @@ export async function GET(request: Request) {
     });
 
     const cookieStore = await cookies();
-    const challenge = verifyAdminMfaChallengeToken(
-      cookieStore.get(ADMIN_MFA_CHALLENGE_COOKIE_NAME)?.value,
-    );
+    let challenge;
+    try {
+      challenge = verifyAdminMfaChallengeToken(
+        cookieStore.get(ADMIN_MFA_CHALLENGE_COOKIE_NAME)?.value,
+      );
+      console.log("[MFA Status] Challenge verified:", {
+        hasChallengeToken: !!challenge,
+        ...(challenge && { sub: challenge.sub, purpose: challenge.purpose }),
+      });
+    } catch (challengeError) {
+      console.log("[MFA Status] Challenge verification error:", {
+        error: challengeError instanceof Error ? challengeError.message : String(challengeError),
+      });
+      throw challengeError;
+    }
 
     if (!challenge) {
       const adminUser = await getAdminRequestUser();
@@ -50,6 +79,10 @@ export async function GET(request: Request) {
 
     return NextResponse.json(responseBody);
   } catch (error) {
+    console.log("[MFA Status] Error caught:", {
+      errorMessage: error instanceof Error ? error.message : String(error),
+      errorStack: error instanceof Error ? error.stack : undefined,
+    });
     return toApiErrorResponse(error, { action: "auth.admin_mfa.status" });
   }
 }
