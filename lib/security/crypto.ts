@@ -3,8 +3,18 @@ import crypto from "node:crypto";
 const ENCRYPTED_PREFIX = "enc:v1:";
 
 function getEncryptionKey(): Buffer {
-  const rawKey = process.env.ENCRYPTION_KEY;
-  if (!rawKey || rawKey.trim().length < 32) {
+  const rawKey = process.env.ENCRYPTION_KEY?.trim();
+  
+  console.log("[Crypto] Encryption key check:", {
+    hasKey: !!rawKey,
+    keyLength: rawKey?.length || 0,
+  });
+
+  if (!rawKey || rawKey.length < 32) {
+    console.error("[Crypto] Encryption key validation failed:", {
+      hasKey: !!process.env.ENCRYPTION_KEY,
+      keyLength: process.env.ENCRYPTION_KEY?.length || 0,
+    });
     throw new Error("ENCRYPTION_KEY must be configured with at least 32 characters");
   }
 

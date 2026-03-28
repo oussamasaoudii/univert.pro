@@ -500,32 +500,56 @@ export async function getPageSections(pageKey: string): Promise<PageSection[]> {
   const pool = getMySQLPool();
   if (!pool) return [];
 
-  const [rows] = await pool.query<RowDataPacket[]>(
-    `SELECT * FROM page_sections WHERE page_key = ? AND is_active = TRUE ORDER BY display_order`,
-    [pageKey]
-  );
-  return rows.map(parsePageSectionRow);
+  try {
+    const [rows] = await pool.query<RowDataPacket[]>(
+      `SELECT * FROM page_sections WHERE page_key = ? AND is_active = TRUE ORDER BY display_order`,
+      [pageKey]
+    );
+    return rows.map(parsePageSectionRow);
+  } catch (error: any) {
+    if (error?.code === 'ER_NO_SUCH_TABLE') {
+      console.warn(`[Content] Table page_sections does not exist yet. Returning empty array.`);
+      return [];
+    }
+    throw error;
+  }
 }
 
 export async function getAllPageSections(): Promise<PageSection[]> {
   const pool = getMySQLPool();
   if (!pool) return [];
 
-  const [rows] = await pool.query<RowDataPacket[]>(
-    `SELECT * FROM page_sections ORDER BY page_key, display_order`
-  );
-  return rows.map(parsePageSectionRow);
+  try {
+    const [rows] = await pool.query<RowDataPacket[]>(
+      `SELECT * FROM page_sections ORDER BY page_key, display_order`
+    );
+    return rows.map(parsePageSectionRow);
+  } catch (error: any) {
+    if (error?.code === 'ER_NO_SUCH_TABLE') {
+      console.warn(`[Content] Table page_sections does not exist yet. Returning empty array.`);
+      return [];
+    }
+    throw error;
+  }
 }
 
 export async function getPageSectionById(id: string): Promise<PageSection | null> {
   const pool = getMySQLPool();
   if (!pool) return null;
 
-  const [rows] = await pool.query<RowDataPacket[]>(
-    `SELECT * FROM page_sections WHERE id = ?`,
-    [id]
-  );
-  return rows.length > 0 ? parsePageSectionRow(rows[0]) : null;
+  try {
+    const [rows] = await pool.query<RowDataPacket[]>(
+      `SELECT * FROM page_sections WHERE id = ?`,
+      [id]
+    );
+    return rows.length > 0 ? parsePageSectionRow(rows[0]) : null;
+  } catch (error: any) {
+    if (error?.code === 'ER_NO_SUCH_TABLE') {
+      console.warn(`[Content] Table page_sections does not exist yet. Returning null.`);
+      return null;
+    }
+    throw error;
+  }
 }
 
 export async function upsertPageSection(
@@ -534,56 +558,64 @@ export async function upsertPageSection(
   const pool = getMySQLPool();
   if (!pool) return null;
 
-  // Check if exists
-  const [existing] = await pool.query<RowDataPacket[]>(
-    `SELECT id FROM page_sections WHERE page_key = ? AND section_key = ?`,
-    [data.page_key, data.section_key]
-  );
+  try {
+    // Check if exists
+    const [existing] = await pool.query<RowDataPacket[]>(
+      `SELECT id FROM page_sections WHERE page_key = ? AND section_key = ?`,
+      [data.page_key, data.section_key]
+    );
 
-  if (existing.length > 0) {
-    // Update existing
-    await pool.query(
-      `UPDATE page_sections SET 
-        title_en = ?, title_ar = ?, subtitle_en = ?, subtitle_ar = ?,
-        content_en = ?, content_ar = ?, metadata = ?, display_order = ?,
-        is_active = ?, updated_at = NOW()
-       WHERE id = ?`,
-      [
-        data.title_en,
-        data.title_ar,
-        data.subtitle_en || null,
-        data.subtitle_ar || null,
-        data.content_en || null,
-        data.content_ar || null,
-        JSON.stringify(data.metadata || {}),
-        data.display_order,
-        data.is_active,
-        existing[0].id,
-      ]
-    );
-    return getPageSectionById(existing[0].id);
-  } else {
-    // Insert new
-    const id = crypto.randomUUID();
-    await pool.query(
-      `INSERT INTO page_sections (id, page_key, section_key, title_en, title_ar, subtitle_en, subtitle_ar, content_en, content_ar, metadata, display_order, is_active)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        id,
-        data.page_key,
-        data.section_key,
-        data.title_en,
-        data.title_ar,
-        data.subtitle_en || null,
-        data.subtitle_ar || null,
-        data.content_en || null,
-        data.content_ar || null,
-        JSON.stringify(data.metadata || {}),
-        data.display_order,
-        data.is_active,
-      ]
-    );
-    return getPageSectionById(id);
+    if (existing.length > 0) {
+      // Update existing
+      await pool.query(
+        `UPDATE page_sections SET 
+          title_en = ?, title_ar = ?, subtitle_en = ?, subtitle_ar = ?,
+          content_en = ?, content_ar = ?, metadata = ?, display_order = ?,
+          is_active = ?, updated_at = NOW()
+          WHERE id = ?`,
+        [
+          data.title_en,
+          data.title_ar,
+          data.subtitle_en,
+          data.subtitle_ar,
+          data.content_en,
+          data.content_ar,
+          data.metadata ? JSON.stringify(data.metadata) : null,
+          data.display_order,
+          data.is_active ? 1 : 0,
+          existing[0].id,
+        ]
+      );
+      return getPageSectionById(existing[0].id);
+    } else {
+      // Insert new
+      const [result] = await pool.query<ResultSetHeader>(
+        `INSERT INTO page_sections (
+          page_key, section_key, title_en, title_ar, subtitle_en, subtitle_ar,
+          content_en, content_ar, metadata, display_order, is_active, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+        [
+          data.page_key,
+          data.section_key,
+          data.title_en,
+          data.title_ar,
+          data.subtitle_en,
+          data.subtitle_ar,
+          data.content_en,
+          data.content_ar,
+          data.metadata ? JSON.stringify(data.metadata) : null,
+          data.display_order,
+          data.is_active ? 1 : 0,
+        ]
+      );
+      return getPageSectionById(result.insertId.toString());
+    }
+  } catch (error: any) {
+    if (error?.code === 'ER_NO_SUCH_TABLE') {
+      console.warn(`[Content] Table page_sections does not exist yet. Cannot upsert section.`);
+      return null;
+    }
+    throw error;
   }
 }
 
