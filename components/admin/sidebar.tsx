@@ -89,7 +89,7 @@ export function AdminSidebar() {
         </div>
 
         {/* Navigation */}
-        <ScrollArea className="flex-1 px-4 py-4">
+        <ScrollArea className="flex-1 overflow-hidden px-4 py-4">
           <nav className="space-y-1">
             {navigation.map((item) => {
               const isActive = pathname === item.href || 
