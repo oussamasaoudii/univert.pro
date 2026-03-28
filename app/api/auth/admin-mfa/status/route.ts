@@ -4,29 +4,14 @@ import { getAdminRequestUser } from "@/lib/api-auth";
 import {
   ADMIN_MFA_CHALLENGE_COOKIE_NAME,
   verifyAdminMfaChallengeToken,
+  createAdminMfaChallengeToken,
+  getAdminMfaChallengeCookieOptions,
 } from "@/lib/auth/admin-mfa-challenge";
-import { beginAdminMfaEnrollment } from "@/lib/mysql/admin-mfa";
+import { beginAdminMfaEnrollment, getAdminMfaSummary } from "@/lib/mysql/admin-mfa";
 import { enforceRouteRateLimit, getRequestIp, toApiErrorResponse } from "@/lib/security/request";
 
 export async function GET(request: Request) {
   try {
-    // [DEBUG] Check environment variables
-    const hasEncryptionKey = !!process.env.ENCRYPTION_KEY;
-    const encryptionKeyLength = process.env.ENCRYPTION_KEY?.length || 0;
-    const hasAdminAuthSecret = !!process.env.ADMIN_AUTH_SECRET;
-    const adminAuthSecretLength = process.env.ADMIN_AUTH_SECRET?.length || 0;
-    const hasAuthSecret = !!process.env.AUTH_SECRET;
-    const authSecretLength = process.env.AUTH_SECRET?.length || 0;
-
-    console.log("[MFA Status] Environment check:", {
-      hasEncryptionKey,
-      encryptionKeyLength,
-      hasAdminAuthSecret,
-      adminAuthSecretLength,
-      hasAuthSecret,
-      authSecretLength,
-    });
-
     await enforceRouteRateLimit({
       scope: "auth-admin-mfa-status",
       key: getRequestIp(request),
@@ -35,30 +20,66 @@ export async function GET(request: Request) {
       blockDurationMs: 15 * 60 * 1000,
     });
 
+    const url = new URL(request.url);
+    const requestedMode = url.searchParams.get("mode");
+    
     const cookieStore = await cookies();
-    let challenge;
+    let challenge = null;
+    
     try {
       challenge = verifyAdminMfaChallengeToken(
         cookieStore.get(ADMIN_MFA_CHALLENGE_COOKIE_NAME)?.value,
       );
-      console.log("[MFA Status] Challenge verified:", {
-        hasChallengeToken: !!challenge,
-        ...(challenge && { sub: challenge.sub, purpose: challenge.purpose }),
-      });
-    } catch (challengeError) {
-      console.log("[MFA Status] Challenge verification error:", {
-        error: challengeError instanceof Error ? challengeError.message : String(challengeError),
-      });
-      throw challengeError;
+    } catch {
+      // Challenge token invalid or expired - will handle below
     }
 
+    // If no valid challenge, check if user is authenticated and create a new challenge if needed
     if (!challenge) {
       const adminUser = await getAdminRequestUser();
-      if (adminUser) {
-        return NextResponse.json({ ok: true, authenticated: true, redirectTo: "/admin" });
+      
+      if (!adminUser) {
+        return NextResponse.json({ error: "challenge_required" }, { status: 401 });
       }
-
-      return NextResponse.json({ error: "challenge_required" }, { status: 401 });
+      
+      // User is authenticated - check their MFA status
+      const mfaSummary = await getAdminMfaSummary(adminUser.id);
+      const mfaEnabled = mfaSummary?.enabled ?? false;
+      
+      // If user wants to enroll and MFA is not enabled, create enrollment challenge
+      if (requestedMode === "enroll" && !mfaEnabled) {
+        const enrollment = await beginAdminMfaEnrollment(adminUser.id);
+        
+        // Create a new challenge token for enrollment
+        const newChallengeToken = createAdminMfaChallengeToken({
+          userId: adminUser.id,
+          email: adminUser.email,
+          purpose: "enroll",
+        });
+        
+        const response = NextResponse.json({
+          ok: true,
+          authenticated: false,
+          email: adminUser.email,
+          mode: "enroll",
+          enrollment: {
+            manualEntryKey: enrollment.manualEntryKey,
+            otpAuthUri: enrollment.otpAuthUri,
+            issuer: "Univert Admin",
+          },
+        });
+        
+        response.cookies.set(
+          ADMIN_MFA_CHALLENGE_COOKIE_NAME,
+          newChallengeToken,
+          getAdminMfaChallengeCookieOptions(),
+        );
+        
+        return response;
+      }
+      
+      // User is already authenticated with MFA or doesn't need enrollment
+      return NextResponse.json({ ok: true, authenticated: true, redirectTo: "/admin" });
     }
 
     const responseBody: Record<string, unknown> = {
