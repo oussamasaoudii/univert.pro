@@ -651,9 +651,9 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
           <SheetContent side="right" className="w-full sm:w-[380px] bg-background border-border overflow-y-auto">
             <div className="flex items-center gap-2.5 mt-2 mb-6">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent">
-                <span className="text-sm font-bold text-accent-foreground">O</span>
+                <span className="text-sm font-bold text-accent-foreground">U</span>
               </div>
-              <span className="text-xl font-semibold tracking-tight">Ovmon</span>
+              <span className="text-xl font-semibold tracking-tight">Univert</span>
             </div>
 
             <nav className="flex flex-col">
