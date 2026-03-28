@@ -109,10 +109,10 @@ const featuredResources = [
 
 // Quick links
 const quickLinks = [
-  { label: "API Reference", href: "/docs/api", icon: Code2 },
-  { label: "CLI Documentation", href: "/docs/cli", icon: FileText },
-  { label: "Changelog", href: "/changelog", icon: Zap },
-  { label: "System Status", href: "https://status.ovmon.com", icon: ExternalLink, external: true },
+  { label: "Blog", href: "/blog", icon: FileText },
+  { label: "Support", href: "/support", icon: Code2 },
+  { label: "How It Works", href: "/how-it-works", icon: Zap },
+  { label: "Contact Us", href: "/contact", icon: ExternalLink },
 ];
 
 export default function ResourcesPage() {

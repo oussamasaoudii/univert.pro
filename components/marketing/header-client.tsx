@@ -111,12 +111,6 @@ const productHighlight = {
 // Solutions menu items
 const solutionsByIndustry = [
   {
-    title: "Small Business",
-    description: "Professional websites for local businesses",
-    href: "/solutions/small-business",
-    icon: Building2,
-  },
-  {
     title: "E-commerce",
     description: "Online stores and digital shops",
     href: "/solutions/ecommerce",
@@ -182,28 +176,10 @@ const resourcesLearn = [
     icon: BookOpen,
   },
   {
-    title: "Knowledge Base",
-    description: "Common questions and solutions",
-    href: "/knowledge-base",
-    icon: BookOpen,
-  },
-  {
     title: "Blog",
     description: "Website tips and business insights",
     href: "/blog",
     icon: FileText,
-  },
-  {
-    title: "Case Studies",
-    description: "Real customer success stories",
-    href: "/case-studies",
-    icon: Award,
-  },
-  {
-    title: "Webinars",
-    description: "Live training and Q&A sessions",
-    href: "/webinars",
-    icon: Video,
   },
 ];
 
@@ -525,16 +501,16 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                     {/* Footer Featured area */}
                     <div className="mt-6 pt-6 border-t border-border/30">
                       <Link
-                        href="/changelog"
+                        href="/support"
                         className="group flex items-center justify-between p-3 rounded-lg hover:bg-secondary/30 transition-colors"
                       >
                         <div className="flex items-center gap-3">
                           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent/20 transition-colors">
-                            <Heart className="h-4 w-4" />
+                            <Headphones className="h-4 w-4" />
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-foreground">What&apos;s new</p>
-                            <p className="text-xs text-muted-foreground">Latest updates and features</p>
+                            <p className="text-sm font-medium text-foreground">Get Support</p>
+                            <p className="text-xs text-muted-foreground">24/7 help and resources</p>
                           </div>
                         </div>
                         <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />

@@ -20,7 +20,7 @@ export function OnboardingFlow() {
         <div className="space-y-2">
           <h2 className="text-2xl font-bold">Welcome to Univert!</h2>
           <p className="text-muted-foreground">
-            Let's get your first website live in 24 hours. You're on a free trial with full access to all features.
+            Let's get your first website live in 24 hours. Choose a template and we'll handle the setup.
           </p>
         </div>
 
@@ -69,15 +69,15 @@ export function OnboardingFlow() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Zap className="w-5 h-5" />
-            You're on a Free Trial
+            Ready to Launch Your Website
           </CardTitle>
           <CardDescription>
-            Full access to all features for 14 days. No credit card required.
+            We'll set everything up for you. Get live in 24 hours.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            {["Launch unlimited websites", "Full infrastructure access", "Premium support", "No credit card needed"].map(
+            {["Professional templates", "Managed setup & hosting", "Custom domain", "24/7 support", "Export anytime"].map(
               (feature) => (
                 <div key={feature} className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-500" />
