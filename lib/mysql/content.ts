@@ -618,45 +618,6 @@ export async function upsertPageSection(
     throw error;
   }
 }
-       WHERE id = ?`,
-      [
-        data.title_en,
-        data.title_ar,
-        data.subtitle_en || null,
-        data.subtitle_ar || null,
-        data.content_en || null,
-        data.content_ar || null,
-        JSON.stringify(data.metadata || {}),
-        data.display_order,
-        data.is_active,
-        existing[0].id,
-      ]
-    );
-    return getPageSectionById(existing[0].id);
-  } else {
-    // Insert new
-    const id = crypto.randomUUID();
-    await pool.query(
-      `INSERT INTO page_sections (id, page_key, section_key, title_en, title_ar, subtitle_en, subtitle_ar, content_en, content_ar, metadata, display_order, is_active)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        id,
-        data.page_key,
-        data.section_key,
-        data.title_en,
-        data.title_ar,
-        data.subtitle_en || null,
-        data.subtitle_ar || null,
-        data.content_en || null,
-        data.content_ar || null,
-        JSON.stringify(data.metadata || {}),
-        data.display_order,
-        data.is_active,
-      ]
-    );
-    return getPageSectionById(id);
-  }
-}
 
 export async function deletePageSection(id: string): Promise<boolean> {
   const pool = getMySQLPool();
