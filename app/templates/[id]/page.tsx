@@ -152,8 +152,8 @@ export default function TemplateDetailPage({
             </div>
           </div>
 
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="sticky top-24 bg-gradient-to-br from-accent/10 via-background to-background border-accent/20">
+          <div className="lg:col-span-1 space-y-6 self-start sticky top-24">
+            <Card className="bg-gradient-to-br from-accent/10 via-background to-background border-accent/20">
               <CardHeader>
                 <CardTitle>Ready to Launch?</CardTitle>
                 <CardDescription>Create a project from this template</CardDescription>
