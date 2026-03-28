@@ -135,7 +135,7 @@ export default function PricingPage() {
               <span className="text-accent">your growth</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-              Start free and upgrade as you grow. No hidden fees, no surprises. Cancel anytime.
+              Simple pricing that scales with your business. Transparent costs, no hidden fees. Cancel anytime.
             </p>
             <div className="flex items-center justify-center gap-4">
               <Label htmlFor="billing-toggle" className={!isYearly ? "text-foreground font-medium" : "text-muted-foreground"}>
@@ -306,9 +306,9 @@ export default function PricingPage() {
       {/* Final CTA */}
       <CTABand
         title="Ready to get started?"
-        description="Start with our free plan and upgrade when you need more."
+        description="Choose a plan and launch your professional website in 24 hours."
         actions={[
-          { label: 'Start Building Free', href: '/auth/signup', variant: 'primary' },
+          { label: 'View Plans', href: '/pricing', variant: 'primary' },
           { label: 'Contact Sales', href: '/contact', variant: 'outline' },
         ]}
         variant="gradient"

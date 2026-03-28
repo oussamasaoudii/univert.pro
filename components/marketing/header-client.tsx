@@ -111,12 +111,6 @@ const productHighlight = {
 // Solutions menu items
 const solutionsByIndustry = [
   {
-    title: "Small Business",
-    description: "Professional websites for local businesses",
-    href: "/solutions/small-business",
-    icon: Building2,
-  },
-  {
     title: "E-commerce",
     description: "Online stores and digital shops",
     href: "/solutions/ecommerce",
@@ -182,28 +176,10 @@ const resourcesLearn = [
     icon: BookOpen,
   },
   {
-    title: "Knowledge Base",
-    description: "Common questions and solutions",
-    href: "/knowledge-base",
-    icon: BookOpen,
-  },
-  {
     title: "Blog",
     description: "Website tips and business insights",
     href: "/blog",
     icon: FileText,
-  },
-  {
-    title: "Case Studies",
-    description: "Real customer success stories",
-    href: "/case-studies",
-    icon: Award,
-  },
-  {
-    title: "Webinars",
-    description: "Live training and Q&A sessions",
-    href: "/webinars",
-    icon: Video,
   },
 ];
 
@@ -274,24 +250,38 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                 <NavigationMenuContent>
                   <div className="w-[820px] p-6 bg-popover text-popover-foreground overflow-visible">
                     <div className="grid grid-cols-12 gap-8">
-                      {/* Featured item */}
+                      {/* Featured item with image background */}
                       <div className="col-span-5 min-w-0">
-                        <div className="rounded-xl bg-gradient-to-br from-accent/15 via-accent/5 to-transparent border border-accent/20 p-5 h-full flex flex-col">
-                          <div className="flex items-center gap-2 mb-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/20 text-accent">
-                              {productFeatured.icon && <productFeatured.icon className="h-4 w-4" />}
+                        <div className="relative rounded-xl overflow-hidden border border-accent/20 h-full min-h-[280px]">
+                          {/* Background Image */}
+                          <div
+                            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+                            style={{
+                              backgroundImage: 'url("/featured-bg.jpg")',
+                            }}
+                          />
+                          {/* Gradient Overlay for readability */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
+                          {/* Content */}
+                          <div className="relative z-10 p-5 h-full flex flex-col justify-between">
+                            <div>
+                              <div className="flex items-center gap-2 mb-3">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm text-white">
+                                  {productFeatured.icon && <productFeatured.icon className="h-4 w-4" />}
+                                </div>
+                                <span className="text-xs font-semibold text-accent uppercase tracking-wider">Featured</span>
+                              </div>
+                              <p className="text-lg font-semibold text-white mb-2">{productFeatured.title || 'Templates Gallery'}</p>
+                              <p className="text-sm text-white/80">{productFeatured.description || 'Browse professional launch-ready website templates'}</p>
                             </div>
-                            <span className="text-xs font-semibold text-accent uppercase tracking-wider">Featured</span>
+                            <Link
+                              href={productFeatured.href || '/templates'}
+                              className="inline-flex items-center text-sm font-medium text-white hover:text-accent transition-colors mt-4"
+                            >
+                              Explore platform
+                              <ArrowRight className="h-4 w-4 ml-2" />
+                            </Link>
                           </div>
-                          <p className="text-base font-semibold text-foreground mb-2">{productFeatured.title || 'Platform Overview'}</p>
-                          <p className="text-sm text-muted-foreground mb-4 flex-grow">{productFeatured.description || 'Discover professional website templates and solutions'}</p>
-                          <Link
-                            href={productFeatured.href || '/product'}
-                            className="inline-flex items-center text-sm font-medium text-accent hover:text-accent transition-colors"
-                          >
-                            Explore platform
-                            <ArrowRight className="h-4 w-4 ml-2" />
-                          </Link>
                         </div>
                       </div>
 
@@ -337,7 +327,7 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                     <div className="mt-6 pt-6 border-t border-border/30">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm font-medium text-foreground mb-1">See Ovmon in action</p>
+                          <p className="text-sm font-medium text-foreground mb-1">See Univert in action</p>
                           <p className="text-xs text-muted-foreground">Watch a 2-minute demo of our platform</p>
                         </div>
                         <Link
@@ -511,16 +501,16 @@ export function HeaderClient({ currentUser, countries = [] }: { currentUser: Mar
                     {/* Footer Featured area */}
                     <div className="mt-6 pt-6 border-t border-border/30">
                       <Link
-                        href="/changelog"
+                        href="/support"
                         className="group flex items-center justify-between p-3 rounded-lg hover:bg-secondary/30 transition-colors"
                       >
                         <div className="flex items-center gap-3">
                           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10 text-accent group-hover:bg-accent/20 transition-colors">
-                            <Heart className="h-4 w-4" />
+                            <Headphones className="h-4 w-4" />
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-foreground">What&apos;s new</p>
-                            <p className="text-xs text-muted-foreground">Latest updates and features</p>
+                            <p className="text-sm font-medium text-foreground">Get Support</p>
+                            <p className="text-xs text-muted-foreground">24/7 help and resources</p>
                           </div>
                         </div>
                         <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />

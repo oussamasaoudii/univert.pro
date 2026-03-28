@@ -8,7 +8,6 @@ const footerLinks = {
     { name: "Support", href: "/support" },
   ],
   solutions: [
-    { name: "Small Business", href: "/solutions/small-business" },
     { name: "E-commerce", href: "/solutions/ecommerce" },
     { name: "Agencies", href: "/solutions/agencies" },
     { name: "Creators", href: "/solutions/creators" },
@@ -20,10 +19,9 @@ const footerLinks = {
     { name: "Contact", href: "/contact" },
   ],
   resources: [
-    { name: "Knowledge Base", href: "/knowledge-base" },
     { name: "Blog", href: "/blog" },
-    { name: "Webinars", href: "/webinars" },
     { name: "Support", href: "/support" },
+    { name: "Ownership & Freedom", href: "/about/ownership" },
   ],
   legal: [
     { name: "Privacy", href: "/privacy" },
