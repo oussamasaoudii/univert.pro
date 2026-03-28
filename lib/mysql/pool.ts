@@ -39,7 +39,7 @@ export function getMySQLPool(): mysql.Pool | null {
 
   // Return null if MySQL is not configured
   if (!isMySQLConfigured()) {
-    console.warn("[MySQL] Database not configured. Missing MYSQL_USER, MYSQL_PASSWORD, or MYSQL_DATABASE environment variables.");
+    console.warn("[MySQL] Database not configured. Missing DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, or DB_PASSWORD environment variables.");
     return null;
   }
 
