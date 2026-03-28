@@ -350,8 +350,8 @@ export default function HomePage() {
                     {/* Stats row */}
                     <div className="grid grid-cols-3 gap-4 mb-6">
                       {[
-                        { label: 'Total Deployments', value: '2,847', change: '+12%', positive: true },
-                        { label: 'Avg Response Time', value: '42ms', change: '-8%', positive: true },
+                        { label: 'Active Websites', value: '12', change: '+2', positive: true },
+                        { label: 'Avg Load Time', value: '42ms', change: '-8%', positive: true },
                         { label: 'Uptime', value: '99.99%', change: '+0.01%', positive: true },
                       ].map((stat, i) => (
                         <div key={i} className="bg-secondary/30 rounded-lg p-3 border border-border/30">
@@ -381,18 +381,18 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    {/* Recent deployments */}
+                    {/* Recent websites */}
                     <div className="space-y-2">
                       {[
-                        { name: 'Production', status: 'Ready', time: '2m ago' },
-                        { name: 'Preview', status: 'Building', time: 'Now' },
-                      ].map((deploy, i) => (
+                        { name: 'Main Website', status: 'Live', time: 'Updated 2m ago' },
+                        { name: 'Landing Page', status: 'Setting Up', time: 'Now' },
+                      ].map((site, i) => (
                         <div key={i} className="flex items-center justify-between text-sm bg-secondary/20 rounded-lg px-3 py-2 border border-border/20">
                           <div className="flex items-center gap-2">
-                            <div className={`w-2 h-2 rounded-full ${deploy.status === 'Ready' ? 'bg-green-500' : 'bg-yellow-500 animate-pulse'}`} />
-                            <span>{deploy.name}</span>
+                            <div className={`w-2 h-2 rounded-full ${site.status === 'Live' ? 'bg-green-500' : 'bg-yellow-500 animate-pulse'}`} />
+                            <span>{site.name}</span>
                           </div>
-                          <span className="text-xs text-muted-foreground">{deploy.time}</span>
+                          <span className="text-xs text-muted-foreground">{site.time}</span>
                         </div>
                       ))}
                     </div>
@@ -406,8 +406,8 @@ export default function HomePage() {
                       <Rocket className="w-5 h-5 text-accent" />
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground">Deploy Time</p>
-                      <p className="text-base font-bold text-foreground">2.3s avg</p>
+                      <p className="text-xs text-muted-foreground">Setup Time</p>
+                      <p className="text-base font-bold text-foreground">24h avg</p>
                     </div>
                   </div>
                 </FloatingBadge>
@@ -456,10 +456,10 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10">
             {[
-              { label: 'Zero config deploys', icon: Zap },
-              { label: 'Git-connected', icon: RefreshCw },
+              { label: 'Managed setup', icon: Zap },
+              { label: '24/7 support', icon: Headphones },
               { label: 'Free SSL included', icon: Lock },
-              { label: 'Instant rollbacks', icon: Clock },
+              { label: 'Daily backups', icon: Clock },
             ].map((item, i) => (
               <motion.div
                 key={item.label}
@@ -482,10 +482,10 @@ export default function HomePage() {
           <div className="bg-secondary/30 border border-border/40 rounded-2xl p-8 lg:p-12">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
               {[
-                { value: 50000, suffix: '+', label: 'Developers', icon: Users },
+                { value: 500, suffix: '+', label: 'Active Customers', icon: Users },
                 { value: 99.99, suffix: '%', label: 'Uptime SLA', icon: Shield },
-                { value: 150, suffix: '+', label: 'Edge Locations', icon: Globe },
-                { value: 2, suffix: 'B+', label: 'Requests/Month', icon: BarChart3 },
+                { value: 50, suffix: '+', label: 'Templates', icon: Globe },
+                { value: 24, suffix: '/7', label: 'Support', icon: Headphones },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
@@ -825,13 +825,13 @@ export default function HomePage() {
               className="mt-10"
             >
               <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 py-6 px-4 rounded-xl bg-card/30 border border-border/30">
-                {/* Open Source */}
-                <a href="https://github.com/ovmon" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 text-foreground/80 hover:text-foreground transition-colors group">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                {/* Knowledge Base */}
+                <Link href="/knowledge-base" className="flex items-center gap-2.5 text-foreground/80 hover:text-foreground transition-colors group">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
-                  <span className="text-sm font-medium">Open Source CLI</span>
-                </a>
+                  <span className="text-sm font-medium">Knowledge Base</span>
+                </Link>
 
                 <span className="hidden sm:block w-px h-4 bg-border/50" aria-hidden="true" />
 
@@ -855,7 +855,7 @@ export default function HomePage() {
 
                 {/* Trustpilot */}
                 <a
-                  href="https://www.trustpilot.com/review/ovmon.com"
+                  href="https://www.trustpilot.com/review/univert.pro"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-foreground/80 hover:text-foreground transition-colors"
@@ -948,7 +948,7 @@ export default function HomePage() {
             </div>
             <div className="flex items-center gap-2">
               <Rocket className="w-4 h-4 text-accent" />
-              <span>Deploy in 60 seconds</span>
+              <span>Launch in 24 hours</span>
             </div>
             <div className="flex items-center gap-2">
               <RefreshCw className="w-4 h-4 text-accent" />
@@ -986,8 +986,8 @@ export default function HomePage() {
       {/* Testimonials Section - Using reusable component */}
       <TestimonialSection
         badge="Customer Stories"
-        title="Loved by developers worldwide"
-        description="See what developers and teams are saying about building with Ovmon."
+        title="Trusted by business owners"
+        description="See what customers are saying about launching their websites with Univert."
         testimonials={homepageTestimonials}
         variant="featured"
       />
@@ -996,17 +996,17 @@ export default function HomePage() {
       <FAQSection
         badge="FAQ"
         title="Frequently Asked Questions"
-        description="Everything you need to know about getting started with Ovmon."
+        description="Everything you need to know about getting started with Univert."
         faqs={homepageFAQs}
         variant="default"
       />
 
       {/* Final CTA Section - Using reusable component */}
       <CTABand
-        title="Start shipping faster today"
-        description="Join 50,000+ developers who build and deploy with confidence. Get started in under 60 seconds."
+        title="Launch your website today"
+        description="Join hundreds of business owners who launched their websites with confidence. Get started in minutes."
         actions={[
-          { label: 'Start Building Free', href: '/auth/signup', variant: 'primary' },
+          { label: 'Browse Templates', href: '/templates', variant: 'primary' },
           { label: 'Talk to Sales', href: '/contact', variant: 'outline' },
         ]}
         variant="centered"
