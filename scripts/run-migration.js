@@ -14,29 +14,48 @@ const pool = mysql.createPool({
 async function runMigration() {
   const connection = await pool.getConnection();
   try {
-    // Create contact_messages table
-    const sql = `
-      CREATE TABLE IF NOT EXISTS contact_messages (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        inquiry_type VARCHAR(255) NOT NULL,
-        message LONGTEXT NOT NULL,
-        status ENUM('received', 'in_review', 'responded') DEFAULT 'received',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        INDEX idx_email (email),
-        INDEX idx_status (status),
-        INDEX idx_created_at (created_at)
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-    `;
-    
-    const statements = sql.split(';').filter(s => s.trim());
-    for (const statement of statements) {
-      if (statement.trim()) {
-        await connection.query(statement);
+    // Add missing received_at column if it doesn't exist
+    try {
+      await connection.query(
+        `ALTER TABLE contact_messages ADD COLUMN received_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP AFTER status`
+      );
+      console.log('✓ Added received_at column');
+    } catch (error) {
+      if (error.code === 'ER_DUP_FIELDNAME') {
+        console.log('[v0] received_at column already exists');
+      } else {
+        throw error;
       }
     }
+
+    // Add missing responded_at column if it doesn't exist
+    try {
+      await connection.query(
+        `ALTER TABLE contact_messages ADD COLUMN responded_at TIMESTAMP NULL`
+      );
+      console.log('✓ Added responded_at column');
+    } catch (error) {
+      if (error.code === 'ER_DUP_FIELDNAME') {
+        console.log('[v0] responded_at column already exists');
+      } else {
+        throw error;
+      }
+    }
+
+    // Add notes column if it doesn't exist
+    try {
+      await connection.query(
+        `ALTER TABLE contact_messages ADD COLUMN notes TEXT`
+      );
+      console.log('✓ Added notes column');
+    } catch (error) {
+      if (error.code === 'ER_DUP_FIELDNAME') {
+        console.log('[v0] notes column already exists');
+      } else {
+        throw error;
+      }
+    }
+
     console.log('✓ Migration completed successfully');
   } catch (error) {
     console.error('✗ Migration failed:', error.message);
