@@ -34,6 +34,8 @@ import {
   HardDrive,
   Bell,
   Cog,
+  MessageSquare,
+  Mail,
 } from "lucide-react";
 
 const navigation = [
@@ -47,6 +49,8 @@ const navigation = [
   { name: "Domains", href: "/admin/domains", icon: Link2 },
   { name: "Backups", href: "/admin/backups", icon: HardDrive },
   { name: "Monitoring", href: "/admin/monitoring", icon: BarChart3 },
+  { name: "Support Tickets", href: "/admin/tickets", icon: MessageSquare },
+  { name: "Contact Messages", href: "/admin/contact-messages", icon: Mail },
   { name: "Alerts & Automation", href: "/admin/alerts", icon: Bell },
   { name: "Settings", href: "/admin/settings", icon: Cog },
 ];
@@ -78,7 +82,7 @@ export function AdminHeader() {
               <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent">
                 <span className="text-sm font-bold text-accent-foreground">U</span>
               </div>
-              <span className="text-xl font-semibold tracking-tight">Ovmon</span>
+              <span className="text-xl font-semibold tracking-tight">Univert</span>
             </Link>
             <Badge variant="outline" className="ml-2 border-accent text-accent text-xs">
               Admin
@@ -115,7 +119,7 @@ export function AdminHeader() {
       {/* Mobile Logo */}
       <Link href="/admin" className="lg:hidden flex items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center rounded-md bg-accent">
-          <span className="text-sm font-bold text-accent-foreground">O</span>
+          <span className="text-sm font-bold text-accent-foreground">U</span>
         </div>
         <Badge variant="outline" className="border-accent text-accent text-xs">
           Admin

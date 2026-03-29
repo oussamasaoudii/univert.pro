@@ -33,11 +33,13 @@ import {
   Cog,
   PanelLeft,
   MessageSquareQuote,
+  MessageSquare,
   HelpCircle,
   Home,
   LogIn,
   Database,
   Wrench,
+  Mail,
 } from "lucide-react";
 
 const navigation = [
@@ -51,6 +53,8 @@ const navigation = [
   { name: "Domains", href: "/admin/domains", icon: Link2 },
   { name: "Backups", href: "/admin/backups", icon: HardDrive },
   { name: "Monitoring", href: "/admin/monitoring", icon: BarChart3 },
+  { name: "Support Tickets", href: "/admin/tickets", icon: MessageSquare },
+  { name: "Contact Messages", href: "/admin/contact-messages", icon: Mail },
   { name: "Alerts & Automation", href: "/admin/alerts", icon: Bell },
   { name: "Settings", href: "/admin/settings", icon: Cog },
 ];
