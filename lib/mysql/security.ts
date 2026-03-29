@@ -94,6 +94,7 @@ export async function consumeRateLimit(input: {
       : null;
 
     // Use atomic INSERT ... ON DUPLICATE KEY UPDATE (no transaction needed)
+    const now_timestamp = toMySqlDateTime(now);
     await pool.query(
       `
         INSERT INTO auth_rate_limits (
@@ -105,7 +106,7 @@ export async function consumeRateLimit(input: {
           created_at,
           updated_at
         )
-        VALUES (?, ?, ?, ?, ?, NOW(), NOW())
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         ON DUPLICATE KEY UPDATE
           scope = VALUES(scope),
           attempts = IF(
@@ -127,6 +128,8 @@ export async function consumeRateLimit(input: {
         nextAttempts,
         toMySqlDateTime(nextWindowStartedAt),
         toMySqlDateTime(nextBlockedUntil),
+        now_timestamp,
+        now_timestamp,
         input.windowMs,
         input.windowMs,
       ],
