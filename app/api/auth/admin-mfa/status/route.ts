@@ -12,13 +12,21 @@ import { enforceRouteRateLimit, getRequestIp, toApiErrorResponse } from "@/lib/s
 
 export async function GET(request: Request) {
   try {
-    await enforceRouteRateLimit({
-      scope: "auth-admin-mfa-status",
-      key: getRequestIp(request),
-      limit: 60,
-      windowMs: 10 * 60 * 1000,
-      blockDurationMs: 15 * 60 * 1000,
-    });
+    // Try to enforce rate limit, but don't fail if it throws
+    try {
+      await enforceRouteRateLimit({
+        scope: "auth-admin-mfa-status",
+        key: getRequestIp(request),
+        limit: 60,
+        windowMs: 10 * 60 * 1000,
+        blockDurationMs: 15 * 60 * 1000,
+      });
+    } catch (rateLimitError) {
+      console.log("[MFA Status] Rate limit check failed (non-critical):", {
+        error: rateLimitError instanceof Error ? rateLimitError.message : String(rateLimitError),
+      });
+      // Continue anyway - rate limit errors shouldn't block MFA flow
+    }
 
     const url = new URL(request.url);
     const requestedMode = url.searchParams.get("mode");

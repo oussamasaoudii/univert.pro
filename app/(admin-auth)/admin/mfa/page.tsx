@@ -79,17 +79,30 @@ function AdminMfaPageContent() {
         const result = await response.json().catch(() => ({}));
 
         if (!response.ok) {
+          console.log("[v0] Status check failed:", {
+            status: response.status,
+            error: result?.error,
+          });
           throw new Error(String(result?.error || "challenge_required"));
         }
 
         const nextStatus = result as AdminMfaStatusResponse;
+        console.log("[v0] MFA Status received:", {
+          authenticated: nextStatus.authenticated,
+          redirectTo: nextStatus.redirectTo,
+          mode: nextStatus.mode,
+        });
+
+        // Only redirect if actually authenticated AND has redirectTo
         if (nextStatus.authenticated && nextStatus.redirectTo) {
+          console.log("[v0] Redirecting to:", nextStatus.redirectTo);
           router.replace(nextStatus.redirectTo);
           return;
         }
 
         setStatus(nextStatus);
       } catch (loadError) {
+        console.log("[v0] Load error:", loadError instanceof Error ? loadError.message : String(loadError));
         setError(normalizeError(loadError));
       } finally {
         setLoading(false);
