@@ -1,150 +1,118 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { generateText } from "ai";
 import { SUPPORT_CHAT_SYSTEM_PROMPT } from "@/lib/ai/prompts";
 
 export const maxDuration = 30;
 
-interface ChatRequestMessage {
-  role: "user" | "assistant";
-  text: string;
+type IncomingMessage = {
+  role?: string;
+  text?: string;
+  parts?: Array<{ type?: string; text?: string }>;
+};
+
+function extractMessageText(message: IncomingMessage) {
+  if (typeof message.text === "string" && message.text.trim()) {
+    return message.text.trim();
+  }
+
+  if (Array.isArray(message.parts)) {
+    return message.parts
+      .filter((part) => part?.type === "text" && typeof part.text === "string")
+      .map((part) => part.text!.trim())
+      .filter(Boolean)
+      .join("\n");
+  }
+
+  return "";
 }
 
-function detectArabic(text: string) {
+function isArabicText(text: string) {
   return /[\u0600-\u06FF]/.test(text);
 }
 
-function buildFallbackReply(input: string) {
-  const message = input.toLowerCase();
-  const isArabic = detectArabic(input);
+function getFallbackReply(input: string) {
+  const normalized = input.toLowerCase();
+  const arabic = isArabicText(input);
 
-  if (
-    message.includes("plan") ||
-    message.includes("pricing") ||
-    message.includes("price") ||
-    message.includes("subscription") ||
-    message.includes("باقة") ||
-    message.includes("سعر") ||
-    message.includes("اشتراك")
-  ) {
-    return isArabic
-      ? "يمكنني مساعدتك في اختيار الباقة. بشكل عام: Starter مناسبة لموقع واحد بسيط، Growth مناسبة للأعمال التي تحتاج أكثر من موقع أو دعم أقوى، وPro/Premium للمشاريع الأكبر. إذا أخبرتني بعدد المواقع والدومينات والدعم الذي تحتاجه سأرشح لك الأنسب."
-      : "I can help you choose a plan. In general, Starter fits a simple single-site launch, Growth fits businesses that need more than one site or stronger support, and Pro/Premium fit larger operations. If you tell me how many websites, domains, and support needs you have, I can narrow it down.";
+  if (/(domain|dns|ssl|subdomain|custom domain|دومين|نطاق)/.test(normalized)) {
+    return arabic
+      ? "يمكنني شرح خطوات ربط الدومين وDNS وSSL بشكل عام، لكن إذا كانت المشكلة مرتبطة بموقعك الحالي أو بحالة التحقق الفعلية فمن الأفضل فتح تذكرة دعم من داخل الداشبورد."
+      : "I can explain how domains, DNS, and SSL work in general. If the issue is tied to your live website or current verification status, please create a dashboard support ticket so the team can inspect your account.";
   }
 
-  if (
-    message.includes("template") ||
-    message.includes("theme") ||
-    message.includes("demo") ||
-    message.includes("قالب") ||
-    message.includes("ديمو")
-  ) {
-    return isArabic
-      ? "لدينا قوالب جاهزة لفئات مثل الأعمال، المتاجر، البورتفوليو، صفحات الهبوط، والمدونات. إذا أخبرتني بنوع مشروعك وهل تريد WordPress أو Laravel أو Next.js، سأساعدك في تضييق الخيارات بسرعة."
-      : "We offer launch-ready templates for business sites, stores, portfolios, landing pages, and blogs. Tell me what kind of website you need and whether you prefer WordPress, Laravel, or Next.js, and I’ll help you narrow the options quickly.";
+  if (/(billing|invoice|payment|renew|refund|الفاتورة|الدفع|الاشتراك|التجديد)/.test(normalized)) {
+    return arabic
+      ? "يمكنني توضيح الفرق بين الخطط وما الذي تتضمنه الفوترة بشكل عام، لكن أي مشكلة دفع أو فاتورة تحتاج تذكرة دعم حتى يراجع الفريق حسابك."
+      : "I can help explain plans and billing at a high level, but invoice, payment, and renewal issues need a support ticket so the team can review your account safely.";
   }
 
-  if (
-    message.includes("setup") ||
-    message.includes("launch") ||
-    message.includes("how long") ||
-    message.includes("وقت") ||
-    message.includes("اطلاق") ||
-    message.includes("إطلاق") ||
-    message.includes("إعداد")
-  ) {
-    return isArabic
-      ? "بعد اختيار القالب والخطة واسم النطاق الفرعي، يبدأ فريق Univert الإعداد. عادةً ستظهر حالة الإعداد داخل لوحة التحكم، وعندما يصبح الموقع جاهزًا ستظهر بيانات الوصول والرابط إذا كانت متاحة."
-      : "After you choose a template, plan, and subdomain, the Univert team starts the setup process. You can track progress in the dashboard, and when the website is ready the live URL and access details appear there when available.";
+  if (/(credential|login|password|access|بيانات الدخول|كلمة المرور|الدخول)/.test(normalized)) {
+    return arabic
+      ? "إذا كنت تسأل عن بيانات الدخول أو الوصول إلى موقعك، فمن الأفضل فتح تذكرة دعم من داخل الداشبورد. يمكن للفريق التحقق من حالة الإعداد وتسليم بيانات الوصول بشكل صحيح."
+      : "If your question is about credentials or website access, please create a support ticket from the dashboard. The team can verify your setup status and provide the right access details.";
   }
 
-  if (
-    message.includes("domain") ||
-    message.includes("dns") ||
-    message.includes("ssl") ||
-    message.includes("دومين") ||
-    message.includes("نطاق")
-  ) {
-    return isArabic
-      ? "يمكنك البدء بنطاق فرعي من Univert ثم ربط دومينك لاحقًا. إذا كنت تحتاج مساعدة في DNS أو SSL أو نقل الدومين، يمكنني أيضًا اقتراح فتح تذكرة دعم لتسريع المعالجة."
-      : "You can start with a Univert subdomain and connect your own domain later. If you need help with DNS, SSL, or domain transfer, I can also suggest opening a support ticket for faster handling.";
+  if (/(launch|setup|provision|ready|failed|error|لا يعمل|فشل|خطأ|غير جاهز)/.test(normalized)) {
+    return arabic
+      ? "يمكنني شرح مسار الإطلاق والإعداد بشكل عام، لكن إذا كان لديك موقع محدد لم يجهز بعد أو ظهرت لك مشكلة فعلية، افتح تذكرة دعم حتى يراجع الفريق الحالة مباشرة."
+      : "I can explain the general launch and setup flow, but if a specific website is delayed or showing an error, please open a support ticket so the team can inspect the exact status.";
   }
 
-  if (
-    message.includes("migrate") ||
-    message.includes("migration") ||
-    message.includes("export") ||
-    message.includes("ownership") ||
-    message.includes("نقل") ||
-    message.includes("تصدير") ||
-    message.includes("ملكية")
-  ) {
-    return isArabic
-      ? "نعم، فلسفة Univert تقوم على عدم حبس العميل. يمكنك البدء معنا بخدمة مُدارة ثم طلب التصدير أو النقل لاحقًا حسب حالة مشروعك وخطتك. إذا أردت، أشرح لك مسار الملكية والنقل خطوة بخطوة."
-      : "Yes. Univert is positioned around no lock-in. You can launch with managed support and later request export or migration depending on your setup and plan. If you want, I can walk you through the ownership and migration path step by step.";
+  if (/(migration|export|ownership|handoff|نقل|هجرة|تصدير|ملكية)/.test(normalized)) {
+    return arabic
+      ? "الملكية والنقل جزء مهم من Univert. يمكنني شرح الفكرة العامة، لكن إذا كنت تريد طلب نقل أو تسليم فعلي فمن الأفضل فتح تذكرة دعم حتى تتم المتابعة مع فريقنا."
+      : "Ownership and migration are part of the Univert promise. I can explain the high-level process, but if you want to request an actual export or migration, please create a support ticket so the team can handle it properly.";
   }
 
-  if (
-    message.includes("login") ||
-    message.includes("credential") ||
-    message.includes("access") ||
-    message.includes("billing") ||
-    message.includes("فاتورة") ||
-    message.includes("دخول") ||
-    message.includes("بيانات")
-  ) {
-    return isArabic
-      ? "هذا النوع من الطلبات قد يحتاج فحصًا لحسابك أو موقعك مباشرة. أستطيع مساعدتك بالمعلومات العامة، وإذا كانت المشكلة تخص الوصول أو الفوترة أو بيانات الدخول فالأفضل إنشاء تذكرة دعم من داخل الويدجت."
-      : "That kind of request may require checking your account or website directly. I can help with general guidance, and if the issue is about access, billing, or credentials, the best next step is creating a support ticket from the widget.";
-  }
-
-  return isArabic
-    ? "أنا هنا لمساعدتك في الخطط، القوالب، الإطلاق، الدومينات، الدعم، والملكية والنقل. اكتب لي ما الذي تريد تنفيذه أو ما الذي يحيّرك، وسأرشدك للخطوة التالية المناسبة."
-    : "I’m here to help with plans, templates, launch steps, domains, support, and ownership or migration questions. Tell me what you’re trying to do, and I’ll guide you to the best next step.";
+  return arabic
+    ? "أنا مساعد دعم Univert. أستطيع مساعدتك في اختيار القالب، فهم الخطط، شرح الإطلاق، ربط الدومين، والدعم بعد الإطلاق. إذا كان طلبك مرتبطًا بحسابك أو بموقع محدد، افتح تذكرة دعم من داخل الداشبورد وسيتابعها الفريق."
+    : "I’m the Univert support assistant. I can help with templates, plans, launch flow, domains, and post-launch support. If your request is tied to a specific account or website, please create a support ticket from the dashboard so the team can follow up.";
 }
 
-export async function POST(req: NextRequest) {
-  try {
-    const body = (await req.json()) as { messages?: ChatRequestMessage[] };
-    const messages = Array.isArray(body.messages) ? body.messages : [];
-    const lastUserMessage =
-      [...messages].reverse().find((message) => message.role === "user")?.text?.trim() || "";
+export async function POST(request: NextRequest) {
+  const body = (await request.json().catch(() => ({}))) as {
+    messages?: IncomingMessage[];
+  };
 
-    if (!lastUserMessage) {
-      return NextResponse.json({
-        message:
-          "Tell me what you need help with, and I’ll guide you through plans, templates, setup, domains, or support.",
-        source: "fallback",
-      });
-    }
+  const messages = Array.isArray(body.messages)
+    ? body.messages
+        .map((message) => {
+          const text = extractMessageText(message);
+          const role = message.role === "assistant" ? "assistant" : "user";
+          return text ? { role, content: text } : null;
+        })
+        .filter(Boolean)
+    : [];
 
-    try {
-      const conversation = messages
-        .map((message) => `${message.role === "user" ? "User" : "Assistant"}: ${message.text}`)
-        .join("\n");
+  const latestUserMessage =
+    [...messages].reverse().find((message) => message?.role === "user")?.content || "";
 
-      const result = await generateText({
-        model: "openai/gpt-5-mini",
-        system: SUPPORT_CHAT_SYSTEM_PROMPT,
-        prompt: conversation,
-        maxOutputTokens: 500,
-      });
-
-      return NextResponse.json({
-        message: result.text || buildFallbackReply(lastUserMessage),
-        source: "ai",
-      });
-    } catch (error) {
-      console.error("AI chat fallback triggered:", error);
-      return NextResponse.json({
-        message: buildFallbackReply(lastUserMessage),
-        source: "fallback",
-      });
-    }
-  } catch (error) {
-    console.error("AI chat route error:", error);
+  if (!messages.length) {
     return NextResponse.json({
       message:
-        "I’m having trouble processing that request right now. Please try again, or create a support ticket if the issue is urgent.",
+        "Hello! I can help with templates, launch, domains, support, and ownership questions.",
+      source: "fallback",
+    });
+  }
+
+  try {
+    const result = await generateText({
+      model: "openai/gpt-5-mini",
+      system: SUPPORT_CHAT_SYSTEM_PROMPT,
+      messages: messages as Array<{ role: "user" | "assistant"; content: string }>,
+      abortSignal: request.signal,
+      maxOutputTokens: 800,
+    });
+
+    const text = result.text?.trim();
+
+    return NextResponse.json({
+      message: text || getFallbackReply(latestUserMessage),
+      source: text ? "model" : "fallback",
+    });
+  } catch {
+    return NextResponse.json({
+      message: getFallbackReply(latestUserMessage),
       source: "fallback",
     });
   }
