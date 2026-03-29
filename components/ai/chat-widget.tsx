@@ -257,7 +257,7 @@ const newsArticles: NewsArticle[] = [
     theme: "from-[#98f5e1] via-[#78e1d5] to-[#b5f1ff]",
     title: {
       en: "Domain setup now feels less technical and more guided",
-      ar: "إعداد الدومين أصبح ��قل تقنية وأكثر توجيهًا",
+      ar: "إعداد الدومين أصبح ����قل تقنية وأكثر توجيهًا",
     },
     excerpt: {
       en: "DNS, SSL, and verification steps now use clearer language for business customers.",
@@ -1205,7 +1205,7 @@ export function ChatWidget() {
                       : t(locale, "Guided support", "دعم موجّه")}
                   </Badge>
                   <Badge className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-white/75 hover:bg-white/[0.04]">
-                    {t(locale, "AI + human follow-up", "ذكاء اصطناعي + متابعة ��شرية")}
+                    {t(locale, "AI + human follow-up", "ذكاء اصطناعي + متابعة ���شرية")}
                   </Badge>
                   <Badge className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-white/75 hover:bg-white/[0.04]">
                     {t(locale, "Tickets, news, and chat in one place", "التذاكر والأخبار والمحادثة في مكان واحد")}
@@ -1271,7 +1271,7 @@ export function ChatWidget() {
                             className="rounded-[20px] border border-slate-950/10 bg-[#11161d]/92 px-4 py-4 text-sm font-medium text-white transition hover:bg-[#0f151a]"
                           >
                             <span className="flex items-center justify-between gap-3">
-                              <span>{t(locale, "Open Help Center", "فتح مركز المساعدة")}</span>
+                              <span>{t(locale, "Open Help Center", "ف��ح مركز المساعدة")}</span>
                               <ArrowUpRight className="h-4 w-4 text-[#8bf1df]" />
                             </span>
                           </Link>
@@ -1601,7 +1601,7 @@ export function ChatWidget() {
                     </div>
                   </div>
 
-                  <ScrollArea className="flex-1 overflow-hidden">
+                  <ScrollArea className="flex-1 overflow-hidden h-full">
                     <div className="space-y-4 px-4 py-4 pb-4">
                       {pageContext.websiteName && (
                         <div className="rounded-[22px] border border-[#5de5d2]/15 bg-[#162129] px-4 py-3">
