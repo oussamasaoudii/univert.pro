@@ -12,11 +12,19 @@ export async function POST(request: Request) {
     const pool = getMySQLPool();
     
     // Split SQL into individual statements by double newlines (how inspect-db joins them)
-    // Each statement from generateMigrationSQL is a complete statement
+    // Each statement from generateMigrationSQL includes a comment header like "-- Create table: xxx"
+    // We need to strip the comment line and keep the actual SQL
     let statements = sql
       .split(/\n\n+/)
       .map(s => s.trim())
-      .filter(s => s.length > 0 && !s.startsWith('--'));
+      .filter(s => s.length > 0)
+      .map(s => {
+        // Remove comment lines at the start of each statement
+        const lines = s.split('\n');
+        const nonCommentLines = lines.filter(line => !line.trim().startsWith('--'));
+        return nonCommentLines.join('\n').trim();
+      })
+      .filter(s => s.length > 0);
     
     console.log('[v0] Total statements parsed:', statements.length);
     console.log('[v0] First few statements:', statements.slice(0, 3).map(s => s.substring(0, 80)));
