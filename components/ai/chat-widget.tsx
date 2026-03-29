@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
 import {
   MessageCircle,
   X,
@@ -16,6 +14,12 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+interface ChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  text: string;
+}
 
 const STARTER_QUESTIONS = [
   {
@@ -56,6 +60,7 @@ const ESCALATION_KEYWORDS = [
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [showTicketForm, setShowTicketForm] = useState(false);
   const [ticketData, setTicketData] = useState({
     title: "",
@@ -65,13 +70,8 @@ export function ChatWidget() {
   });
   const [ticketCreated, setTicketCreated] = useState(false);
   const [shouldEscalate, setShouldEscalate] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const { messages, sendMessage, status } = useChat({
-    transport: new DefaultChatTransport({ api: "/api/ai/chat" }),
-  });
-
-  const isLoading = status === "streaming" || status === "submitted";
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -83,10 +83,7 @@ export function ChatWidget() {
     if (messages.length > 0) {
       const lastMessage = messages[messages.length - 1];
       if (lastMessage.role === "user") {
-        const text = lastMessage.parts
-          .map((p) => (p.type === "text" ? p.text : ""))
-          .join("")
-          .toLowerCase();
+        const text = lastMessage.text.toLowerCase();
         const needsEscalation = ESCALATION_KEYWORDS.some((keyword) =>
           text.includes(keyword)
         );
@@ -95,15 +92,72 @@ export function ChatWidget() {
     }
   }, [messages]);
 
+  const sendChatMessage = async (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed || isLoading) return;
+
+    const userMessage: ChatMessage = {
+      id: `${Date.now()}-user`,
+      role: "user",
+      text: trimmed,
+    };
+
+    const nextMessages = [...messages, userMessage];
+    setMessages(nextMessages);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: nextMessages.map((message) => ({
+            role: message.role,
+            text: message.text,
+          })),
+        }),
+      });
+
+      const result = await response.json().catch(() => ({}));
+      const reply =
+        typeof result?.message === "string" && result.message.trim()
+          ? result.message.trim()
+          : "I’m here to help with plans, templates, setup, domains, and support. Please try asking your question again.";
+
+      setMessages((current) => [
+        ...current,
+        {
+          id: `${Date.now()}-assistant`,
+          role: "assistant",
+          text: reply,
+        },
+      ]);
+    } catch (error) {
+      console.error("Failed to send chat message:", error);
+      setMessages((current) => [
+        ...current,
+        {
+          id: `${Date.now()}-assistant-error`,
+          role: "assistant",
+          text: "I’m having trouble replying right now. Please try again, or create a support ticket if the issue is urgent.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
-    sendMessage({ text: input });
+    void sendChatMessage(input);
     setInput("");
   };
 
   const handleQuickQuestion = (question: string) => {
-    sendMessage({ text: question });
+    void sendChatMessage(question);
   };
 
   const handleCreateTicket = async () => {
@@ -281,16 +335,7 @@ export function ChatWidget() {
                       : "bg-card border border-border/60 text-foreground rounded-bl-none"
                   )}
                 >
-                  {message.parts.map((part, index) => {
-                    if (part.type === "text") {
-                      return (
-                        <span key={index} className="whitespace-pre-wrap block">
-                          {part.text}
-                        </span>
-                      );
-                    }
-                    return null;
-                  })}
+                  <span className="whitespace-pre-wrap block">{message.text}</span>
                 </div>
               </div>
             ))}
