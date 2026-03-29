@@ -78,6 +78,13 @@ export default function SchemaCheckPage() {
       
       // Refresh schema data after migration
       if (result.success) {
+        // Reset the MySQL connection pool to force metadata refresh
+        try {
+          await fetch('/api/admin/reset-pool', { method: 'POST' });
+        } catch (err) {
+          console.log('[v0] Could not reset pool:', err);
+        }
+        
         setTimeout(() => {
           setLoading(true);
           fetch('/api/inspect-db')
