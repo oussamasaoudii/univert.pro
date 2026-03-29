@@ -1,10 +1,4 @@
 import mysql from 'mysql2/promise';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || '72.60.90.147',
@@ -20,8 +14,29 @@ const pool = mysql.createPool({
 async function runMigration() {
   const connection = await pool.getConnection();
   try {
-    const sql = fs.readFileSync(path.join(__dirname, '050_contact_messages.sql'), 'utf8');
-    await connection.query(sql);
+    // Create contact_messages table
+    const sql = `
+      CREATE TABLE IF NOT EXISTS contact_messages (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        inquiry_type VARCHAR(255) NOT NULL,
+        message LONGTEXT NOT NULL,
+        status ENUM('received', 'in_review', 'responded') DEFAULT 'received',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_email (email),
+        INDEX idx_status (status),
+        INDEX idx_created_at (created_at)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `;
+    
+    const statements = sql.split(';').filter(s => s.trim());
+    for (const statement of statements) {
+      if (statement.trim()) {
+        await connection.query(statement);
+      }
+    }
     console.log('✓ Migration completed successfully');
   } catch (error) {
     console.error('✗ Migration failed:', error.message);
