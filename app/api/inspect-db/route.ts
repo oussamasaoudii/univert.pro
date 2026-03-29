@@ -176,6 +176,21 @@ const EXPECTED_SCHEMA: Record<string, {
     },
     indexes: ['PRIMARY', 'idx_site_media_site_id']
   },
+  faqs: {
+    columns: {
+      id: { type: 'VARCHAR(36)', nullable: false },
+      question_en: { type: 'VARCHAR(500)', nullable: false },
+      question_ar: { type: 'VARCHAR(500)', nullable: false },
+      answer_en: { type: 'TEXT', nullable: false },
+      answer_ar: { type: 'TEXT', nullable: false },
+      category: { type: 'VARCHAR(100)', nullable: true },
+      display_order: { type: 'INT', nullable: false, default: '0' },
+      is_active: { type: 'TINYINT(1)', nullable: false, default: '1' },
+      created_at: { type: 'TIMESTAMP', nullable: false },
+      updated_at: { type: 'TIMESTAMP', nullable: false }
+    },
+    indexes: ['PRIMARY', 'idx_faqs_category', 'idx_faqs_is_active']
+  },
   domains: {
     columns: {
       id: { type: 'VARCHAR(36)', nullable: false },
@@ -749,6 +764,10 @@ function getIndexColumns(tableName: string, indexName: string): string | null {
     },
     site_media: {
       'idx_site_media_site_id': '`site_id`'
+    },
+    faqs: {
+      'idx_faqs_category': '`category`',
+      'idx_faqs_is_active': '`is_active`'
     },
     domains: {
       'idx_domains_site_id': '`site_id`',
