@@ -2,6 +2,7 @@ import { MarketingLayout } from '@/components/marketing/marketing-layout';
 import { Mail, FileText, HelpCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { ContactForm } from '@/components/contact/contact-form';
 
 export const metadata = {
   title: 'Contact Us - Univert',
@@ -63,64 +64,7 @@ export default function ContactPage() {
           </p>
         </div>
 
-        <form className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium">
-                Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                placeholder="Your name"
-                className="w-full px-3 py-2 bg-secondary border border-border rounded-md focus:outline-none focus:border-accent"
-              />
-            </div>
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                className="w-full px-3 py-2 bg-secondary border border-border rounded-md focus:outline-none focus:border-accent"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="inquiry-type" className="text-sm font-medium">
-              Inquiry Type
-            </label>
-            <select
-              id="inquiry-type"
-              className="w-full px-3 py-2 bg-secondary border border-border rounded-md focus:outline-none focus:border-accent"
-            >
-              <option value="">Select an option</option>
-              <option value="general">General Question</option>
-              <option value="pricing">Pricing Inquiry</option>
-              <option value="templates">Template Question</option>
-              <option value="support">Support Request</option>
-              <option value="partnership">Partnership Inquiry</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="message" className="text-sm font-medium">
-              Message
-            </label>
-            <textarea
-              id="message"
-              placeholder="Tell us how we can help..."
-              rows={6}
-              className="w-full px-3 py-2 bg-secondary border border-border rounded-md focus:outline-none focus:border-accent resize-none"
-            />
-          </div>
-
-          <Button className="w-full">Send Message</Button>
-        </form>
+        <ContactForm />
       </section>
 
       {/* Response Expectations */}

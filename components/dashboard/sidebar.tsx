@@ -27,6 +27,7 @@ import {
   CreditCard,
   Link2,
   HelpCircle,
+  Mail,
   Settings,
   LogOut,
   ChevronDown,
@@ -40,6 +41,7 @@ const navigation = [
   { name: "Website Setup", href: "/dashboard/provisioning", icon: Server },
   { name: "Domains", href: "/dashboard/domains", icon: Link2 },
   { name: "Billing", href: "/dashboard/billing", icon: CreditCard },
+  { name: "Contact Messages", href: "/dashboard/contact-messages", icon: Mail },
   { name: "Support", href: "/dashboard/support", icon: HelpCircle },
 ];
 
