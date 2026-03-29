@@ -31,9 +31,6 @@ type ContactMessage = {
   message: string;
   status: 'received' | 'in_review' | 'responded';
   created_at: string;
-  received_at: string;
-  responded_at: string | null;
-  notes: string | null;
 };
 
 type MessageStatus = 'received' | 'in_review' | 'responded';
