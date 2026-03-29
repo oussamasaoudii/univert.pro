@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
     // Insert into database
     const pool = getMySQLPool();
     const [result] = await pool.query<any>(
-      `INSERT INTO contact_messages (name, email, inquiry_type, message, status, received_at)
-       VALUES (?, ?, ?, ?, ?, NOW())`,
+      `INSERT INTO contact_messages (name, email, inquiry_type, message, status)
+       VALUES (?, ?, ?, ?, ?)`,
       [
         validatedData.name,
         validatedData.email,

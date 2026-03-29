@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     });
 
     const [messages] = await db.query(
-      `SELECT id, name, email, inquiry_type, message, status, created_at, received_at, responded_at, notes 
+      `SELECT id, name, email, inquiry_type, message, status, created_at 
        FROM contact_messages 
        ORDER BY created_at DESC 
        LIMIT 1000`

@@ -71,7 +71,7 @@ export async function PATCH(
     );
 
     const [messages] = await db.query(
-      'SELECT id, name, email, inquiry_type, message, status, created_at, received_at, responded_at, notes FROM contact_messages WHERE id = ?',
+      'SELECT id, name, email, inquiry_type, message, status, created_at FROM contact_messages WHERE id = ?',
       [id]
     );
 
