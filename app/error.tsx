@@ -13,7 +13,7 @@ export default function Error({
   reset: () => void;
 }) {
   const language = useSiteLanguage();
-  const copy = GENERIC_ERROR_PAGE_COPY[language];
+  const copy = GENERIC_ERROR_PAGE_COPY[language] ?? GENERIC_ERROR_PAGE_COPY.en;
 
   useEffect(() => {
     // Log the error to an error reporting service
