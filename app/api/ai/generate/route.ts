@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { generateText } from "ai";
 import { getSessionFromRequest } from "@/lib/security/session-cookies";
 import { CONTENT_GENERATOR_SYSTEM_PROMPT } from "@/lib/ai/prompts";
+import { getDefaultTextModel, hasConfiguredAiProvider } from "@/lib/ai/provider";
 
 export const maxDuration = 30;
 
@@ -18,6 +19,13 @@ interface GenerateRequest {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!hasConfiguredAiProvider()) {
+      return NextResponse.json(
+        { error: "AI provider is not configured" },
+        { status: 503 }
+      );
+    }
+
     const session = await getSessionFromRequest(request);
     if (!session?.userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -66,7 +74,7 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await generateText({
-      model: "openai/gpt-5-mini",
+      model: getDefaultTextModel(),
       system: CONTENT_GENERATOR_SYSTEM_PROMPT,
       prompt: `${typeInstructions}${contextPrompt}\n\nUser request: ${prompt}`,
       maxOutputTokens: 1000,
@@ -75,8 +83,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       content: result.text,
       usage: {
-        promptTokens: result.usage.promptTokens,
-        completionTokens: result.usage.completionTokens,
+        promptTokens: result.usage.inputTokens,
+        completionTokens: result.usage.outputTokens,
       },
     });
   } catch (error) {

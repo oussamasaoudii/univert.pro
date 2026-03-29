@@ -3,6 +3,7 @@ import { generateText, Output } from "ai";
 import { z } from "zod";
 import { getSessionFromRequest } from "@/lib/security/session-cookies";
 import { RECOMMENDATION_SYSTEM_PROMPT } from "@/lib/ai/prompts";
+import { getDefaultTextModel, hasConfiguredAiProvider } from "@/lib/ai/provider";
 
 export const maxDuration = 30;
 
@@ -32,6 +33,13 @@ interface RecommendRequest {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!hasConfiguredAiProvider()) {
+      return NextResponse.json(
+        { error: "AI provider is not configured" },
+        { status: 503 }
+      );
+    }
+
     const session = await getSessionFromRequest(request);
     if (!session?.userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -52,7 +60,7 @@ ${body.budget ? `- Budget preference: ${body.budget}` : ""}
 Provide your recommendation with reasoning, an alternative option if applicable, and helpful tips.`;
 
     const result = await generateText({
-      model: "openai/gpt-5-mini",
+      model: getDefaultTextModel(),
       system: RECOMMENDATION_SYSTEM_PROMPT,
       prompt,
       output: Output.object({ schema: RecommendationSchema }),
@@ -60,7 +68,7 @@ Provide your recommendation with reasoning, an alternative option if applicable,
     });
 
     return NextResponse.json({
-      recommendation: result.object,
+      recommendation: result.output,
     });
   } catch (error) {
     console.error("AI recommendation error:", error);

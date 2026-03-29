@@ -15,6 +15,7 @@
     "cloudflare:harden": "node scripts/cloudflare-hardening.mjs"
   },
   "dependencies": {
+    "@ai-sdk/groq": "^3.0.31",
     "@ai-sdk/react": "^3.0.142",
     "@aws-sdk/client-s3": "^3.1018.0",
     "@aws-sdk/s3-request-presigner": "^3.1018.0",

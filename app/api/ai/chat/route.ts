@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateText } from "ai";
 import { SUPPORT_CHAT_SYSTEM_PROMPT } from "@/lib/ai/prompts";
+import { getActiveAiProviderLabel, getDefaultTextModel, hasConfiguredAiProvider } from "@/lib/ai/provider";
 
 export const maxDuration = 30;
 
@@ -9,17 +10,6 @@ type IncomingMessage = {
   text?: string;
   parts?: Array<{ type?: string; text?: string }>;
 };
-
-const AI_PROVIDER_ENV_KEYS = [
-  "AI_GATEWAY_API_KEY",
-  "OPENAI_API_KEY",
-  "ANTHROPIC_API_KEY",
-  "GOOGLE_GENERATIVE_AI_API_KEY",
-  "GROQ_API_KEY",
-  "XAI_API_KEY",
-  "OPENROUTER_API_KEY",
-  "TOGETHER_API_KEY",
-] as const;
 
 function extractMessageText(message: IncomingMessage) {
   if (typeof message.text === "string" && message.text.trim()) {
@@ -238,13 +228,6 @@ function getFallbackReply(input: string) {
       ]);
 }
 
-function hasConfiguredAiProvider() {
-  return AI_PROVIDER_ENV_KEYS.some((key) => {
-    const value = process.env[key];
-    return typeof value === "string" && value.trim().length > 0;
-  });
-}
-
 async function generateModelReply(
   messages: Array<{ role: "user" | "assistant"; content: string }>,
   signal: AbortSignal,
@@ -256,7 +239,7 @@ async function generateModelReply(
 
   try {
     return await generateText({
-      model: "openai/gpt-5-mini",
+      model: getDefaultTextModel(),
       system: SUPPORT_CHAT_SYSTEM_PROMPT,
       messages,
       abortSignal: controller.signal,
@@ -299,6 +282,7 @@ export async function POST(request: NextRequest) {
       message: getFallbackReply(latestUserMessage),
       source: "fallback",
       reason: "missing-ai-provider",
+      provider: getActiveAiProviderLabel(),
     });
   }
 
@@ -313,12 +297,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       message: text || getFallbackReply(latestUserMessage),
       source: text ? "model" : "fallback",
+      provider: getActiveAiProviderLabel(),
     });
   } catch {
     return NextResponse.json({
       message: getFallbackReply(latestUserMessage),
       source: "fallback",
       reason: "model-unavailable",
+      provider: getActiveAiProviderLabel(),
     });
   }
 }
