@@ -65,6 +65,13 @@ function AdminMfaPageContent() {
       setError("");
 
       try {
+        // Reset the pool to ensure fresh database connections with updated schema
+        try {
+          await fetch("/api/admin/reset-pool", { method: "POST" });
+        } catch (err) {
+          console.log("[v0] Pool reset failed (non-critical):", err);
+        }
+
         const response = await fetch("/api/auth/admin-mfa/status", {
           credentials: "include",
           cache: "no-store",
