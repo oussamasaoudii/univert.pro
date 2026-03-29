@@ -13,12 +13,14 @@ export default async function DashboardLayout({
   const user = await requireAuth();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background">
       <RealtimeSessionBridge role="user" userId={user.id} />
       <DashboardSidebar />
-      <div className="lg:pl-[280px] flex-1 flex flex-col">
+      <div className="flex min-h-screen flex-col lg:pl-[280px]">
         <DashboardHeader />
-        <main className="flex-1 p-6 lg:p-8 max-w-[1600px] w-full overflow-y-auto">{children}</main>
+        <main className="flex-1 min-w-0 p-6 lg:p-8 max-w-[1600px] w-full">
+          {children}
+        </main>
       </div>
       <ChatWidget />
     </div>
