@@ -60,8 +60,9 @@ export function OAuthButtons({
   className,
 }: OAuthButtonsProps) {
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
-  const isArabic = language === "ar";
-  const copy = OAUTH_COPY[language];
+  const resolvedLanguage: keyof typeof OAUTH_COPY = language === "ar" ? "ar" : "en";
+  const isArabic = resolvedLanguage === "ar";
+  const copy = OAUTH_COPY[resolvedLanguage];
 
   const handleOAuthClick = (provider: "google" | "github") => {
     setLoadingProvider(provider);
@@ -143,7 +144,8 @@ export function OAuthButtons({
 }
 
 export function OAuthDivider({ language = "en" }: { language?: "en" | "ar" }) {
-  const copy = OAUTH_COPY[language];
+  const resolvedLanguage: keyof typeof OAUTH_COPY = language === "ar" ? "ar" : "en";
+  const copy = OAUTH_COPY[resolvedLanguage];
 
   return (
     <div className="relative my-6">

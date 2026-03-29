@@ -106,8 +106,9 @@ function normalizeAuthError(value: unknown, language: keyof typeof LOGIN_COPY): 
 export default function LoginPage() {
   const router = useRouter();
   const language = useSiteLanguage();
-  const isArabic = language === "ar";
-  const copy = LOGIN_COPY[language];
+  const resolvedLanguage: keyof typeof LOGIN_COPY = language === "ar" ? "ar" : "en";
+  const isArabic = resolvedLanguage === "ar";
+  const copy = LOGIN_COPY[resolvedLanguage];
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -151,7 +152,7 @@ export default function LoginPage() {
       router.push(redirectTo);
       router.refresh();
     } catch (err) {
-      setError(normalizeAuthError(err, language));
+      setError(normalizeAuthError(err, resolvedLanguage));
     } finally {
       setLoading(false);
     }
@@ -174,9 +175,9 @@ export default function LoginPage() {
       </div>
 
       {/* OAuth Buttons */}
-      <OAuthButtons language={language} returnUrl="/dashboard" />
+      <OAuthButtons language={resolvedLanguage} returnUrl="/dashboard" />
 
-      <OAuthDivider language={language} />
+      <OAuthDivider language={resolvedLanguage} />
 
       {/* Error Alert */}
       {error && (
