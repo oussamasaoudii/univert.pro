@@ -1,17 +1,19 @@
-import { z } from 'zod';
 import { NextResponse } from 'next/server';
 import { getAuthenticatedRequestUser } from '@/lib/api-auth';
 import {
-  assertTrustedOrigin,
   enforceRouteRateLimit,
   getRequestIp,
-  parseJsonBody,
   toApiErrorResponse,
 } from '@/lib/security/request';
 import { db } from '@/lib/db';
+import { isPreviewMode } from '@/lib/preview-mode';
 
 export async function GET(request: Request) {
   try {
+    if (isPreviewMode()) {
+      return NextResponse.json({ messages: [] }, { status: 200 });
+    }
+
     const user = await getAuthenticatedRequestUser();
     if (!user || user.source === 'local_admin_fallback' || user.sessionType !== 'user') {
       return NextResponse.json({ error: 'unauthorized' }, { status: 401 });

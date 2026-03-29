@@ -124,7 +124,7 @@ export default function ActivityPage() {
       setActivities(Array.isArray(result?.activities) ? result.activities : []);
     } catch (error) {
       console.error('[dashboard/activity] load failed', error);
-      setErrorMessage('Failed to load activity from database.');
+      setErrorMessage('Activity is temporarily unavailable in this preview.');
     } finally {
       setLoading(false);
     }
