@@ -131,8 +131,9 @@ function checkPasswordStrength(password: string) {
 export default function SignupPage() {
   const router = useRouter();
   const language = useSiteLanguage();
-  const isArabic = language === "ar";
-  const copy = SIGNUP_COPY[language];
+  const resolvedLanguage: keyof typeof SIGNUP_COPY = language === "ar" ? "ar" : "en";
+  const isArabic = resolvedLanguage === "ar";
+  const copy = SIGNUP_COPY[resolvedLanguage];
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -187,7 +188,7 @@ export default function SignupPage() {
 
       router.push("/auth/sign-up-success");
     } catch (err) {
-      setError(normalizeSignUpError(err, language));
+      setError(normalizeSignUpError(err, resolvedLanguage));
     } finally {
       setIsLoading(false);
     }
@@ -210,9 +211,9 @@ export default function SignupPage() {
       </div>
 
       {/* OAuth Buttons */}
-      <OAuthButtons language={language} returnUrl="/dashboard" />
+      <OAuthButtons language={resolvedLanguage} returnUrl="/dashboard" />
 
-      <OAuthDivider language={language} />
+      <OAuthDivider language={resolvedLanguage} />
 
       {/* Error Alert */}
       {error && (

@@ -7,8 +7,9 @@ import {
   parseJsonBody,
   toApiErrorResponse,
 } from '@/lib/security/request';
-import { db } from '@/lib/db';
+import { getMySQLPool } from '@/lib/mysql/pool';
 import { z } from 'zod';
+import { isPreviewMode } from '@/lib/preview-mode';
 
 const updateMessageSchema = z
   .object({
@@ -22,6 +23,32 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    if (isPreviewMode()) {
+      const id = parseInt(params.id, 10);
+      if (isNaN(id)) {
+        return NextResponse.json({ error: 'invalid_id' }, { status: 400 });
+      }
+
+      const body = await parseJsonBody(request, updateMessageSchema, { maxBytes: 8 * 1024 });
+      return NextResponse.json(
+        {
+          message: {
+            id,
+            name: 'Preview contact',
+            email: 'preview@univert.pro',
+            inquiry_type: 'general',
+            message: 'This preview message demonstrates how status updates appear in the dashboard.',
+            status: body.status || 'received',
+            notes: body.notes || null,
+            created_at: new Date().toISOString(),
+          },
+          preview: true,
+        },
+        { status: 200 },
+      );
+    }
+
+    assertTrustedOrigin(request);
     const user = await getAuthenticatedRequestUser();
     if (!user || user.source === 'local_admin_fallback' || user.sessionType !== 'user') {
       return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
@@ -65,12 +92,13 @@ export async function PATCH(
 
     values.push(id);
 
-    await db.query(
+    const pool = getMySQLPool();
+    await pool.query(
       `UPDATE contact_messages SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
       values
     );
 
-    const [messages] = await db.query(
+    const [messages] = await pool.query(
       'SELECT id, name, email, inquiry_type, message, status, created_at FROM contact_messages WHERE id = ?',
       [id]
     );

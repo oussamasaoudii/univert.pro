@@ -116,7 +116,7 @@ export default function SupportPage() {
       setTickets(Array.isArray(payload.tickets) ? payload.tickets : []);
     } catch (error) {
       console.error("[dashboard/support] failed to load tickets", error);
-      setErrorMessage("Failed to load support tickets from MySQL.");
+      setErrorMessage("Support history is temporarily unavailable in this preview.");
     } finally {
       setIsLoading(false);
     }
@@ -191,7 +191,7 @@ export default function SupportPage() {
             <DialogHeader>
               <DialogTitle>Create Support Ticket</DialogTitle>
               <DialogDescription>
-                This ticket will be saved directly in MySQL and visible to admin.
+                Share the issue details and we will route your request to the support team.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">

@@ -127,9 +127,10 @@ export default function AuthLayout({
 }) {
   const language = useSiteLanguage();
   const pathname = usePathname();
-  const isArabic = language === "ar";
-  const copy = AUTH_LAYOUT_COPY[language];
-  const tabs = AUTH_TABS[language];
+  const resolvedLanguage: keyof typeof AUTH_LAYOUT_COPY = language === "ar" ? "ar" : "en";
+  const isArabic = resolvedLanguage === "ar";
+  const copy = AUTH_LAYOUT_COPY[resolvedLanguage];
+  const tabs = AUTH_TABS[resolvedLanguage];
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   
   const isLoginPage = pathname === "/auth/login" || pathname === "/auth/signin";

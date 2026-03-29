@@ -6,6 +6,8 @@ import {
   createCustomDomainForUser,
   listDashboardDomainsForUser,
 } from "@/lib/domain/user-domain-service";
+import { createPreviewDashboardDomain, getPreviewDashboardDomains } from "@/lib/preview-data";
+import { isPreviewMode } from "@/lib/preview-mode";
 import {
   assertTrustedOrigin,
   enforceRouteRateLimit,
@@ -27,6 +29,10 @@ const createDomainSchema = z
 
 export async function GET(request: Request) {
   try {
+    if (isPreviewMode()) {
+      return NextResponse.json({ domains: getPreviewDashboardDomains() });
+    }
+
     const user = await getAuthenticatedRequestUser();
     if (!user || user.source === "local_admin_fallback" || user.sessionType !== "user") {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
@@ -50,6 +56,17 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     assertTrustedOrigin(request);
+    if (isPreviewMode()) {
+      const body = await parseJsonBody(request, createDomainSchema, { maxBytes: 8 * 1024 });
+      const domain = createPreviewDashboardDomain({
+        domain: body.domain,
+        websiteId: body.websiteId || null,
+        isPrimary: body.isPrimary === true,
+      });
+
+      return NextResponse.json({ ok: true, domain, preview: true }, { status: 201 });
+    }
+
     const user = await getAuthenticatedRequestUser();
     if (!user || user.source === "local_admin_fallback" || user.sessionType !== "user") {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });

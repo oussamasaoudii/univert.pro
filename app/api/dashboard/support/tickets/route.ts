@@ -8,6 +8,8 @@ import {
   type SupportTicketPriority,
 } from "@/lib/mysql/support";
 import { createUserActivity } from "@/lib/mysql/platform";
+import { createPreviewSupportTicket, getPreviewSupportTickets } from "@/lib/preview-data";
+import { isPreviewMode } from "@/lib/preview-mode";
 import {
   assertTrustedOrigin,
   enforceRouteRateLimit,
@@ -27,6 +29,19 @@ const supportTicketSchema = z
 
 export async function GET(request: Request) {
   try {
+    if (isPreviewMode()) {
+      const tickets = getPreviewSupportTickets();
+      return NextResponse.json({
+        tickets,
+        stats: {
+          total: tickets.length,
+          open: tickets.filter((ticket) => ticket.status === "open").length,
+          inProgress: tickets.filter((ticket) => ticket.status === "in_progress").length,
+          resolved: tickets.filter((ticket) => ticket.status === "resolved").length,
+        },
+      });
+    }
+
     const user = await getAuthenticatedRequestUser();
     if (!user || user.source === "local_admin_fallback" || user.sessionType !== "user") {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
@@ -57,6 +72,19 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     assertTrustedOrigin(request);
+
+    if (isPreviewMode()) {
+      const body = await parseJsonBody(request, supportTicketSchema, { maxBytes: 16 * 1024 });
+      const ticket = createPreviewSupportTicket({
+        subject: body.subject,
+        description: body.description,
+        category: body.category as SupportTicketCategory,
+        priority: body.priority as SupportTicketPriority,
+      });
+
+      return NextResponse.json({ ticket, preview: true }, { status: 201 });
+    }
+
     const user = await getAuthenticatedRequestUser();
     if (!user || user.source === "local_admin_fallback" || user.sessionType !== "user") {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });

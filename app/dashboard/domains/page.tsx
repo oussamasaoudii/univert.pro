@@ -295,7 +295,7 @@ export default function DomainsPage() {
       });
     } catch (error) {
       console.error('[dashboard/domains] load failed', error);
-      setErrorMessage('Failed to load domains from database.');
+      setErrorMessage('Domain data is temporarily unavailable in this preview.');
     } finally {
       setLoading(false);
     }
@@ -416,7 +416,10 @@ export default function DomainsPage() {
       const response = await fetch('/api/dashboard/domains', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          websiteId: form.websiteId.trim() ? form.websiteId : null,
+        }),
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) {
@@ -579,7 +582,7 @@ export default function DomainsPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Domains</h1>
           <p className="text-muted-foreground mt-1">
-            Manage custom domains, DNS and SSL from your MySQL-backed account.
+            Manage custom domains, DNS, and SSL from your website account.
           </p>
         </div>
         <Dialog

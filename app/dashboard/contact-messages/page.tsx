@@ -31,6 +31,7 @@ type ContactMessage = {
   message: string;
   status: 'received' | 'in_review' | 'responded';
   created_at: string;
+  notes?: string | null;
 };
 
 type MessageStatus = 'received' | 'in_review' | 'responded';
@@ -82,7 +83,7 @@ export default function ContactMessagesPage() {
       setMessages(Array.isArray(data.messages) ? data.messages : []);
     } catch (error) {
       console.error('[dashboard/contact-messages] failed to load messages', error);
-      setErrorMessage('Failed to load contact messages.');
+      setErrorMessage('Contact messages are temporarily unavailable in this preview.');
     } finally {
       setIsLoading(false);
     }
@@ -284,7 +285,7 @@ export default function ContactMessagesPage() {
                 <div>
                   <label className="text-sm font-medium text-foreground">Received</label>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {new Date(selectedMessage.received_at).toLocaleDateString('en-US', {
+                    {new Date(selectedMessage.created_at).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
                       year: 'numeric',

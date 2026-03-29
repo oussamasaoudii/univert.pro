@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getAuthenticatedRequestUser } from "@/lib/api-auth";
 import { listUserActivities } from "@/lib/mysql/platform";
+import { getPreviewActivityRecords } from "@/lib/preview-data";
+import { isPreviewMode } from "@/lib/preview-mode";
 import { enforceRouteRateLimit, getRequestIp, toApiErrorResponse } from "@/lib/security/request";
 import { ValidationError } from "@/lib/utils/errors";
 
@@ -11,6 +13,21 @@ const activityQuerySchema = z.object({
 
 export async function GET(request: Request) {
   try {
+    const queryResult = activityQuerySchema.safeParse({
+      limit: new URL(request.url).searchParams.get("limit") || undefined,
+    });
+    if (!queryResult.success) {
+      throw new ValidationError("invalid_query_params", {
+        issues: queryResult.error.flatten(),
+      });
+    }
+
+    if (isPreviewMode()) {
+      return NextResponse.json({
+        activities: getPreviewActivityRecords(queryResult.data.limit),
+      });
+    }
+
     const user = await getAuthenticatedRequestUser();
     if (!user || user.source === "local_admin_fallback" || user.sessionType !== "user") {
       return NextResponse.json({ error: "unauthorized" }, { status: 401 });
@@ -23,15 +40,6 @@ export async function GET(request: Request) {
       windowMs: 10 * 60 * 1000,
       blockDurationMs: 10 * 60 * 1000,
     });
-
-    const queryResult = activityQuerySchema.safeParse({
-      limit: new URL(request.url).searchParams.get("limit") || undefined,
-    });
-    if (!queryResult.success) {
-      throw new ValidationError("invalid_query_params", {
-        issues: queryResult.error.flatten(),
-      });
-    }
 
     const activities = await listUserActivities(user.id, queryResult.data.limit);
     return NextResponse.json({ activities });

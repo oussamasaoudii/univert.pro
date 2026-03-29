@@ -1,17 +1,19 @@
-import { z } from 'zod';
 import { NextResponse } from 'next/server';
 import { getAuthenticatedRequestUser } from '@/lib/api-auth';
 import {
-  assertTrustedOrigin,
   enforceRouteRateLimit,
   getRequestIp,
-  parseJsonBody,
   toApiErrorResponse,
 } from '@/lib/security/request';
-import { db } from '@/lib/db';
+import { getMySQLPool } from '@/lib/mysql/pool';
+import { isPreviewMode } from '@/lib/preview-mode';
 
 export async function GET(request: Request) {
   try {
+    if (isPreviewMode()) {
+      return NextResponse.json({ messages: [] }, { status: 200 });
+    }
+
     const user = await getAuthenticatedRequestUser();
     if (!user || user.source === 'local_admin_fallback' || user.sessionType !== 'user') {
       return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
@@ -25,7 +27,8 @@ export async function GET(request: Request) {
       blockDurationMs: 15 * 60 * 1000,
     });
 
-    const [messages] = await db.query(
+    const pool = getMySQLPool();
+    const [messages] = await pool.query(
       `SELECT id, name, email, inquiry_type, message, status, created_at 
        FROM contact_messages 
        ORDER BY created_at DESC 

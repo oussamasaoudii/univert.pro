@@ -40,8 +40,9 @@ const SIGNUP_SUCCESS_COPY = {
 
 export default function SignUpSuccessPage() {
   const language = useSiteLanguage();
-  const isArabic = language === "ar";
-  const copy = SIGNUP_SUCCESS_COPY[language];
+  const resolvedLanguage: keyof typeof SIGNUP_SUCCESS_COPY = language === "ar" ? "ar" : "en";
+  const isArabic = resolvedLanguage === "ar";
+  const copy = SIGNUP_SUCCESS_COPY[resolvedLanguage];
 
   return (
     <div dir={isArabic ? "rtl" : "ltr"} className={cn("space-y-6", isArabic ? "text-right" : "text-left")}>

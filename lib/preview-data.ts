@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   activities as mockActivities,
   currentSubscription as mockCurrentSubscription,
@@ -8,6 +9,7 @@ import {
   templates as mockTemplates,
   websites as mockWebsites,
 } from "@/lib/mock-data";
+import type { DashboardDomainRecord } from "@/lib/domain/dashboard-records";
 import type {
   BillingPlanRecord,
   BillingPlanTier,
@@ -22,6 +24,11 @@ import type {
   UserSubscriptionRecord,
   WebsiteRecord,
 } from "@/lib/mysql/platform";
+import type {
+  SupportTicketCategory,
+  SupportTicketPriority,
+  SupportTicketRecord,
+} from "@/lib/mysql/support";
 
 const PREVIEW_USER_ID = "preview-user";
 const NOW = "2026-03-11T18:30:00.000Z";
@@ -248,4 +255,161 @@ export function getPreviewDomains() {
     id: domain.id,
     domain: domain.customDomain || domain.subdomain,
   }));
+}
+
+function getPreviewWebsiteName(websiteId: string | undefined) {
+  return mockWebsites.find((website) => website.id === websiteId)?.projectName || null;
+}
+
+function buildPreviewDashboardDomain(
+  domain: (typeof mockDomains)[number],
+): DashboardDomainRecord {
+  const domainValue = domain.customDomain || domain.subdomain;
+  const routingRecord =
+    domain.dnsRecords?.find((record) => record.type === "A" || record.type === "CNAME") || null;
+  const ownerTokenRecord = domain.dnsRecords?.find((record) => record.type === "TXT") || null;
+
+  return {
+    id: domain.id,
+    userId: PREVIEW_USER_ID,
+    websiteId: domain.websiteId,
+    websiteName: getPreviewWebsiteName(domain.websiteId),
+    domain: domainValue,
+    isPrimary: Boolean(domain.isPrimary),
+    verificationStatus: domain.verificationStatus,
+    sslStatus: domain.sslStatus,
+    status: domain.verificationStatus === "verified" ? "active" : "verifying",
+    domainType: domain.customDomain ? "custom_domain" : "platform_subdomain",
+    dnsRecords: domain.dnsRecords || [],
+    instructions:
+      domain.verificationStatus === "verified"
+        ? ["This domain is already connected and secured."]
+        : [
+            "Point your DNS to the values shown here.",
+            "Wait for DNS propagation to finish.",
+            "SSL will be issued automatically after verification.",
+          ],
+    ownerTokenRecord,
+    routingRecord,
+    dnsVerifiedAt: domain.verificationStatus === "verified" ? NOW : null,
+    sslExpiresAt: domain.sslStatus === "active" ? "2027-03-01T00:00:00.000Z" : null,
+    lastCheckedAt: NOW,
+    errorMessage: null,
+    createdAt: NOW,
+    updatedAt: NOW,
+  };
+}
+
+let previewDashboardDomainsState: DashboardDomainRecord[] = mockDomains.map(buildPreviewDashboardDomain);
+
+export function getPreviewDashboardDomains(): DashboardDomainRecord[] {
+  return previewDashboardDomainsState.map((domain) => ({ ...domain }));
+}
+
+export function createPreviewDashboardDomain(input: {
+  domain: string;
+  websiteId?: string | null;
+  isPrimary?: boolean;
+}): DashboardDomainRecord {
+  const createdAt = new Date().toISOString();
+  const websiteName = getPreviewWebsiteName(input.websiteId || undefined);
+  const normalizedDomain = input.domain.trim().toLowerCase();
+
+  const record: DashboardDomainRecord = {
+    id: randomUUID(),
+    userId: PREVIEW_USER_ID,
+    websiteId: input.websiteId || null,
+    websiteName,
+    domain: normalizedDomain,
+    isPrimary: input.isPrimary === true,
+    verificationStatus: "pending",
+    sslStatus: "pending",
+    status: "verifying",
+    domainType: "custom_domain",
+    dnsRecords: [
+      { type: "TXT", name: "_univert-verify", value: `univert-verify=${normalizedDomain}` },
+      { type: "CNAME", name: "www", value: "domains.univert.pro" },
+    ],
+    instructions: [
+      "Add the TXT record to confirm ownership.",
+      "Point your www record to the Univert target.",
+      "Return here after DNS propagation to verify the domain.",
+    ],
+    ownerTokenRecord: {
+      type: "TXT",
+      name: "_univert-verify",
+      value: `univert-verify=${normalizedDomain}`,
+    },
+    routingRecord: {
+      type: "CNAME",
+      name: "www",
+      value: "domains.univert.pro",
+    },
+    dnsVerifiedAt: null,
+    sslExpiresAt: null,
+    lastCheckedAt: createdAt,
+    errorMessage: null,
+    createdAt,
+    updatedAt: createdAt,
+  };
+
+  previewDashboardDomainsState = [record, ...previewDashboardDomainsState];
+  return record;
+}
+
+let previewSupportTicketsState: SupportTicketRecord[] = [
+  {
+    id: "ticket_preview_1",
+    ticketNumber: "TKT-PREVIEW-001",
+    userId: PREVIEW_USER_ID,
+    userEmail: "preview@univert.pro",
+    userName: "Preview User",
+    subject: "Can I connect my own domain later?",
+    description: "I want to launch with a Univert subdomain first and connect my custom domain later.",
+    category: "domain",
+    priority: "medium",
+    status: "open",
+    assignedAdminId: null,
+    assignedAdminEmail: null,
+    responsesCount: 1,
+    lastReplyAt: NOW,
+    createdAt: NOW,
+    updatedAt: NOW,
+  },
+];
+
+export function getPreviewSupportTickets(): SupportTicketRecord[] {
+  return previewSupportTicketsState
+    .map((ticket) => ({ ...ticket }))
+    .sort((left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime());
+}
+
+export function createPreviewSupportTicket(input: {
+  subject: string;
+  description: string;
+  category: SupportTicketCategory;
+  priority: SupportTicketPriority;
+}): SupportTicketRecord {
+  const createdAt = new Date().toISOString();
+  const ticket: SupportTicketRecord = {
+    id: randomUUID(),
+    ticketNumber: `TKT-PREVIEW-${String(previewSupportTicketsState.length + 1).padStart(3, "0")}`,
+    userId: PREVIEW_USER_ID,
+    userEmail: "preview@univert.pro",
+    userName: "Preview User",
+    subject: input.subject,
+    description: input.description,
+    category: input.category,
+    priority: input.priority,
+    status: "open",
+    assignedAdminId: null,
+    assignedAdminEmail: null,
+    responsesCount: 0,
+    lastReplyAt: null,
+    createdAt,
+    updatedAt: createdAt,
+  };
+
+  previewSupportTicketsState = [ticket, ...previewSupportTicketsState];
+  return ticket;
 }
