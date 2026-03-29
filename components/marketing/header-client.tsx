@@ -36,6 +36,8 @@ import {
   Heart,
   ChevronDown,
   Headphones,
+  Lightbulb,
+  Code,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Country } from "@/lib/countries/types";
@@ -75,16 +77,34 @@ const productFeatures = [
     icon: Rocket,
   },
   {
+    title: "Compare Templates",
+    description: "Side-by-side comparison of all templates",
+    href: "/compare-templates",
+    icon: BookOpen,
+  },
+  {
+    title: "Help Me Choose",
+    description: "Guided tool to find your perfect stack",
+    href: "/help-me-choose",
+    icon: Lightbulb,
+  },
+  {
+    title: "What Happens Next",
+    description: "Post-purchase flow and launch timeline",
+    href: "/what-happens-after-order",
+    icon: Rocket,
+  },
+  {
+    title: "Custom Website",
+    description: "Need something more custom?",
+    href: "/need-custom-website",
+    icon: Code,
+  },
+  {
     title: "How It Works",
     description: "Our launch and support process",
     href: "/how-it-works",
     icon: Zap,
-  },
-  {
-    title: "Support Included",
-    description: "Managed setup and technical support",
-    href: "/support",
-    icon: Headphones,
   },
   {
     title: "Own Your Site",
