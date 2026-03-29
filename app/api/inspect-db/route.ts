@@ -61,16 +61,15 @@ const EXPECTED_SCHEMA: Record<string, {
   },
   auth_rate_limits: {
     columns: {
-      id: { type: 'VARCHAR(36)', nullable: false },
-      identifier: { type: 'VARCHAR(255)', nullable: false },
-      action: { type: 'VARCHAR(50)', nullable: false },
+      key_hash: { type: 'CHAR(64)', nullable: false },
+      scope: { type: 'VARCHAR(64)', nullable: false },
       attempts: { type: 'INT', nullable: false, default: '0' },
-      first_attempt_at: { type: 'TIMESTAMP', nullable: false },
-      blocked_until: { type: 'TIMESTAMP', nullable: true },
-      created_at: { type: 'TIMESTAMP', nullable: false },
-      updated_at: { type: 'TIMESTAMP', nullable: false }
+      window_started_at: { type: 'DATETIME', nullable: false },
+      blocked_until: { type: 'DATETIME', nullable: true },
+      created_at: { type: 'DATETIME', nullable: false },
+      updated_at: { type: 'DATETIME', nullable: false }
     },
-    indexes: ['PRIMARY', 'idx_rate_limits_identifier_action', 'idx_rate_limits_blocked_until']
+    indexes: ['PRIMARY', 'idx_auth_rate_limits_scope', 'idx_auth_rate_limits_blocked_until']
   },
   platform_settings: {
     columns: {
