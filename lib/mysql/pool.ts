@@ -51,9 +51,18 @@ function isTiDBCloud(): boolean {
 }
 
 /**
- * Get the MySQL pool. Uses default configuration if environment variables are not set.
- * Supports TiDB Cloud with automatic SSL configuration.
+ * Close and reset the MySQL pool to force reconnection and refresh metadata
  */
+export async function resetMySQLPool(): Promise<void> {
+  if (pool) {
+    try {
+      await pool.end();
+    } catch (error) {
+      console.error("[MySQL] Error closing pool:", error);
+    }
+    pool = null;
+  }
+}
 export function getMySQLPool(): mysql.Pool | null {
   if (pool) return pool;
 
