@@ -11,20 +11,42 @@ export async function POST(request: Request) {
 
     const pool = getMySQLPool();
     
-    // Split SQL into individual statements by double newlines (how inspect-db joins them)
-    // Each statement from generateMigrationSQL includes a comment header like "-- Create table: xxx"
-    // We need to strip the comment line and keep the actual SQL
-    let statements = sql
-      .split(/\n\n+/)
-      .map(s => s.trim())
-      .filter(s => s.length > 0)
-      .map(s => {
-        // Remove comment lines at the start of each statement
-        const lines = s.split('\n');
-        const nonCommentLines = lines.filter(line => !line.trim().startsWith('--'));
-        return nonCommentLines.join('\n').trim();
-      })
-      .filter(s => s.length > 0);
+    if (!pool) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
+    
+    // Split SQL into individual statements
+    // Each statement block is separated by double newlines and starts with a comment like "-- Create table: xxx"
+    // We need to keep the full statement (including multi-line CREATE TABLE) and only strip comment headers
+    let statements: string[] = [];
+    
+    // Split by the comment pattern that starts each statement
+    const blocks = sql.split(/(?=--\s+(?:Create table|Add missing column|Add missing index):)/);
+    
+    for (const block of blocks) {
+      const trimmed = block.trim();
+      if (!trimmed) continue;
+      
+      // Find where the actual SQL starts (after the comment line)
+      const lines = trimmed.split('\n');
+      const sqlLines: string[] = [];
+      let foundSql = false;
+      
+      for (const line of lines) {
+        const trimmedLine = line.trim();
+        if (!foundSql && trimmedLine.startsWith('--')) {
+          // Skip comment header
+          continue;
+        }
+        foundSql = true;
+        sqlLines.push(line);
+      }
+      
+      const sqlStatement = sqlLines.join('\n').trim();
+      if (sqlStatement) {
+        statements.push(sqlStatement);
+      }
+    }
     
     console.log('[v0] Total statements parsed:', statements.length);
     console.log('[v0] First few statements:', statements.slice(0, 3).map(s => s.substring(0, 80)));
