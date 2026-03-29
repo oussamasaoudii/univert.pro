@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertCircle, Mail, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
+import { AlertCircle, Mail, Loader2, CheckCircle, AlertTriangle, Send } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 
 type ContactMessage = {
@@ -16,6 +17,8 @@ type ContactMessage = {
   message: string;
   status: 'received' | 'in_review' | 'responded';
   created_at: string;
+  admin_reply?: string | null;
+  admin_replied_at?: string | null;
 };
 
 export default function AdminContactMessagesPage() {
@@ -23,7 +26,8 @@ export default function AdminContactMessagesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null);
-  const [newStatus, setNewStatus] = useState<string>('');
+  const [replyText, setReplyText] = useState<string>('');
+  const [replySending, setReplySending] = useState(false);
 
   useEffect(() => {
     fetchMessages();
@@ -57,6 +61,33 @@ export default function AdminContactMessagesPage() {
       setSelectedMessage(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update message');
+    }
+  };
+
+  const sendReply = async (messageId: number, reply: string) => {
+    if (!reply.trim()) {
+      setError('Reply cannot be empty');
+      return;
+    }
+
+    try {
+      setReplySending(true);
+      const response = await fetch(`/api/admin/contact-messages/${messageId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          admin_reply: reply,
+          status: 'responded'
+        }),
+      });
+      if (!response.ok) throw new Error('Failed to send reply');
+      await fetchMessages();
+      setReplyText('');
+      setSelectedMessage(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send reply');
+    } finally {
+      setReplySending(false);
     }
   };
 
@@ -191,7 +222,7 @@ export default function AdminContactMessagesPage() {
       {/* Message Detail Modal */}
       {selectedMessage && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <Card className="w-full max-w-2xl max-h-96 overflow-y-auto">
+          <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div>
@@ -208,8 +239,40 @@ export default function AdminContactMessagesPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Message</p>
-                <p className="whitespace-pre-wrap">{selectedMessage.message}</p>
+                <p className="whitespace-pre-wrap bg-muted p-3 rounded-md text-sm">{selectedMessage.message}</p>
               </div>
+              
+              {/* Admin Reply Section */}
+              {selectedMessage.admin_reply ? (
+                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-md border border-green-200 dark:border-green-900/50">
+                  <p className="text-sm font-medium text-green-900 dark:text-green-400 mb-2">Your Reply</p>
+                  <p className="whitespace-pre-wrap text-sm text-green-900 dark:text-green-300">{selectedMessage.admin_reply}</p>
+                  {selectedMessage.admin_replied_at && (
+                    <p className="text-xs text-green-700 dark:text-green-500 mt-2">
+                      Sent: {format(new Date(selectedMessage.admin_replied_at), 'PPp')}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-muted-foreground">Write a Reply (Will be sent from support@example.com)</p>
+                  <Textarea
+                    placeholder="Type your reply here... This will be sent to the customer via email"
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    className="min-h-24"
+                  />
+                  <Button 
+                    onClick={() => sendReply(selectedMessage.id, replyText)}
+                    disabled={replySending || !replyText.trim()}
+                    className="w-full"
+                  >
+                    <Send className="h-4 w-4 mr-2" />
+                    {replySending ? 'Sending...' : 'Send Reply & Mark as Responded'}
+                  </Button>
+                </div>
+              )}
+
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Status</p>
                 <div className="flex gap-2 mt-2">
@@ -219,6 +282,7 @@ export default function AdminContactMessagesPage() {
                       variant={selectedMessage.status === status ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => updateMessageStatus(selectedMessage.id, status)}
+                      disabled={replySending}
                     >
                       {status.replace('_', ' ')}
                     </Button>

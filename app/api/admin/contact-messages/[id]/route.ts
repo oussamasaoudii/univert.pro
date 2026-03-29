@@ -11,15 +11,34 @@ export async function PATCH(
 
     const pool = getMySQLPool();
 
-    // Update message status
+    const updates = [];
+    const values = [];
+
+    if (body.status) {
+      updates.push('status = ?');
+      values.push(body.status);
+    }
+
+    if (body.admin_reply !== undefined) {
+      updates.push('admin_reply = ?');
+      updates.push('admin_replied_at = CURRENT_TIMESTAMP');
+      values.push(body.admin_reply);
+    }
+
+    if (updates.length === 0) {
+      return NextResponse.json({ error: 'no_updates' }, { status: 400 });
+    }
+
+    values.push(id);
+
     await pool.query(
-      `UPDATE contact_messages SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
-      [body.status, id]
+      `UPDATE contact_messages SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
+      values
     );
 
     // Fetch updated message
     const [messages] = await pool.query(
-      `SELECT id, name, email, inquiry_type, message, status, created_at 
+      `SELECT id, name, email, inquiry_type, message, status, created_at, admin_reply, admin_replied_at 
        FROM contact_messages WHERE id = ?`,
       [id]
     );
