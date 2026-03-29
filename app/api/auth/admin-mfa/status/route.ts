@@ -9,6 +9,7 @@ import {
 } from "@/lib/auth/admin-mfa-challenge";
 import { beginAdminMfaEnrollment, getAdminMfaSummary } from "@/lib/mysql/admin-mfa";
 import { enforceRouteRateLimit, getRequestIp, toApiErrorResponse } from "@/lib/security/request";
+import { isPreviewMode } from "@/lib/preview-mode";
 
 export async function GET(request: Request) {
   try {
@@ -87,6 +88,45 @@ export async function GET(request: Request) {
       }
       
       // User is already authenticated with MFA or doesn't need enrollment
+      // In preview mode, skip MFA requirement
+      if (isPreviewMode()) {
+        return NextResponse.json({ ok: true, authenticated: true, redirectTo: "/admin" });
+      }
+      
+      // In production, user must have MFA enabled or be enrolling
+      const mfaRequired = true; // MFA is mandatory for admin access
+      if (!mfaEnabled && mfaRequired) {
+        // User must enroll in MFA before accessing admin panel
+        const enrollment = await beginAdminMfaEnrollment(adminUser.id);
+        
+        // Create a new challenge token for enrollment
+        const newChallengeToken = createAdminMfaChallengeToken({
+          userId: adminUser.id,
+          email: adminUser.email,
+          purpose: "enroll",
+        });
+        
+        const response = NextResponse.json({
+          ok: true,
+          authenticated: false,
+          email: adminUser.email,
+          mode: "enroll",
+          enrollment: {
+            manualEntryKey: enrollment.manualEntryKey,
+            otpAuthUri: enrollment.otpAuthUri,
+            issuer: "Univert Admin",
+          },
+        });
+        
+        response.cookies.set(
+          ADMIN_MFA_CHALLENGE_COOKIE_NAME,
+          newChallengeToken,
+          getAdminMfaChallengeCookieOptions(),
+        );
+        
+        return response;
+      }
+      
       return NextResponse.json({ ok: true, authenticated: true, redirectTo: "/admin" });
     }
 
