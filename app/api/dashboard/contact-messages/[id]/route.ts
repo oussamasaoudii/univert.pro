@@ -7,7 +7,7 @@ import {
   parseJsonBody,
   toApiErrorResponse,
 } from '@/lib/security/request';
-import { db } from '@/lib/db';
+import { getMySQLPool } from '@/lib/mysql/pool';
 import { z } from 'zod';
 import { isPreviewMode } from '@/lib/preview-mode';
 
@@ -92,12 +92,13 @@ export async function PATCH(
 
     values.push(id);
 
-    await db.query(
+    const pool = getMySQLPool();
+    await pool.query(
       `UPDATE contact_messages SET ${updates.join(', ')}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
       values
     );
 
-    const [messages] = await db.query(
+    const [messages] = await pool.query(
       'SELECT id, name, email, inquiry_type, message, status, created_at FROM contact_messages WHERE id = ?',
       [id]
     );

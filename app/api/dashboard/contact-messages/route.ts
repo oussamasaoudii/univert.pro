@@ -5,7 +5,7 @@ import {
   getRequestIp,
   toApiErrorResponse,
 } from '@/lib/security/request';
-import { db } from '@/lib/db';
+import { getMySQLPool } from '@/lib/mysql/pool';
 import { isPreviewMode } from '@/lib/preview-mode';
 
 export async function GET(request: Request) {
@@ -27,7 +27,8 @@ export async function GET(request: Request) {
       blockDurationMs: 15 * 60 * 1000,
     });
 
-    const [messages] = await db.query(
+    const pool = getMySQLPool();
+    const [messages] = await pool.query(
       `SELECT id, name, email, inquiry_type, message, status, created_at 
        FROM contact_messages 
        ORDER BY created_at DESC 
